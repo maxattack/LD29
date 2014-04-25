@@ -1,0 +1,12 @@
+*.unityproj
+*.csproj
+*.pidb
+*.sln
+*.userprefs
+/Library
+Temp
+obj
+Build-iOS
+.DS_Store
+TinyStarpilot.app
+tinystarpilot.com/build
