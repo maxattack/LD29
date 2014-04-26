@@ -7,6 +7,7 @@ public  class WorldGen : CustomBehaviour {
 	public Transform tile;
 	public Transform debris;
 	public Transform rocket;
+	public Transform item;
 
 	public Sprite [] sprites;
 	public Sprite [] debrisSprites;
@@ -42,7 +43,10 @@ public  class WorldGen : CustomBehaviour {
         
 		//generate grid
 
-	
+		Item newItem = item.GetComponent<Item> ().Alloc ();
+		newItem.GetComponent<GameObjUserData> ().goType = GameObjUserData.GOType.Item;
+		newItem.transform.position = new Vector2 (10, 10);
+
 
 		tiles = new Transform[width, height];
 

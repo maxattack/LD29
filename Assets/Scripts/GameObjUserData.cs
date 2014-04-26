@@ -7,6 +7,8 @@ public class GameObjUserData : MonoBehaviour {
 	{
 		DontCare,
 		Tile,
+		Item,
+		Hero,
 
 
 	}

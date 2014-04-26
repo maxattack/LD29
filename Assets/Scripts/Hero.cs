@@ -59,7 +59,12 @@ public class Hero : CustomBehaviour {
 			Jukebox.Play("Jump");
 			body.AddForce(Vec(0, jumpImpulse, 0), ForceMode.VelocityChange);
 		}
-		
+
+		if (input.PressedItem) {
+
+			if(currItem)
+				currItem.Operate();
+				}
 	}
 	
 	void FixedUpdate() {
@@ -91,7 +96,30 @@ public class Hero : CustomBehaviour {
 			--groundCount;
 		}
 	}
-	
+
+	Item currItem;
+
+	//-------------------------------------------------------------------------------
+	// COLLISION HANDLING
+
+	void OnCollisionEnter(Collision collision) {
+		
+		GameObject obj = collision.collider.gameObject;
+		if (obj) {
+			
+			GameObjUserData ud = obj.GetComponent<GameObjUserData>();
+			if(ud )
+			{
+				if(ud.goType == GameObjUserData.GOType.Item)
+				{
+					currItem = obj;
+				}
+			}
+			
+		}
+		
+	}
+
 	
 	//--------------------------------------------------------------------------------
 	// INTERACTION HALTING
