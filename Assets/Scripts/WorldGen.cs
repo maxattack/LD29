@@ -42,11 +42,20 @@ public  class WorldGen : CustomBehaviour {
     {
         
 		//generate grid
+		{
+						Item newItem = item.GetComponent<Item> ().Alloc ();
+						newItem.GetComponent<GameObjUserData> ().goType = GameObjUserData.GOType.Item;
+						newItem.transform.position = new Vector2 (10, 10);
+			newItem.itemType = Item.ItemType.Shovel;
+				}
+		{
+			
+			Item newItem = item.GetComponent<Item> ().Alloc ();
+			newItem.GetComponent<GameObjUserData> ().goType = GameObjUserData.GOType.Item;
+			newItem.transform.position = new Vector2 (5, 10);
+			newItem.itemType = Item.ItemType.RocketLauncher;
 
-		Item newItem = item.GetComponent<Item> ().Alloc ();
-		newItem.GetComponent<GameObjUserData> ().goType = GameObjUserData.GOType.Item;
-		newItem.transform.position = new Vector2 (10, 10);
-
+				}
 
 		tiles = new Transform[width, height];
 

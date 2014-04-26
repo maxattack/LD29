@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Item : CustomBehaviour {
@@ -6,7 +6,7 @@ public class Item : CustomBehaviour {
 	Item prefab;
 	Item next;
 
-
+	public Transform rocket;
 
 
 	public bool IsPrefab { 
@@ -68,6 +68,8 @@ public class Item : CustomBehaviour {
 	// Use this for initialization
 	void Start () {
 	
+
+
 		xform = transform;
 	}
 	
@@ -78,12 +80,12 @@ public class Item : CustomBehaviour {
 	}
 
 
-	enum ItemType
+	internal enum ItemType
 	{
 		Shovel,
 		RocketLauncher,
 	}
-	ItemType itemType = ItemType.Shovel;
+	internal ItemType itemType = ItemType.Shovel;
 
 	internal void Operate(Vector2 dir)
 	{
@@ -95,8 +97,12 @@ public class Item : CustomBehaviour {
 
 				}
 		if (itemType == ItemType.RocketLauncher) {
+
+
+			Transform inst = Dup (rocket);
 			
-			WorldGen.inst.DigRocket((int)xform.position.x,(int)xform.position.y);
+			inst.transform.position = xform.position;
+			inst.GetComponent<Projectile>().initDir = new Vector3(dir.x,dir.y,0);
 			
 		}
 
