@@ -61,7 +61,7 @@ public class Hero : CustomBehaviour {
 		}
 
 		if (currItem) {
-						currItem.xform = xform;
+						currItem.xform.position = xform.position;
 
 				}
 		if (input.PressedItem) {

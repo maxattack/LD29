@@ -39,7 +39,10 @@ public class Debris : CustomBehaviour {
 	}
 	
 	void Init() {
-		
+
+		rigidbody.velocity = new Vector3 (0, 0, 0);
+		rigidbody.angularVelocity = new Vector3 (0, 0, 0);
+
 	}
 	
 	public void Release() {
