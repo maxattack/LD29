@@ -40,6 +40,42 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: topSoilTile
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: soilTile
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: heroStand
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 17
+        width: 22
+        height: 22
+      alignment: 7
+      pivot: {x: .5, y: 0}
+    - name: heroJump
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 17
+        width: 22
+        height: 24
+      alignment: 7
+      pivot: {x: .5, y: 0}
   spritePackingTag: 
   userData: 
