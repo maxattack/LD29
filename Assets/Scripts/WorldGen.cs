@@ -22,7 +22,20 @@ public  class WorldGen : CustomBehaviour {
 		
 		inst = this;
 	}
-
+	
+	
+	void OnDrawGizmos() {
+		if (!Application.isPlaying) {
+			Gizmos.color = Color.yellow;
+			var left = Vec(-0.5f,-0.5f,0);
+			var right = Vec(width-0.5f,-0.5f,0);
+			var nibNeight = 0.1f;
+			Gizmos.DrawLine(left, right);
+			Gizmos.DrawLine (left.Above(nibNeight), left.Below(nibNeight));
+			Gizmos.DrawLine(right.Above(nibNeight), right.Below(nibNeight));
+		}
+		
+	}
 
 	void Start()
     {

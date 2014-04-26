@@ -15,6 +15,7 @@ public class Hero : CustomBehaviour {
 	internal HeroInput input;
 	internal HeroFX fx;
 	internal Rigidbody body;
+	internal Transform xform;
 	
 	// PRIVATE MEMBERS	
 	int haltSemaphore = 0;
@@ -40,6 +41,7 @@ public class Hero : CustomBehaviour {
 		input = GetComponent<HeroInput>();
 		fx = GetComponent<HeroFX>();
 		body = this.rigidbody;
+		xform = this.transform;
 		
 	}
 	

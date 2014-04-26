@@ -31,7 +31,7 @@ public class HeroFX : CustomBehaviour {
 	void Update() {
 	
 		if (hero.Grounded) {
-			var speed = hero.body.velocity.magnitude;
+			var speed = Mathf.Abs (hero.body.velocity.x);
 			if (speed > 0.02f) {
 				animationTime += speed * Time.deltaTime;
 				var spr =  Mathf.FloorToInt(2 * animationTime) % 2 == 0 ? idleSprite : jumpySprite;

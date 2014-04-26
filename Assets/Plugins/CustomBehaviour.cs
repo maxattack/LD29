@@ -17,6 +17,7 @@ public class CustomBehaviour : MonoBehaviour {
 	// Shader-Style Vector Shorthand
 	public static Vector2 Vec(float x, float y) { return new Vector2(x, y); }
 	public static Vector3 Vec(float x, float y, float z) { return new Vector3(x, y, z); }
+	public static Vector3 Vec(float x, Vector2 yz) { return new Vector3(x, yz.x, yz.y); }
 	public static Vector3 Vec(Vector2 v, float z) { return new Vector3(v.x, v.y, z); }
 	public static Vector4 Vec(float x, float y, float z, float w) { return new Vector4(x, y, z, w); }
 	public static Vector4 Vec(Vector3 v, float w) { return new Vector4(v.x, v.y, v.z, w); }
