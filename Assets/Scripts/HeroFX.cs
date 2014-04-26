@@ -12,6 +12,8 @@ public class HeroFX : CustomBehaviour {
 	internal Transform xform;
 	internal Hero hero;
 	
+	
+	
 	internal float animationTime;
 	internal Direction direction = Direction.Right;
 	
