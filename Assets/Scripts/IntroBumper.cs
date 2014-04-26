@@ -17,20 +17,21 @@ public class IntroBumper : CustomBehaviour {
 		var baseScale = appearFx.localScale;
 		appearFx.localScale = Vec(baseScale.x, 0, baseScale.z);
 		
+		// SHOW LOGO
 		var p0 = logo.position;
 		var p1 = p0.Above( CameraFX.inst.Height );
+		logo.position = p1;
+		yield return null;
+		Jukebox.Play("Appear");
 		foreach(var u in Interpolate(1f)) {
 			logo.position = Vector3.Lerp(p1, p0, EaseOut2(u));
 			yield return null;
 		}
-
 		foreach(var u in Interpolate(0.1f)) {
 			logoFx.color = RGBA(Color.white, u);
 			yield return null;
 		}
-		
 		Jukebox.Play("Bumper");
-		
 		foreach(var u in Interpolate(0.1f)) {
 			logoFx.color = RGBA(Color.white, 1f-u);
 			yield return null;
