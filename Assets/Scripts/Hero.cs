@@ -60,6 +60,10 @@ public class Hero : CustomBehaviour {
 			body.AddForce(Vec(0, jumpImpulse, 0), ForceMode.VelocityChange);
 		}
 
+		if (currItem) {
+						currItem.xform = xform;
+
+				}
 		if (input.PressedItem) {
 
 			if(currItem)
@@ -112,7 +116,9 @@ public class Hero : CustomBehaviour {
 			{
 				if(ud.goType == GameObjUserData.GOType.Item)
 				{
-					currItem = obj;
+					currItem = obj.GetComponent<Item>();
+					currItem.rigidbody.isKinematic = true;
+					currItem.rigidbody.detectCollisions = false;
 				}
 			}
 			
