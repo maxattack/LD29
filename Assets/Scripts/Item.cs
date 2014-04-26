@@ -101,7 +101,7 @@ public class Item : CustomBehaviour {
 	{
 	
 		if (this == Hero.inst.currItem) {
-						xform.localPosition = xform.localPosition.EaseTowards (Vector3.zero, 0.1f); 
+			//			xform.localPosition = xform.localPosition.EaseTowards (Vector3.zero, 0.1f); 
 				}
 	
 	}
