@@ -30,7 +30,7 @@ public class HeroFX : CustomBehaviour {
 	
 	void Update() {
 	
-		if (hero.Grounded) {
+		if (hero.grounded) {
 			var speed = Mathf.Abs (hero.body.velocity.x);
 			if (speed > 0.02f) {
 				animationTime += speed * Time.deltaTime;

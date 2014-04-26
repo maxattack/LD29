@@ -11,6 +11,7 @@ public class CameraFX : CustomBehaviour {
 	internal static CameraFX inst;
 	internal Camera cam;
 	internal Transform xform;
+	internal Rigidbody body;
 	internal Color baseColor;
 	
 	float smoothedSpeed = 0f;
@@ -49,6 +50,7 @@ public class CameraFX : CustomBehaviour {
 		
 		// CACHE BASE CAMERA PARAMS
 		xform = this.transform;
+		body = this.rigidbody;
 		cam = GetComponent<Camera>();
 		baseColor = cam.backgroundColor;
 		
@@ -62,6 +64,7 @@ public class CameraFX : CustomBehaviour {
 	void LateUpdate() {
 		
 		if (Hero.inst) {
+			//var p0 = body.position;
 			var p0 = xform.position;
 
 			// TRACK HERO WITH A LITTLE LOOK-AHEAD
@@ -84,6 +87,7 @@ public class CameraFX : CustomBehaviour {
 				p0.y -= diff;
 			}
 			
+			//body.MovePosition(p0);
 			xform.position = p0;
 		}
 	

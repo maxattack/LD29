@@ -17,16 +17,16 @@ public class Hero : CustomBehaviour {
 	internal Rigidbody body;
 	internal Transform xform;
 	
+	internal Item currItem;
+	
+	internal enum Status { Idle, Dead };
+	internal Status status = Status.Idle;
+	internal bool grounded = false;
+	
+	
 	// PRIVATE MEMBERS	
 	int haltSemaphore = 0;
 	float targetRunningSpeed = 0f;	
-	int groundCount = 0;
-	
-	//--------------------------------------------------------------------------------
-	// GETTERS
-	//--------------------------------------------------------------------------------
-
-	public bool Grounded { get { return groundCount > 0; } }
 	
 	//--------------------------------------------------------------------------------
 	// EVENT CALLBACKS
@@ -54,9 +54,16 @@ public class Hero : CustomBehaviour {
 
 	Vector2 currDir;
 
+	void Start() {
+		PollGrounded();
+	}
+
+
+		
+		
+
 	void Update() {
 
-		//funky..make rawkit launcher look like one
 		Vector2 newDir = Vector2.zero;
 		if (input.PressingUp)
 			newDir.y += 1;
@@ -75,7 +82,7 @@ public class Hero : CustomBehaviour {
 
 
 		// JUMPING
-		if (Grounded && input.PressedJump) {
+		if (grounded && input.PressedJump) {
 			Jukebox.Play("Jump");
 			body.AddForce(Vec(0, jumpImpulse, 0), ForceMode.VelocityChange);
 		}
@@ -92,7 +99,13 @@ public class Hero : CustomBehaviour {
 				}
 	}
 	
+	void PollGrounded() {
+		grounded = Physics.CheckSphere(body.position, 0.1f, Layers.DefaultMask);
+	}
+	
 	void FixedUpdate() {
+		PollGrounded();
+		
 	
 		// RUNNING
 		var vel = body.velocity;
@@ -109,44 +122,29 @@ public class Hero : CustomBehaviour {
 		
 		body.AddForce(Vec(targetRunningSpeed - vel.x, 0, 0), ForceMode.VelocityChange);
 	}
-	
-	void OnTriggerEnter(Collider c) {
-		if (!c.isTrigger) {
-			++groundCount;
-		}
-	}
-	
-	void OnTriggerExit(Collider c) {
-		if (!c.isTrigger) {
-			--groundCount;
-		}
-	}
-
-	Item currItem;
 
 	//-------------------------------------------------------------------------------
 	// COLLISION HANDLING
-
+	//--------------------------------------------------------------------------------
+	
 	void OnCollisionEnter(Collision collision) {
 		
-		GameObject obj = collision.collider.gameObject;
-		if (obj) {
-			
-			GameObjUserData ud = obj.GetComponent<GameObjUserData>();
-			if(ud )
-			{
-				if(ud.goType == GameObjUserData.GOType.Item)
-				{
-					currItem = obj.GetComponent<Item>();
-					currItem.rigidbody.isKinematic = true;
-					currItem.rigidbody.detectCollisions = false;
+		switch(collision.collider.gameObject.layer) {
+			case Layers.Item:
+				currItem = collision.collider.GetComponent<Item>();
+				currItem.rigidbody.isKinematic = true;
+				currItem.rigidbody.detectCollisions = false;			
+				break;
+			case Layers.Camera:
+				if (grounded) {
+					Kill();
 				}
-			}
-			
+				break;
 		}
 		
+		
+		
 	}
-
 	
 	//--------------------------------------------------------------------------------
 	// INTERACTION HALTING
@@ -161,4 +159,17 @@ public class Hero : CustomBehaviour {
 	public void Unhalt() {
 		if (haltSemaphore > 0) { --haltSemaphore; }
 	}
+	
+	//--------------------------------------------------------------------------------
+	// KILL! KILL!
+	//--------------------------------------------------------------------------------
+	
+	public void Kill() {
+		if (status != Status.Dead) {
+			status = Status.Dead;
+			print("KILL!");
+		}
+		
+	}
+				
 }
