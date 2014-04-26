@@ -96,7 +96,6 @@ public abstract class Item : CustomBehaviour {
 		fx = xform.GetChild(0);
 	}
 	
-	// Update is called once per frame
 	void Update () 
 	{
 		if (this == Hero.inst.currItem) {
