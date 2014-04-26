@@ -157,6 +157,8 @@ public class Hero : CustomBehaviour {
 	public void Kill() {
 		if (status != Status.Dead) {
 			status = Status.Dead;
+			Time.timeScale = 0;
+			Jukebox.Play("Kill");
 			print("KILL!");
 		}
 		
