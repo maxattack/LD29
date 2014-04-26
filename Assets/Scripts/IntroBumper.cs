@@ -13,6 +13,7 @@ public class IntroBumper : CustomBehaviour {
 		
 		// HIDE THE PLAYER AND APPEAR FX
 		Hero.inst.Halt();
+		CameraFX.inst.Halt();
 		Hero.inst.gameObject.SetActive(false);
 		var baseScale = appearFx.localScale;
 		appearFx.localScale = Vec(baseScale.x, 0, baseScale.z);
@@ -22,7 +23,6 @@ public class IntroBumper : CustomBehaviour {
 		var p1 = p0.Above( CameraFX.inst.Height );
 		logo.position = p1;
 		yield return null;
-		Jukebox.Play("Appear");
 		foreach(var u in Interpolate(0.5f)) {
 			logo.position = Vector3.Lerp(p1, p0, EaseOut2(u));
 			yield return null;
@@ -71,6 +71,7 @@ public class IntroBumper : CustomBehaviour {
 				
 		// BEGIN INTERACTION
 		Hero.inst.Unhalt();
+		CameraFX.inst.Unhalt();
 		
 		Destroy(gameObject);
 	

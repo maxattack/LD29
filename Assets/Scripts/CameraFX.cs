@@ -13,6 +13,7 @@ public class CameraFX : CustomBehaviour {
 	internal Color baseColor;
 	
 	float smoothedSpeed = 0f;
+	int haltingSemaphore = 0;
 	
 	//--------------------------------------------------------------------------------
 	// GETTERS
@@ -49,10 +50,26 @@ public class CameraFX : CustomBehaviour {
 			smoothedSpeed = smoothedSpeed.EaseTowards(Hero.inst.body.velocity.x, 0.1f);
 			var targetPosition = Hero.inst.xform.position.x + lookAheadAmount * smoothedSpeed;
 			p0.x = p0.x.EaseTowards(targetPosition, 0.2f);
-			p0.y -= Time.deltaTime * killSpeed;
+			if (!Halted) {
+				p0.y -= Time.deltaTime * killSpeed;
+			}
 			xform.position = p0;
 		}
 	
+	}
+
+	//--------------------------------------------------------------------------------
+	// Y-MOVE HALTING
+	//--------------------------------------------------------------------------------
+	
+	public bool Halted { get { return haltingSemaphore > 0; } }
+	
+	public void Halt() {
+		++haltingSemaphore;
+	}
+	
+	public void Unhalt() {
+		if (haltingSemaphore > 0) { --haltingSemaphore; }
 	}
 	
 	//--------------------------------------------------------------------------------

@@ -56,7 +56,7 @@ public class Hero : CustomBehaviour {
 		
 		// JUMPING
 		if (Grounded && input.PressedJump) {
-			Jukebox.Play("Appear");
+			Jukebox.Play("Jump");
 			body.AddForce(Vec(0, jumpImpulse, 0), ForceMode.VelocityChange);
 		}
 		
