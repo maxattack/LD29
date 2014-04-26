@@ -26,7 +26,7 @@ public class PoolingSample : CustomBehaviour {
 			next = result.next;
 			result.next = null;
 			result.transform.position = position;
-			result.SetActive(true);
+			result.gameObject.SetActive(true);
 			
 		} else {
 		
