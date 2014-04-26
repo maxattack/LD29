@@ -42,7 +42,7 @@ public class IntroBumper : CustomBehaviour {
 		do { yield return null; } while(!Input.anyKeyDown);
 	
 		// TRANSITION IN "FRONT"
-		foreach(var u in Interpolate(0.15f)) {
+		foreach(var u in Interpolate(0.1f)) {
 			appearFx.localScale = Vec(baseScale.x, u * baseScale.y, baseScale.z);
 			logo.position = Vector3.Lerp(p0, p1, EaseOut2(u));			
 			yield return null;
@@ -50,7 +50,7 @@ public class IntroBumper : CustomBehaviour {
 		
 		// SHOW THE PLAYER
 		Hero.inst.gameObject.SetActive(true);
-		
+		Hero.inst.fx.fx.color = Color.white;
 		
 		CameraFX.inst.Flash(Color.white);
 		Jukebox.Play("AppearThump");
@@ -61,12 +61,14 @@ public class IntroBumper : CustomBehaviour {
 		appearFx.rotation = appearFx.rotation * QRadians(Mathf.PI);
 		
 		
-		foreach(var u in Interpolate(0.15f)) {
+		foreach(var u in Interpolate(0.1f)) {
 			var v = u - 1f;
 			appearFx.localScale = Vec(baseScale.x, v * baseScale.y, baseScale.z);
 			yield return null;
 		}
+		Hero.inst.fx.Flash(Color.white, 0.25f);
 		
+				
 		// BEGIN INTERACTION
 		Hero.inst.Unhalt();
 		

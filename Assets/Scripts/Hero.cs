@@ -18,7 +18,15 @@ public class Hero : CustomBehaviour {
 	
 	// PRIVATE MEMBERS	
 	int haltSemaphore = 0;
+	float targetRunningSpeed = 0f;	
+	int groundCount = 0;
+	
+	//--------------------------------------------------------------------------------
+	// GETTERS
+	//--------------------------------------------------------------------------------
 
+	public bool Grounded { get { return groundCount > 0; } }
+	
 	//--------------------------------------------------------------------------------
 	// EVENT CALLBACKS
 	//--------------------------------------------------------------------------------
@@ -42,21 +50,46 @@ public class Hero : CustomBehaviour {
 		
 	}
 	
+	void Update() {
+		
+		// JUMPING
+		if (Grounded && input.PressedJump) {
+			Jukebox.Play("Appear");
+			body.AddForce(Vec(0, jumpImpulse, 0), ForceMode.VelocityChange);
+		}
+		
+	}
+	
 	void FixedUpdate() {
-		var currVel = body.velocity;
+	
+		// RUNNING
+		var vel = body.velocity;
+		var easing = 0.2f;
 		if (input.PressingLeft) {
 			fx.SetDirection(HeroFX.Direction.Left);
-			var targetVel = Vec(-runSpeed, 0, 0);
-			body.AddForce(targetVel - currVel, ForceMode.VelocityChange);
+			targetRunningSpeed = targetRunningSpeed.EaseTowards(-runSpeed, easing);
 		} else if (input.PressingRight) {
 			fx.SetDirection(HeroFX.Direction.Right);
-			var targetVel = Vec(runSpeed, 0, 0);
-			body.AddForce(targetVel - currVel, ForceMode.VelocityChange);
+			targetRunningSpeed = targetRunningSpeed.EaseTowards(runSpeed, easing);
 		} else {
-			var targetVel = Vector3.zero;
-			body.AddForce(targetVel - currVel, ForceMode.Acceleration);
+			targetRunningSpeed = targetRunningSpeed.EaseTowards(0, easing);
+		}
+		
+		body.AddForce(Vec(targetRunningSpeed - vel.x, 0, 0), ForceMode.VelocityChange);
+	}
+	
+	void OnTriggerEnter(Collider c) {
+		if (!c.isTrigger) {
+			++groundCount;
 		}
 	}
+	
+	void OnTriggerExit(Collider c) {
+		if (!c.isTrigger) {
+			--groundCount;
+		}
+	}
+	
 	
 	//--------------------------------------------------------------------------------
 	// INTERACTION HALTING
