@@ -2,6 +2,8 @@
 using UnityEngine;
 
 [RequireComponent(typeof(HeroInput))]
+[RequireComponent(typeof(HeroFX))]
+[RequireComponent(typeof(Rigidbody))]
 public class Hero : CustomBehaviour {
 	
 	// DESIGNER PARAMETERS
@@ -11,6 +13,8 @@ public class Hero : CustomBehaviour {
 	// INTERNAL PARAMETERS
 	internal static Hero inst;
 	internal HeroInput input;
+	internal HeroFX fx;
+	internal Rigidbody body;
 	
 	// PRIVATE MEMBERS	
 	int haltSemaphore = 0;
@@ -26,6 +30,8 @@ public class Hero : CustomBehaviour {
 		
 		// CACHE COMMON SIBLINGS
 		input = GetComponent<HeroInput>();
+		fx = GetComponent<HeroFX>();
+		body = this.rigidbody;
 		
 	}
 	
@@ -37,7 +43,19 @@ public class Hero : CustomBehaviour {
 	}
 	
 	void FixedUpdate() {
-		
+		var currVel = body.velocity;
+		if (input.PressingLeft) {
+			fx.SetDirection(HeroFX.Direction.Left);
+			var targetVel = Vec(-runSpeed, 0, 0);
+			body.AddForce(targetVel - currVel, ForceMode.VelocityChange);
+		} else if (input.PressingRight) {
+			fx.SetDirection(HeroFX.Direction.Right);
+			var targetVel = Vec(runSpeed, 0, 0);
+			body.AddForce(targetVel - currVel, ForceMode.VelocityChange);
+		} else {
+			var targetVel = Vector3.zero;
+			body.AddForce(targetVel - currVel, ForceMode.Acceleration);
+		}
 	}
 	
 	//--------------------------------------------------------------------------------
