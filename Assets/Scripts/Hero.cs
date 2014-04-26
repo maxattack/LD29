@@ -58,18 +58,27 @@ public class Hero : CustomBehaviour {
 		PollGrounded();
 	}
 
-	void Update() {
+
 		
-		// DETERMINE CURRENT DIRECTION
-		currDir = Vector2.zero;
+		
+
+	void Update() {
+
+		Vector2 newDir = Vector2.zero;
 		if (input.PressingUp)
-			currDir.y += 1;
+			newDir.y += 1;
 		if (input.PressingDown)
-			currDir.y -= 1;
+			newDir.y -= 1;
 		if (input.PressingRight)
-			currDir.x += 1;
+			newDir.x += 1;
 		if (input.PressingLeft)
-			currDir.x -= 1;
+			newDir.x -= 1;
+
+		newDir.Normalize ();
+
+		if (newDir.sqrMagnitude > 0)
+					currDir = newDir;
+
 
 
 		// JUMPING
@@ -79,7 +88,8 @@ public class Hero : CustomBehaviour {
 		}
 
 		if (currItem) {
-						currItem.xform.position = xform.position;
+						currItem.xform.position = xform.position + new Vector3(0,0.5f,0);
+			currItem.SetDir(currDir);
 
 				}
 		if (input.PressedItem) {
