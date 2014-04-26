@@ -5,7 +5,7 @@ using System.Collections;
 public  class WorldGen : CustomBehaviour {
 
 	public Transform tile;
-	public Transform debris;
+	public Debris debrisPrefab;
 	public Transform rocket;
 	public Transform item;
 
@@ -150,7 +150,7 @@ public  class WorldGen : CustomBehaviour {
 			for(int sx = 0 ; sx < 2 ; sx++)
 			{
 
-				var inst = debris.GetComponent<Debris>().Alloc();
+				var inst = debrisPrefab.Alloc();
 				inst.transform.position = new Vector2 (x + sx * 0.5f,y + sy * 0.5f);
 
 

@@ -39,7 +39,8 @@ public class Debris : CustomBehaviour {
 	}
 	
 	void Init() {
-
+		
+		totalTime = 0f;
 		rigidbody.velocity = new Vector3 (0, 0, 0);
 		rigidbody.angularVelocity = new Vector3 (0, 0, 0);
 
@@ -66,11 +67,8 @@ public class Debris : CustomBehaviour {
 
 
 
-	// Use this for initialization
-	void Start () {
-	
-	}
 	float totalTime = 0;
+	
 	// Update is called once per frame
 	void Update () {
 
@@ -78,7 +76,7 @@ public class Debris : CustomBehaviour {
 
 		if (totalTime > 5) {
 			Release();
-				}
+		}
 	
 	}
 }
