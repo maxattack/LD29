@@ -11,7 +11,8 @@ public class HeroFX : CustomBehaviour {
 	internal Sprite idleSprite;
 	internal Transform xform;
 	internal Hero hero;
-	
+	public Transform highHand;
+
 	internal float animationTime;
 	internal Direction direction = Direction.Right;
 	
@@ -24,7 +25,9 @@ public class HeroFX : CustomBehaviour {
 	public void SetDirection(Direction dir) {
 		if (direction != dir) {
 			direction = dir;
+
 			xform.localScale = Vec(dir == Direction.Left ? -1 : 1, 1, 1);
+			highHand.localScale = Vec(dir == Direction.Left ? -1 : 1, 1, 1);
 		}
 	}
 	

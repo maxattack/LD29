@@ -69,23 +69,20 @@ public class Item : CustomBehaviour {
 	internal void SetDir(Vector2 d)
 	{
 		dir = d;
-		Vector2 s = xform.localScale;
-
+	
 		xform.localRotation = Quaternion.FromToRotation (new Vector3 (1, 0, 0), new Vector3 (dir.x, dir.y, 0));
-		xform.localScale = s;
+
 
 
 	}
 
 	Vector3 basePos;
 
-	internal void SetHoldPos(Vector3 p,bool flip)
+	internal void SetOperatePos(Vector3 p)
 	{
 		basePos = p;
 
-
-
-		xform.position = p + new Vector3(0.5f * (flip ? -1 : 1),1.2f,0);
+	
 	}
 
 
@@ -100,9 +97,12 @@ public class Item : CustomBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
 	
-	
+		if (this == Hero.inst.currItem) {
+						xform.localPosition = xform.localPosition.EaseTowards (Vector3.zero, 0.1f); 
+				}
 	
 	}
 
@@ -131,7 +131,7 @@ public class Item : CustomBehaviour {
 	{
 		if (itemType == ItemType.Shovel) {
 
-		
+			xform.localPosition = 1 * xform.right;
 
 			WorldGen.inst.DigShovel((int)(basePos.x + dir.x + 0.5f),(int)(basePos.y + dir.y + 0.5f));
 

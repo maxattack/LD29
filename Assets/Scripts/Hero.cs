@@ -90,7 +90,7 @@ public class Hero : CustomBehaviour {
 		if (currItem) {
 						
 			currItem.SetDir(currDir);
-			currItem.SetHoldPos(xform.position,fx.direction == HeroFX.Direction.Left );
+			currItem.SetOperatePos(xform.position);
 
 				}
 		if (input.PressedItem) {
@@ -134,7 +134,9 @@ public class Hero : CustomBehaviour {
 			case Layers.Item:
 				currItem = collision.collider.GetComponent<Item>();
 				currItem.rigidbody.isKinematic = true;
-				currItem.rigidbody.detectCollisions = false;			
+				currItem.rigidbody.detectCollisions = false;	
+				currItem.transform.parent = fx.highHand;
+				currItem.transform.localPosition = Vector3.zero;
 				break;
 			case Layers.Camera:
 				if (grounded) {

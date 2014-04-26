@@ -33,8 +33,7 @@ public class Projectile : MonoBehaviour {
 	
 		totalTime += Time.deltaTime;
 
-
-
+	
 	}
 
 
