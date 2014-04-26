@@ -80,10 +80,10 @@ TextureImporter:
     - name: shovel
       rect:
         serializedVersion: 2
-        x: 55
-        y: 47
-        width: 5
-        height: 14
+        x: 54
+        y: 48
+        width: 14
+        height: 5
       alignment: 0
       pivot: {x: .5, y: .5}
     - name: bazooka

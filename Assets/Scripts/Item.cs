@@ -62,6 +62,24 @@ public class Item : CustomBehaviour {
 		}
 		
 	}
+	Vector2 dir;
+	internal void SetDir(Vector2 d)
+	{
+		dir = d;
+		Vector2 s = xform.localScale;
+//		if (dir.x > 0)
+//				s.x = 1;
+//		if (dir.x <= 0)
+//				s.x = -1;
+
+	
+
+
+		xform.localRotation = Quaternion.FromToRotation (new Vector3 (1, 0, 0), new Vector3 (dir.x, dir.y, 0));
+		xform.localScale = s;
+
+
+	}
 
 
 	internal Transform xform;
@@ -69,6 +87,7 @@ public class Item : CustomBehaviour {
 	void Start () {
 	
 
+		GetComponent<SpriteRenderer> ().sprite = sprites [(int)itemType];
 
 		xform = transform;
 	}
@@ -77,6 +96,18 @@ public class Item : CustomBehaviour {
 	void Update () {
 	
 	
+	
+	}
+
+	void OnDrawGizmos()
+	{
+		Gizmos.color = Color.white;
+
+		Vector3 digPos = new Vector3 ((int)(xform.position.x + dir.x + 0.5f), (int)(xform.position.y + dir.y + 0.5f), 0);
+		Gizmos.DrawWireCube(digPos, new Vector3(1.0f,1.0f,1.0f));
+
+		Vector3 digPosRaw = new Vector3 ((xform.position.x + dir.x), (xform.position.y + dir.y), 0);
+		Gizmos.DrawWireSphere (digPosRaw, 0.1f);
 	}
 
 
@@ -84,7 +115,9 @@ public class Item : CustomBehaviour {
 	{
 		Shovel,
 		RocketLauncher,
+		NumItemTypes
 	}
+	public Sprite [] sprites = new Sprite[(int)ItemType.NumItemTypes];
 	internal ItemType itemType = ItemType.Shovel;
 
 	internal void Operate(Vector2 dir)
@@ -93,7 +126,7 @@ public class Item : CustomBehaviour {
 
 		
 
-			WorldGen.inst.DigShovel((int)(xform.position.x + dir.x),(int)(xform.position.y + dir.y));
+			WorldGen.inst.DigShovel((int)(xform.position.x + dir.x + 0.5f),(int)(xform.position.y + dir.y + 0.5f));
 
 				}
 		if (itemType == ItemType.RocketLauncher) {

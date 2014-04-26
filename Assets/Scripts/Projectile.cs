@@ -4,6 +4,7 @@ using System.Collections;
 public class Projectile : MonoBehaviour {
 
 
+
 	Transform xform;
 
 	// Use this for initialization
@@ -22,7 +23,7 @@ public class Projectile : MonoBehaviour {
 	{
 
 		rigidbody.AddForce (new Vector3 (0, -1, 0));
-		rigidbody.AddForce (initDir * 1); 
+		rigidbody.AddForce (initDir * 10); 
 
 	}
 
