@@ -112,7 +112,7 @@ public class Hero : CustomBehaviour {
 			{
 				if(ud.goType == GameObjUserData.GOType.Item)
 				{
-					currItem = obj;
+					currItem = obj.GetComponent<Item>();
 				}
 			}
 			
