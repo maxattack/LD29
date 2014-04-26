@@ -6,6 +6,7 @@ public class CameraFX : CustomBehaviour {
 	
 	public float lookAheadAmount = 1f;
 	public float killSpeed = 1f;
+	public float bottomOffsetLimit = 0f;
 	
 	internal static CameraFX inst;
 	internal Camera cam;
@@ -19,8 +20,24 @@ public class CameraFX : CustomBehaviour {
 	// GETTERS
 	//--------------------------------------------------------------------------------
 
+	public float HalfWidth { get { return cam.orthographicSize * cam.aspect; } }
+	public float HalfHeight { get { return cam.orthographicSize; } }
 	public float Width { get { return 2f * cam.orthographicSize * cam.aspect; } }
 	public float Height { get { return 2f * cam.orthographicSize; } }
+	
+	public float LimitLeft {
+		get {
+			var worldLeft = -0.5f;
+			return worldLeft + HalfWidth;
+		}
+	}
+	
+	public float LimitRight {
+		get {
+			var worldRight = WorldGen.inst.width - 0.5f;
+			return worldRight - HalfWidth;
+		}
+	}
 	
 	//--------------------------------------------------------------------------------
 	// EVENTS
@@ -44,15 +61,29 @@ public class CameraFX : CustomBehaviour {
 	
 	void LateUpdate() {
 		
-		// TRACK HERO WITH A LITTLE LOOK-AHEAD
 		if (Hero.inst) {
 			var p0 = xform.position;
+
+			// TRACK HERO WITH A LITTLE LOOK-AHEAD
 			smoothedSpeed = smoothedSpeed.EaseTowards(Hero.inst.body.velocity.x, 0.1f);
-			var targetPosition = Hero.inst.xform.position.x + lookAheadAmount * smoothedSpeed;
-			p0.x = p0.x.EaseTowards(targetPosition, 0.2f);
+			var hp = Hero.inst.xform.position;
+			var targetPosition = hp.x + lookAheadAmount * smoothedSpeed;
+			p0.x = Mathf.Clamp(
+				p0.x.EaseTowards(targetPosition, 0.2f), 
+				LimitLeft, 
+				LimitRight
+			);
 			if (!Halted) {
 				p0.y -= Time.deltaTime * killSpeed;
 			}
+			
+			// CAMERA TRACKS PLAYER BELOW SCREEN
+			var bottomThreshold = p0.y - HalfHeight + bottomOffsetLimit;
+			var diff = bottomThreshold - hp.y;
+			if (diff > 0f) {
+				p0.y -= diff;
+			}
+			
 			xform.position = p0;
 		}
 	

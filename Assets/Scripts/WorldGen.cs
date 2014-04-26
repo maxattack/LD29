@@ -15,8 +15,8 @@ public  class WorldGen : CustomBehaviour {
 	internal static WorldGen inst;
 
 	Transform [,] tiles;
-	int height = 100;
-	int width = 40;
+	public int height = 100;
+	public int width = 40;
     
 	void Awake()
 	{
