@@ -74,7 +74,7 @@ public class Hero : CustomBehaviour {
 		}
 
 		if (currItem) {
-						currItem.xform.position = xform.position + currDir;
+						currItem.xform.position = xform.position;
 
 				}
 		if (input.PressedItem) {
