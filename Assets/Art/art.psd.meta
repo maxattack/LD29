@@ -149,5 +149,23 @@ TextureImporter:
         height: 30
       alignment: 9
       pivot: {x: .5, y: .25999999}
+    - name: dirt0
+      rect:
+        serializedVersion: 2
+        x: 54
+        y: 8
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: grass0
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 8
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: .5, y: .5}
   spritePackingTag: 
   userData: 
