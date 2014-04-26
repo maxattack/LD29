@@ -88,16 +88,11 @@ public class Hero : CustomBehaviour {
 		}
 
 		if (currItem) {
-						
 			currItem.SetDir(currDir);
-			currItem.SetOperatePos(xform.position);
-
-				}
+		}
 		if (input.PressedItem) {
-
-			if(currItem)
-				currItem.Operate(currDir);
-				}
+			if(currItem) { currItem.Operate(currDir); }
+		}
 	}
 	
 	void PollGrounded() {
@@ -132,11 +127,7 @@ public class Hero : CustomBehaviour {
 		
 		switch(collision.collider.gameObject.layer) {
 			case Layers.Item:
-				currItem = collision.collider.GetComponent<Item>();
-				currItem.rigidbody.isKinematic = true;
-				currItem.rigidbody.detectCollisions = false;	
-				currItem.transform.parent = fx.highHand;
-				currItem.transform.localPosition = Vector3.zero;
+				PickUp(collision.collider.GetComponent<Item>());	
 				break;
 			case Layers.Camera:
 				if (grounded) {
@@ -148,6 +139,24 @@ public class Hero : CustomBehaviour {
 		
 		
 	}
+
+	//--------------------------------------------------------------------------------
+	// INTERACTING WITH ITEMS
+	//--------------------------------------------------------------------------------
+	
+	public void PickUp(Item item) {
+		
+		currItem = item;
+		
+		// REPARENT FX TO THIS
+		currItem.fx.parent = fx.highHand;
+		currItem.fx.localPosition = Vector3.zero;
+		
+		//currItem.gameObject.SetActive(false);		
+		currItem.rigidbody.isKinematic = true;
+		currItem.rigidbody.detectCollisions = false;
+	}
+	
 	
 	//--------------------------------------------------------------------------------
 	// INTERACTION HALTING

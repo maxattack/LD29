@@ -1,12 +1,31 @@
 using UnityEngine;
 using System.Collections;
 
-public class Item : CustomBehaviour {
+public abstract class Item : CustomBehaviour {
+	
+	internal Transform fx;	
+	internal Transform xform;
+	internal Vector2 dir;
+	
+	//--------------------------------------------------------------------------------
+	// GENERIC ITEM INTERFACE
+	//--------------------------------------------------------------------------------
+	
+	public abstract void Init();
+	public abstract void Operate(Vector2 dir);
+	
+	internal void SetDir(Vector2 d)
+	{
+		dir = d;
+		fx.localRotation = Quaternion.FromToRotation (new Vector3 (1, 0, 0), new Vector3 (dir.x, dir.y, 0));
+	}
+	
+	//--------------------------------------------------------------------------------
+	// POOLING
+	//--------------------------------------------------------------------------------
 	
 	Item prefab;
 	Item next;
-
-	public Transform rocket;
 
 
 	public bool IsPrefab { 
@@ -14,7 +33,7 @@ public class Item : CustomBehaviour {
 	}
 	
 	
-	public Item Alloc() {
+	public Item Alloc(Vector2 pos) {
 		Assert(IsPrefab);
 		
 		Item result;
@@ -25,28 +44,27 @@ public class Item : CustomBehaviour {
 			result = next;
 			next = result.next;
 			result.next = null;
+			result.xform.position = pos;
 			result.gameObject.SetActive(true);
 			
 		} else {
 			
 			// CREATE NEW INSTANCE
-			result = Dup(this);
+			result = Dup(this, pos);
 			result.prefab = this;
 			
 		}
 		
+		// RE-PARENT FX
+		result.fx.parent = result.xform;
+		result.fx.Reset();
+		
 		// RE-INIT INSTANCE
 		result.Init();
+		
 		return result;
 	}
 	
-	void Init() {
-		
-	}
-
-
-
-
 	public void Release() {
 		
 		if (prefab != null) {
@@ -65,88 +83,41 @@ public class Item : CustomBehaviour {
 		}
 		
 	}
-	Vector2 dir;
-	internal void SetDir(Vector2 d)
-	{
-		dir = d;
 	
-		xform.localRotation = Quaternion.FromToRotation (new Vector3 (1, 0, 0), new Vector3 (dir.x, dir.y, 0));
-
-
-
-	}
-
-	Vector3 basePos;
-
-	internal void SetOperatePos(Vector3 p)
-	{
-		basePos = p;
-
 	
-	}
-
-
-	internal Transform xform;
-	// Use this for initialization
-	void Start () {
 	
-
-		GetComponent<SpriteRenderer> ().sprite = sprites [(int)itemType];
-
+	//--------------------------------------------------------------------------------
+	// EVENTS	
+	//--------------------------------------------------------------------------------
+	
+	
+	void Awake() {
 		xform = transform;
+		fx = xform.GetChild(0);
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-	
 		if (this == Hero.inst.currItem) {
-						xform.localPosition = xform.localPosition.EaseTowards (Vector3.zero, 0.1f); 
-				}
-	
+			xform.localPosition = xform.localPosition.EaseTowards (Vector3.zero, 0.1f); 
+		}
 	}
 
 	void OnDrawGizmos()
 	{
 		Gizmos.color = Color.white;
-
-		Vector3 digPos = new Vector3 ((int)(xform.position.x + dir.x + 0.5f), (int)(xform.position.y + dir.y + 0.5f), 0);
+		
+		print("DIR: " + dir);
+		print("fx.pos = " + fx.position);
+		
+		Vector3 digPos = new Vector3 ((int)(fx.position.x + dir.x + 0.5f), (int)(fx.position.y + dir.y + 0.5f), 0);
 		Gizmos.DrawWireCube(digPos, new Vector3(1.0f,1.0f,1.0f));
 
-		Vector3 digPosRaw = new Vector3 ((xform.position.x + dir.x), (xform.position.y + dir.y), 0);
+		Vector3 digPosRaw = new Vector3 ((fx.position.x + dir.x), (fx.position.y + dir.y), 0);
 		Gizmos.DrawWireSphere (digPosRaw, 0.1f);
 	}
 
-
-	internal enum ItemType
-	{
-		Shovel,
-		RocketLauncher,
-		NumItemTypes
-	}
-	public Sprite [] sprites = new Sprite[(int)ItemType.NumItemTypes];
-	internal ItemType itemType = ItemType.Shovel;
-
-	internal void Operate(Vector2 dir)
-	{
-		if (itemType == ItemType.Shovel) {
-
-			xform.localPosition = 1 * xform.right;
-
-			WorldGen.inst.DigShovel((int)(basePos.x + dir.x + 0.5f),(int)(basePos.y + dir.y + 0.5f));
-
-				}
-		if (itemType == ItemType.RocketLauncher) {
-
-
-			Transform inst = Dup (rocket);
-			
-			inst.transform.position = basePos;
-			inst.GetComponent<Projectile>().initDir = new Vector3(dir.x,dir.y,0);
-			
-		}
-
-	}
 
 
 }

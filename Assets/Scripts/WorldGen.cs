@@ -7,7 +7,8 @@ public  class WorldGen : CustomBehaviour {
 	public Transform tile;
 	public Debris debrisPrefab;
 	public Transform rocket;
-	public Transform item;
+	
+	public Item[] items;	
 
 	public Sprite [] sprites;
 	public Sprite [] debrisSprites;
@@ -42,20 +43,8 @@ public  class WorldGen : CustomBehaviour {
     {
         
 		//generate grid
-		{
-						Item newItem = item.GetComponent<Item> ().Alloc ();
-						newItem.GetComponent<GameObjUserData> ().goType = GameObjUserData.GOType.Item;
-						newItem.transform.position = new Vector2 (10, 10);
-			newItem.itemType = Item.ItemType.Shovel;
-				}
-		{
-			
-			Item newItem = item.GetComponent<Item> ().Alloc ();
-			newItem.GetComponent<GameObjUserData> ().goType = GameObjUserData.GOType.Item;
-			newItem.transform.position = new Vector2 (5, 10);
-			newItem.itemType = Item.ItemType.RocketLauncher;
-
-				}
+		items[0].Alloc (new Vector2 (10, 10));
+		//items[1].Alloc (new Vector2 (5, 10));
 
 		tiles = new Transform[width, height];
 
