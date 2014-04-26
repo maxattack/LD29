@@ -23,7 +23,7 @@ public class IntroBumper : CustomBehaviour {
 		logo.position = p1;
 		yield return null;
 		Jukebox.Play("Appear");
-		foreach(var u in Interpolate(1f)) {
+		foreach(var u in Interpolate(0.5f)) {
 			logo.position = Vector3.Lerp(p1, p0, EaseOut2(u));
 			yield return null;
 		}
