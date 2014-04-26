@@ -6,14 +6,25 @@ public  class WorldGen : CustomBehaviour {
 
 	public Transform tile;
 	public Transform debris;
+	public Transform rocket;
 
 	public Sprite [] sprites;
 	public Sprite [] debrisSprites;
 
+	internal static WorldGen inst;
+
 	Transform [,] tiles;
 	int height = 100;
 	int width = 40;
-    void Start()
+    
+	void Awake()
+	{
+		
+		inst = this;
+	}
+
+
+	void Start()
     {
         
 		//generate grid
@@ -101,14 +112,16 @@ public  class WorldGen : CustomBehaviour {
 	{
 
 		timer += Time.deltaTime;
-		if (timer > 1) 
-		{
-			DigShovel (15,depth);
-			depth--;
 
-			timer = 0;
 
-		}
+		if (Input.GetKeyDown(KeyCode.R)) {
+			Transform inst = Dup (rocket);
+
+			inst.transform.position = new Vector2(0,10);
+			inst.GetComponent<Projectile>().initDir = new Vector3(0,-1,0);
+		//	inst.rigidbody.AddForce(new Vector3(0,10,0));
+
+				}
 
 	}
 
@@ -149,13 +162,41 @@ public  class WorldGen : CustomBehaviour {
 		}
 	}
 
-	void DigShovel(int x,int y)
+	internal void DigShovel(int x,int y)
 	{
 		Dig (x, y);
 		Dig (x - 1, y);
 		Dig (x + 1, y);
 		Dig (x, y - 1);
 
+	}
+
+	internal void DigRocket(int x,int y)
+	{
+		DigShovel (x, y);
+
+		Dig (x - 2, y);
+		Dig (x + 2, y);
+		Dig (x, y - 2);
+		Dig (x, y + 2);
+
+
+		Dig (x - 1, y - 1);
+		Dig (x + 1, y + 1);
+		Dig (x + 1, y - 1);
+		Dig (x - 1, y + 1);
+		
+	}
+	
+	
+
+
+
+	void OnDestroy() {
+		
+		// RELEASE SINGLETON REFERENCE
+		if (inst == this) { inst = null; }
+		
 	}
 
 }
