@@ -146,7 +146,7 @@ public  class WorldGen : CustomBehaviour {
 			for(int sx = 0 ; sx < 2 ; sx++)
 			{
 
-				var inst = Dup (debris);
+				var inst = debris.GetComponent<Debris>().Alloc();
 				inst.transform.position = new Vector2 (x + sx * 0.5f,y + sy * 0.5f);
 
 
