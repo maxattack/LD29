@@ -16,6 +16,15 @@ public class Shovel : Item {
 		
 	}
 	
+	void Update () 
+	{
+		if (this == Hero.inst.currItem) {
+			fx.localPosition = fx.localPosition.EaseTowards (Vector3.zero, 0.1f); 
+		}
+	}
+	
+	
+	
 	
 }
 

@@ -96,13 +96,6 @@ public abstract class Item : CustomBehaviour {
 		fx = xform.GetChild(0);
 	}
 	
-	void Update () 
-	{
-		if (this == Hero.inst.currItem) {
-			xform.localPosition = xform.localPosition.EaseTowards (Vector3.zero, 0.1f); 
-		}
-	}
-
 	void OnDrawGizmos()
 	{
 		Gizmos.color = Color.white;
