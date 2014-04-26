@@ -8,6 +8,7 @@ public class Item : CustomBehaviour {
 
 
 
+
 	public bool IsPrefab { 
 		get { return prefab == null; } 
 	}
@@ -51,7 +52,7 @@ public class Item : CustomBehaviour {
 			gameObject.SetActive(false);
 			next = prefab.next;
 			prefab.next = this;
-			
+
 			
 		} else if (gameObject) {
 			
@@ -63,7 +64,7 @@ public class Item : CustomBehaviour {
 	}
 
 
-	Transform xform;
+	internal Transform xform;
 	// Use this for initialization
 	void Start () {
 	
@@ -73,8 +74,9 @@ public class Item : CustomBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-		Time.timeScale = 0.1f;
+	
 	}
+
 
 	enum ItemType
 	{
