@@ -88,8 +88,9 @@ public class Hero : CustomBehaviour {
 		}
 
 		if (currItem) {
-						currItem.xform.position = xform.position + new Vector3(0,0.5f,0);
+						
 			currItem.SetDir(currDir);
+			currItem.SetHoldPos(xform.position,fx.direction == HeroFX.Direction.Left );
 
 				}
 		if (input.PressedItem) {
