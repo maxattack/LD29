@@ -85,16 +85,18 @@ public class Item : CustomBehaviour {
 	}
 	ItemType itemType = ItemType.Shovel;
 
-	internal void Operate()
+	internal void Operate(Vector2 dir)
 	{
 		if (itemType == ItemType.Shovel) {
 
-			WorldGen.inst.DigShovel((int)xform.position.x,(int)xform.position.z);
+		
+
+			WorldGen.inst.DigShovel((int)(xform.position.x + dir.x),(int)(xform.position.y + dir.y));
 
 				}
 		if (itemType == ItemType.RocketLauncher) {
 			
-			WorldGen.inst.DigRocket((int)xform.position.x,(int)xform.position.z);
+			WorldGen.inst.DigRocket((int)xform.position.x,(int)xform.position.y);
 			
 		}
 

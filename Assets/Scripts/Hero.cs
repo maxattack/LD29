@@ -51,9 +51,22 @@ public class Hero : CustomBehaviour {
 		if (inst == this) { inst = null; }
 		
 	}
-	
+
+	Vector2 currDir;
+
 	void Update() {
-		
+
+		currDir = Vector2.zero;
+		if (input.PressingUp)
+			currDir.y += 1;
+		if (input.PressingDown)
+			currDir.y -= 1;
+		if (input.PressingRight)
+			currDir.x += 1;
+		if (input.PressingLeft)
+			currDir.x -= 1;
+
+
 		// JUMPING
 		if (Grounded && input.PressedJump) {
 			Jukebox.Play("Jump");
@@ -61,13 +74,13 @@ public class Hero : CustomBehaviour {
 		}
 
 		if (currItem) {
-						currItem.xform.position = xform.position;
+						currItem.xform.position = xform.position + currDir;
 
 				}
 		if (input.PressedItem) {
 
 			if(currItem)
-				currItem.Operate();
+				currItem.Operate(currDir);
 				}
 	}
 	

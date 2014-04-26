@@ -134,7 +134,7 @@ public  class WorldGen : CustomBehaviour {
 		if (Input.GetKeyDown(KeyCode.R)) {
 			Transform inst = Dup (rocket);
 
-			inst.transform.position = new Vector2(0,10);
+			inst.transform.position = new Vector2(5,10);
 			inst.GetComponent<Projectile>().initDir = new Vector3(0,-1,0);
 		//	inst.rigidbody.AddForce(new Vector3(0,10,0));
 
