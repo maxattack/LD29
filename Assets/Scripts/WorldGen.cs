@@ -3,23 +3,24 @@
 using System.Collections;
 
 public  class WorldGen : CustomBehaviour {
-
-	public Transform tile;
+	public Tile grassTile;
+	public Tile dirtTile;
+	
 	public Debris debrisPrefab;
-	public Transform rocket;
 	public LandMine landMine;
 	
 	public Item[] items;	
+	
 
 	public Sprite [] sprites;
 	public Sprite [] debrisSprites;
 
 	internal static WorldGen inst;
 
-	Transform [,] tiles;
 	public int height = 100;
 	public int width = 40;
-    
+	internal Tile [,] tiles;
+	
 	void Awake()
 	{
 		
@@ -39,6 +40,8 @@ public  class WorldGen : CustomBehaviour {
 		}
 		
 	}
+	
+	
 
 	void Start()
     {
@@ -48,28 +51,11 @@ public  class WorldGen : CustomBehaviour {
 		items[1].Alloc (new Vector2 (5, 10));
 		items[2].Alloc (new Vector2 (1, 10));
 
-		tiles = new Transform[width, height];
+		tiles = new Tile[width, height];
 
         for (int y = 0; y < height; y++)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                var inst = Dup(tile);
-
-                inst.position = new Vector2(x, y - height);
-				tiles[x,y] = inst;
-
-                if (y == height-1)
-                {
-                    
-                    inst.GetComponent<SpriteRenderer>().sprite = sprites[0];
-
-                }
-                else
-                {
-                    inst.GetComponent<SpriteRenderer>().sprite = sprites[1];
-                }
-            }
+		for (int x = 0; x < width; x++) {
+			tiles[x,y] = (y == height - 1 ? grassTile : dirtTile).AllocAtCoord(x,y);
         }
 
 		//put caverns in (small medium and large
@@ -85,7 +71,9 @@ public  class WorldGen : CustomBehaviour {
 
 				if(size >= 0)
 				{
-					Destroy(tiles[x,y].gameObject);
+					if (IsTileAt(x,y)) {
+						tiles[x,y].Release();
+					}
 
 				
 					SafeDestroy(x,y+1);
@@ -144,23 +132,12 @@ public  class WorldGen : CustomBehaviour {
 		{
 			if(tiles[x,y])
 			{
-				Destroy(tiles [x, y].gameObject);
+				tiles[x,y].Release();
 				return true;
 			}
 		}
 		return false;
 	}
-
-	float timer = 0;
-	void Update()
-	{
-
-		timer += Time.deltaTime;
-
-
-
-	}
-
 
 	void SpawnDebrisAt(int x,int y)
 	{
@@ -190,14 +167,17 @@ public  class WorldGen : CustomBehaviour {
 
 	}
 
+	internal bool IsTileAt(int x, int y) {
+		return tiles[x,y] != null;
+	}
+
 	internal bool Dig(int x,int y)
 	{
-
-
+		
 		y += height;
 		if (y < height && y >= 0 && x < width && x >= 0) 
 		{
-			if(tiles[x,y])
+			if(IsTileAt(x,y))
 			{
 				Vector3 pos = tiles [x, y].transform.position;
 				int range = 30;
@@ -215,7 +195,7 @@ public  class WorldGen : CustomBehaviour {
 					landMine.Alloc(pos + new Vector3 (0,0,0));
 
 				SpawnDebrisAt(x,y - height);
-				Destroy(tiles[x,y].gameObject);
+				tiles[x,y].Release();
 				return true;
 			}
 
