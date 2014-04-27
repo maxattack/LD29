@@ -13,17 +13,37 @@ public class HeroPose : CustomBehaviour {
 	public Transform rightArm;
 	public Transform leftLeg;
 	public Transform rightLeg;
-	public Transform leftHandLocator;
-	public Transform rightHandLocator;
-	public Transform leftFootLocator;
-	public Transform rightFootLocator;
+	public Transform leftHand;
+	public Transform rightHand;
+	public Transform leftFoot;
+	public Transform rightFoot;
+	
+	internal bool showing = true;
+	internal SpriteRenderer[] sprites;
+	
+	void Awake() {
+		sprites = GetComponentsInChildren<SpriteRenderer>();
+	}
+	
+	public void Show(bool flag) {
+		if (flag != showing) {
+			var len = sprites.Length;
+			for(int i=0; i<len; ++i) {
+				sprites[i].enabled = flag;
+			}
+			showing = flag;
+			if (!showing) {
+				Reset();
+			}
+		}
+	}
 	
 	public void Reset() {
-		root.Reset();
-		leftArm.Reset();
-		rightArm.Reset();
-		leftLeg.Reset();
-		rightLeg.Reset();
+		root.localPosition = Vector3.zero;
+		leftArm.localRotation = Quaternion.identity;
+		rightArm.localRotation = Quaternion.identity;
+		leftLeg.localRotation = Quaternion.identity;
+		rightLeg.localRotation = Quaternion.identity;
 	}
 	
 	//--------------------------------------------------------------------------------
@@ -32,11 +52,35 @@ public class HeroPose : CustomBehaviour {
 	// LEGS ON RANGE 0:1
 	//--------------------------------------------------------------------------------
 	
-	public void SetLeftArm(float u) { leftArm.localRotation = QDegrees(-90f * u); }
-	public void SetRightArm(float u) { rightArm.localRotation = QDegrees(90f * u); }
-	public void SetLeftLeg(float u) { leftLeg.localRotation = QDegrees(50f * u); }
-	public void SetRightLeg(float u) { rightLeg.localRotation = QDegrees(-50f * u); }
+	public void SetLeftArm(float u) { leftArm.localRotation = QDegrees(-80f * u); }
+	public void SetRightArm(float u) { rightArm.localRotation = QDegrees(50f * u); }
+	public void SetLeftLeg(float u) { leftLeg.localRotation = QDegrees(60f * u); }
+	public void SetRightLeg(float u) { rightLeg.localRotation = QDegrees(-60f * u); }
 	
+	//--------------------------------------------------------------------------------
+	// ANIMATION CYCLES
+	//--------------------------------------------------------------------------------
 	
+	const float kJumpHeight = 0.14f;
+	
+	public void ApplyRunCycle(float time) {
+		var u = Mathf.Abs(Mathf.Sin (2f * TAU * time));
+		
+		root.localPosition = Vec(0, kJumpHeight * u, 0);
+		SetLeftArm(1f-u);
+		SetRightArm(1f-u);
+		SetLeftLeg(1f-u);
+		SetRightLeg(1f-u);
+	}
+	
+	public void ApplyJumpCycle(float time) {
+		var u = 0.5f + 0.5f * Mathf.Sin (4f * TAU * time);
+		u = 0.8f + 0.2f * u;
+		root.localPosition = Vec(0, kJumpHeight, 0);
+		SetLeftArm(1f-u);
+		SetRightArm(1f-u);
+		SetLeftLeg(1f-u);
+		SetRightLeg(1f-u);		
+	}
 	
 }

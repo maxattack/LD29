@@ -50,7 +50,7 @@ public class IntroBumper : CustomBehaviour {
 		
 		// SHOW THE PLAYER
 		Hero.inst.gameObject.SetActive(true);
-		Hero.inst.fx.fx.color = Color.white;
+		Hero.inst.fx.SetColor(Color.white);
 		
 		CameraFX.inst.Flash(Color.white);
 		Jukebox.Play("AppearThump");

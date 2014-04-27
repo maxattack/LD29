@@ -2,7 +2,6 @@
 using UnityEngine;
 
 [RequireComponent(typeof(HeroInput))]
-[RequireComponent(typeof(HeroFX))]
 [RequireComponent(typeof(Rigidbody))]
 public class Hero : CustomBehaviour {
 	
@@ -39,7 +38,7 @@ public class Hero : CustomBehaviour {
 		
 		// CACHE COMMON SIBLINGS
 		input = GetComponent<HeroInput>();
-		fx = GetComponent<HeroFX>();
+		fx = GetComponentInChildren<HeroFX>();
 		body = this.rigidbody;
 		xform = this.transform;
 		
@@ -149,7 +148,7 @@ public class Hero : CustomBehaviour {
 		currItem = item;
 		
 		// REPARENT FX TO THIS
-		currItem.fx.parent = fx.highHand;
+		currItem.fx.parent = fx.pose.rightHand;
 		currItem.fx.localPosition = Vector3.zero;
 		
 		//currItem.gameObject.SetActive(false);		

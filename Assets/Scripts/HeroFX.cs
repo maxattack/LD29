@@ -1,60 +1,88 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(Hero))]
 public class HeroFX : CustomBehaviour {
 
 	public enum Direction { Left, Right }
-	
-	public SpriteRenderer fx;
-	public Sprite jumpySprite;
-	internal Sprite idleSprite;
-	internal Transform xform;
-	internal Hero hero;
-	public Transform highHand;
+	public enum Status { Idle, Running, Jumping }
 
+	
+	public SpriteRenderer idle;
+	public float runAnimScale = 1f;
+	
+	internal HeroPose pose;
+	internal Transform xform;
 	internal float animationTime;
+	
 	internal Direction direction = Direction.Right;
+	internal Status status = Status.Idle;
+	
+	SpriteRenderer[] sprites;
 	
 	void Awake() {
-		xform = fx.transform;
-		idleSprite = fx.sprite;
-		hero = GetComponent<Hero>();
+	
+		// CACHE REFERENCES
+		xform = transform;
+		sprites = GetComponentsInChildren<SpriteRenderer>();
+		pose = GetComponentInChildren<HeroPose>();
+		
+	}
+	
+	void Start() {
+		pose.Show (false);
 	}
 	
 	public void SetDirection(Direction dir) {
+	
+		// SET THE CURRENT DIRECTION BY FLIPPING THE ROOT AND UNFLIPPING
+		// LOCATORS WHERE ITEMS ARE ATTACHED
 		if (direction != dir) {
 			direction = dir;
 
 			xform.localScale = Vec(dir == Direction.Left ? -1 : 1, 1, 1);
-			highHand.localScale = Vec(dir == Direction.Left ? -1 : 1, 1, 1);
+			pose.rightHand.localScale = Vec(dir == Direction.Left ? -1 : 1, 1, 1);
+			pose.leftHand.localScale = Vec(dir == Direction.Left ? -1 : 1, 1, 1);
 		}
+	}
+	
+	public bool SetStatus(Status aStatus) {
+		
+		// FLIP BETWEEN THE IDLE SPRITE AND THE ARTICULATED POSE
+		if (status != aStatus) {
+			if (status == Status.Idle) {
+				idle.enabled = false;
+				pose.Show(true);
+			}
+			status = aStatus;
+			if (status == Status.Idle) {
+				idle.enabled = true;
+				pose.Show(false);
+			}
+			return true;
+		} else {
+			return false;
+		}
+		
 	}
 	
 	void Update() {
 	
-		if (hero.grounded) {
-			var speed = Mathf.Abs (hero.body.velocity.x);
-			if (speed > 0.02f) {
-				animationTime += speed * Time.deltaTime;
-				var spr =  Mathf.FloorToInt(2 * animationTime) % 2 == 0 ? idleSprite : jumpySprite;
-				if (fx.sprite != spr) {
-					fx.sprite = spr;
-					if (spr == idleSprite) {
-						Jukebox.Play("Footfall");
-					}
-				}
-				
+		if (Hero.inst.grounded) {
+			var speed = Mathf.Abs (Hero.inst.body.velocity.x);
+			if (speed > 0.05f) {
+				SetStatus(Status.Running);
+				animationTime += runAnimScale * (speed+0.25f) * Time.deltaTime;
+				pose.ApplyRunCycle(animationTime);
+				// TODO: footfall
+				// Jukebox.Play("Footfall");
 			} else {
+				SetStatus(Status.Idle);
 				animationTime = 0f;
-				if (fx.sprite != idleSprite) {
-					fx.sprite = idleSprite;
-					Jukebox.Play("Footfall");
-				}
 			}
 		} else {
 			animationTime = 0f;
-			fx.sprite = jumpySprite;			
+			SetStatus(Status.Jumping);
+			pose.ApplyJumpCycle(Time.time);
 		}
 	}
 	
@@ -64,11 +92,16 @@ public class HeroFX : CustomBehaviour {
 	
 	IEnumerator DoFlash(Color c, float duration) {
 		foreach(var u in Interpolate(duration)) {
-			fx.color = RGBA(c, 1f-EaseOut2(u));
+			SetColor(RGBA(c, 1f-EaseOut2(u)));
 			yield return null;
 		}
 	}
 	
+	public void SetColor(Color c) {
+		for(int i=0; i<sprites.Length; ++i) {
+			sprites[i].color = c;
+		}
+	}
 
 	
 
