@@ -3,9 +3,10 @@ using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class OneShotSpriteAnimation : CustomBehaviour {
+public class OneShotAnimation : PooledObject {
 	public Sprite[] frames;
 	public float framesPerSecond = 30f;
+	public string sfx;
 	
 	SpriteRenderer spriteRenderer;
 	float time;
@@ -13,13 +14,15 @@ public class OneShotSpriteAnimation : CustomBehaviour {
 	
 	void Awake() {
 		spriteRenderer = GetComponent<SpriteRenderer>();
-		spriteRenderer.sprite = frames[0];
-		frame = 0;
 	}
 	
-	void OnEnable() {
-		SetFrame(0);
+	public override void Init() {
+		spriteRenderer.sprite = frames[0];
+		frame = 0;
 		time = 0f;
+		if (sfx.Length > 0) {
+			Jukebox.Play(sfx);
+		}
 	}
 	
 	void Update() {
@@ -27,17 +30,17 @@ public class OneShotSpriteAnimation : CustomBehaviour {
 		var nextFrame = Mathf.FloorToInt(time * framesPerSecond);
 		if (nextFrame >= frames.Length) {
 			SetFrame(frames.Length-1);
-			SendMessage("AnimationComplete", SendMessageOptions.DontRequireReceiver);
+			Release();
 		} else {
 			SetFrame(nextFrame);
 		}
 	}
 	
 	void SetFrame(int aFrame) {
-		//if (aFrame != frame) {
+		if (aFrame != frame) {
 			frame = aFrame;
 			spriteRenderer.sprite = frames[frame];
-		//}
+		}
 	}
 	
 	

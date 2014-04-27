@@ -14,18 +14,15 @@ public class RocketLauncher : Item {
 	
 	public override void Operate(Vector2 dir) {
 	
-		Jukebox.Play("ShootBazooka");
 	
-		// SPAWN ROCKET (TODO: POOL)
+		// SPAWN ROCKET W/ KINDA RANDOMIZED HEADING
 		rocket.Alloc(
 			muzzle.position,  
-			
-			// DIRECTION RANDOMIZED A LITTLE
-			Cmul(UnitVec(Random.Range(-0.1f * Mathf.PI, 0.1f * Mathf.PI)), dir)
-			
+			Cmul( UnitVec(Random.Range(-0.1f * Mathf.PI, 0.1f * Mathf.PI) ), dir)
 		);
-			
-		// KICKBACK
+		
+		// SIDE-EFFECTS
+		Jukebox.Play("ShootBazooka");
 		Hero.inst.Kickback();
 	}
 

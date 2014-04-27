@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Projectile : CustomBehaviour {
 
-	public Transform explosionPrefab;
+	public PooledObject explosionPrefab;
 	
 	Projectile prefab;
 	Projectile next;
@@ -84,9 +84,9 @@ public class Projectile : CustomBehaviour {
 			WorldGen.inst.DigRocket(Mathf.FloorToInt(p.x), Mathf.FloorToInt(p.y));
 			
 		}
-		Jukebox.Play("RocketExplosion");
 		CameraFX.inst.Shake();
 		CameraFX.inst.Flash(RGBA(Color.red, 0.5f));
+		explosionPrefab.Alloc(xform.position);
 		Release();
 		
 	}
