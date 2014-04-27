@@ -202,7 +202,7 @@ TextureImporter:
         width: 9
         height: 9
       alignment: 9
-      pivot: {x: .200000346, y: .788889349}
+      pivot: {x: .299999654, y: .833333135}
     - name: heroTorso
       rect:
         serializedVersion: 2
@@ -228,8 +228,8 @@ TextureImporter:
         y: 2
         width: 8
         height: 5
-      alignment: 0
-      pivot: {x: .5, y: .5}
+      alignment: 9
+      pivot: {x: .409999996, y: .779999971}
     - name: heroLeftLeg
       rect:
         serializedVersion: 2
@@ -238,7 +238,7 @@ TextureImporter:
         width: 9
         height: 6
       alignment: 9
-      pivot: {x: .833333313, y: .883333981}
+      pivot: {x: .49000001, y: .849999607}
     - name: rocketSmoke
       rect:
         serializedVersion: 2
