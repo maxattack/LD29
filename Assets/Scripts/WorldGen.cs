@@ -4,6 +4,7 @@ using System.Collections;
 
 public  class WorldGen : CustomBehaviour {
 
+	public EarthCore earthCore;
 	public Transform tile;
 	public Debris debrisPrefab;
 	public Transform rocket;
