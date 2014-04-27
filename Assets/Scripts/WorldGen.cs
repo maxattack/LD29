@@ -44,7 +44,7 @@ public  class WorldGen : CustomBehaviour {
         
 		//generate grid
 		items[0].Alloc (new Vector2 (10, 10));
-		//items[1].Alloc (new Vector2 (5, 10));
+		items[1].Alloc (new Vector2 (5, 10));
 
 		tiles = new Transform[width, height];
 

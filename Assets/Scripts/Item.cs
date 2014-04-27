@@ -107,6 +107,8 @@ public abstract class Item : CustomBehaviour {
 			xform.position = fx.position;
 			xform.rotation = fx.rotation;
 			fx.parent = xform;
+			// Not sure why we need this - sprite randomly shrinks sometimes :P
+			fx.localScale = Vector3.one;
 		}
 		var body = this.rigidbody;
 		if (deferCollider) {
