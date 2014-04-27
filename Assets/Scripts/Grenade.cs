@@ -30,7 +30,7 @@ public class Grenade : PooledObject {
 
 	}
 
-	public static float explodeTime = 3.0f;
+	public float explodeTime = 3.0f;
 	float flickerTime = 0;
 	// Update is called once per frame
 	void Update () {
@@ -97,6 +97,7 @@ public class Grenade : PooledObject {
 			}
 			
 		}
+
 
 		
 	}
