@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Projectile : CustomBehaviour {
+public class Rocket : CustomBehaviour {
 
 	public PooledObject explosionPrefab;
 	
-	Projectile prefab;
-	Projectile next;
+	Rocket prefab;
+	Rocket next;
 	internal Transform xform;
 	internal Rigidbody body;
 	internal ParticleSystem particles;
@@ -18,9 +18,9 @@ public class Projectile : CustomBehaviour {
 	// OBJECT POOL
 	//--------------------------------------------------------------------------------
 	
-	public Projectile Alloc(Vector2 position, Vector2 heading) {
+	public Rocket Alloc(Vector2 position, Vector2 heading) {
 		Assert(IsPrefab);
-		Projectile result;
+		Rocket result;
 		if (next != null) {
 			// RECYCLE INSTANCE
 			result = next;
@@ -37,11 +37,11 @@ public class Projectile : CustomBehaviour {
 		result.Init(heading.normalized);
 		return result;
 	}	
-
+	public float speed = 10;
 	void Init(Vector2 initDir) {
 		timeout = 0f;
 		particles.Clear();		
-		body.velocity = Hero.inst.body.velocity.magnitude * initDir;
+		body.velocity =  initDir * (Hero.inst.body.velocity.magnitude + speed);
 		body.rotation = Quaternion.FromToRotation (new Vector3 (1, 0, 0), initDir);
 	}
 	

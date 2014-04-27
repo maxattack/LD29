@@ -3,7 +3,7 @@ using System.Collections;
 
 public class RocketLauncher : Item {
 
-	public Projectile rocket;
+	public Rocket rocket;
 	ParticleSystem particles;
 	Transform muzzle;
 	

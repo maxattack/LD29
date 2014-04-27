@@ -45,6 +45,7 @@ public  class WorldGen : CustomBehaviour {
 		//generate grid
 		items[0].Alloc (new Vector2 (10, 10));
 		items[1].Alloc (new Vector2 (5, 10));
+		items[2].Alloc (new Vector2 (1, 10));
 
 		tiles = new Transform[width, height];
 
@@ -182,6 +183,24 @@ public  class WorldGen : CustomBehaviour {
 	}
 
 	internal bool DigRocket(int x,int y)
+	{
+		var result = Dig (x, y);
+
+		result |= Dig (x - 1, y - 1);
+		result |= Dig (x + 1, y + 1);
+		result |= Dig (x + 1, y - 1);
+		result |= Dig (x - 1, y + 1);
+
+		result |= Dig (x - 1, y);
+		result |= Dig (x + 1, y);
+		result |= Dig (x, y - 1);
+		result |= Dig (x, y + 1);
+
+
+		return result;
+	}
+
+	internal bool DigGrenade(int x,int y)
 	{
 		var result = DigShovel (x, y);
 
