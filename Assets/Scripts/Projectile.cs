@@ -10,6 +10,7 @@ public class Projectile : CustomBehaviour {
 	internal Transform xform;
 	internal Rigidbody body;
 	internal ParticleSystem particles;
+	float timeout;
 	
 	public bool IsPrefab { get { return prefab == null; } }
 	
@@ -38,6 +39,7 @@ public class Projectile : CustomBehaviour {
 	}	
 
 	void Init(Vector2 initDir) {
+		timeout = 0f;
 		particles.Clear();		
 		body.velocity = Hero.inst.body.velocity.magnitude * initDir;
 		body.rotation = Quaternion.FromToRotation (new Vector3 (1, 0, 0), initDir);
@@ -66,8 +68,13 @@ public class Projectile : CustomBehaviour {
 	}
 	
 	void FixedUpdate() {
-		body.AddForce (Vec(0, -1, 0));
-		body.AddForce (xform.right * 10f); 
+		timeout += Time.fixedDeltaTime;
+		if (timeout > 10f) {
+			Release();
+		} else {	
+			body.AddForce (Vec(0, -1, 0));
+			body.AddForce (xform.right * 10f); 
+		}
 
 	}
 
