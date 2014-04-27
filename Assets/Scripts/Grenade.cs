@@ -73,6 +73,7 @@ public class Grenade : PooledObject {
 
 	public override void Init()
 	{
+		playOnce = true;
 		timeout = 0f;
 	}
 	public float speed = 100;
@@ -83,5 +84,20 @@ public class Grenade : PooledObject {
 
 		body.velocity = initDir * (speed + Hero.inst.body.velocity.magnitude);
 		body.rotation = Quaternion.FromToRotation (new Vector3 (1, 0, 0), initDir);
+	}
+
+	bool playOnce = true;
+	void OnCollisionEnter(Collision collision) {
+		if (collision.collider.IsTile()) {
+
+			if( playOnce)
+			{
+				Jukebox.Play("GrenadeBounce");
+				playOnce = false;
+			}
+			
+		}
+
+		
 	}
 }
