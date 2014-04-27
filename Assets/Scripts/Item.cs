@@ -6,6 +6,7 @@ public abstract class Item : CustomBehaviour {
 	internal Transform fx;	
 	internal Transform xform;
 	internal Vector2 dir;
+	internal bool goodToCapture;
 	
 	//--------------------------------------------------------------------------------
 	// GENERIC ITEM INTERFACE
@@ -46,7 +47,6 @@ public abstract class Item : CustomBehaviour {
 			result.next = null;
 			result.xform.position = pos;
 			result.gameObject.SetActive(true);
-			result.StartPhysics();
 			
 		} else {
 			
@@ -60,6 +60,7 @@ public abstract class Item : CustomBehaviour {
 		
 		
 		// RE-INIT INSTANCE
+		result.goodToCapture = true;
 		result.Init();
 		
 		
@@ -72,6 +73,8 @@ public abstract class Item : CustomBehaviour {
 			Hero.inst.currItem = null;
 			fx.parent = xform;
 			fx.Reset();
+			this.collider.enabled = true;
+			this.rigidbody.isKinematic = false;
 		}
 		
 		if (prefab != null) {
@@ -92,21 +95,32 @@ public abstract class Item : CustomBehaviour {
 	}
 	
 	public void StopPhysics() {
+		StopAllCoroutines();
 		this.collider.enabled = false;
 		var body = this.rigidbody;
 		body.velocity = Vector3.zero;
 		body.isKinematic = true;
 	}
 	
-	public void StartPhysics() {
+	public void StartPhysics(Vector2 initialVelocity, bool deferCollider = false) {
 		if (fx.parent != xform) {
 			xform.position = fx.position;
 			xform.rotation = fx.rotation;
 			fx.parent = xform;
 		}
+		var body = this.rigidbody;
+		if (deferCollider) {
+			goodToCapture = false;
+			StartCoroutine(DoWaitToResetCapture());
+		}
 		this.collider.enabled = true;
-		this.rigidbody.isKinematic = false;
-		
+		body.isKinematic = false;
+		body.AddForce(initialVelocity, ForceMode.VelocityChange);
+	}
+	
+	IEnumerator DoWaitToResetCapture() {
+		yield return new WaitForSeconds(0.5f);
+		goodToCapture = true;
 	}
 	
 }

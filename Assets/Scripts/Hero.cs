@@ -63,22 +63,18 @@ public class Hero : CustomBehaviour {
 
 	void Update() {
 
+		// COMPUTE ITEM DIRECITON
 		Vector2 newDir = Vector2.zero;
-		if (input.PressingUp)
-			newDir.y += 1;
-		if (input.PressingDown)
-			newDir.y -= 1;
-		if (input.PressingRight)
-			newDir.x += 1;
-		if (input.PressingLeft)
-			newDir.x -= 1;
-
-		newDir.Normalize ();
-
-		if (newDir.sqrMagnitude > 0)
-					currDir = newDir;
-
-
+		if (input.PressingUp) { newDir.y += 1; } 
+		if (input.PressingDown) { newDir.y -= 1; }
+		if (input.PressingRight) { newDir.x += 1; }
+		if (input.PressingLeft) { newDir.x -= 1; }
+		if (newDir.sqrMagnitude > 0) { currDir = newDir.normalized; }
+		
+		if (Input.GetKeyDown(KeyCode.X)) {
+			DropItem();
+		}
+		
 
 		// JUMPING
 		if (grounded && input.PressedJump) {
@@ -126,7 +122,8 @@ public class Hero : CustomBehaviour {
 		
 		switch(collision.collider.gameObject.layer) {
 			case Layers.Item:
-				PickUp(collision.collider.GetComponent<Item>());	
+				var item = collision.collider.GetComponent<Item>();
+				if (item.goodToCapture) { PickUp(item);	}
 				break;
 			case Layers.Camera:
 				if (grounded) {
@@ -162,9 +159,13 @@ public class Hero : CustomBehaviour {
 	}
 	
 	public void DropItem() {
-		if (currItem == null) { return; }
+		if (currItem != null) {
 		
-		
+			currItem.StartPhysics(fx.direction == HeroFX.Direction.Right ?Vec(-8,16) : Vec(8,16), true);
+			currItem = null;
+			Jukebox.Play("DropWeapon");
+			
+		}
 	}
 	
 	//--------------------------------------------------------------------------------
