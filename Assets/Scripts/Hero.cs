@@ -66,6 +66,10 @@ public class Hero : CustomBehaviour {
 		if (input.PressingRight) { newDir.x += 1; }
 		if (input.PressingLeft) { newDir.x -= 1; }
 		if (newDir.sqrMagnitude > 0) { currDir = newDir.normalized; }
+		if (currDir.sqrMagnitude < 0.0001f) {
+
+			currDir.x = fx.direction == HeroFX.Direction.Right ? 1 : -1;
+				}
 		
 		// TESTING HACK
 		if (Input.GetKeyDown(KeyCode.X)) {
