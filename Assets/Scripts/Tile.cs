@@ -6,6 +6,7 @@ using System.Collections;
 public class Tile : PooledObject {
 	
 	internal SpriteRenderer spr;
+	internal int tileX, tileY;
 	
 	void Awake() {
 		// Make sure we're tagged correctly
@@ -13,10 +14,14 @@ public class Tile : PooledObject {
 		spr = GetComponent<SpriteRenderer>();
 	}
 	
+	public override void Init() {
+		WorldToCoord(transform.position.xy(), out tileX, out tileY);
+		
+		spr.color = (tileX + tileY) % 2 == 0 ? RGB(0.9f, 0.9f, 0.9f) : Color.white;
+	}
+	
 	public override void Deinit() {
-		int x,y;
-		WorldToCoord(transform.position.xy(), out x, out y);
-		WorldGen.inst.tiles[x,y] = null;
+		WorldGen.inst.tiles[tileX, tileY] = null;
 	}	
 	
 	
