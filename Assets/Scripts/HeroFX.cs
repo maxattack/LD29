@@ -7,7 +7,7 @@ public class HeroFX : CustomBehaviour {
 	public enum Status { Idle, Running, Jumping }
 
 	
-	public SpriteRenderer idle;
+	public SpriteRenderer idleSprite;
 	public float runAnimScale = 1f;
 	
 	internal HeroPose pose;
@@ -50,12 +50,12 @@ public class HeroFX : CustomBehaviour {
 		// FLIP BETWEEN THE IDLE SPRITE AND THE ARTICULATED POSE
 		if (status != aStatus) {
 			if (status == Status.Idle) {
-				idle.enabled = false;
+				idleSprite.enabled = false;
 				pose.Show(true);
 			}
 			status = aStatus;
 			if (status == Status.Idle) {
-				idle.enabled = true;
+				idleSprite.enabled = true;
 				pose.Show(false);
 			}
 			return true;

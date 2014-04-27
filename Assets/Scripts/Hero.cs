@@ -150,10 +150,10 @@ public class Hero : CustomBehaviour {
 		// REPARENT FX TO THIS
 		currItem.fx.parent = fx.pose.rightHand;
 		currItem.fx.localPosition = Vector3.zero;
+		currItem.fx.localScale = Vector3.one;
 		
 		//currItem.gameObject.SetActive(false);		
-		currItem.rigidbody.isKinematic = true;
-		currItem.rigidbody.detectCollisions = false;
+		currItem.gameObject.SetActive(false);
 	}
 	
 	

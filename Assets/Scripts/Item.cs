@@ -51,13 +51,12 @@ public abstract class Item : CustomBehaviour {
 			
 			// CREATE NEW INSTANCE
 			result = Dup(this, pos);
+			result.xform = result.transform;
+			result.fx = result.xform.GetChild(0);
 			result.prefab = this;
 			
 		}
 		
-		// RE-PARENT FX
-		result.fx.parent = result.xform;
-		result.fx.Reset();
 		
 		// RE-INIT INSTANCE
 		result.Init();
@@ -66,6 +65,12 @@ public abstract class Item : CustomBehaviour {
 	}
 	
 	public void Release() {
+		
+		if (Hero.inst && this == Hero.inst.currItem) {
+			Hero.inst.currItem = null;
+			fx.parent = xform;
+			fx.Reset();
+		}
 		
 		if (prefab != null) {
 			
@@ -83,20 +88,5 @@ public abstract class Item : CustomBehaviour {
 		}
 		
 	}
-	
-	
-	
-	//--------------------------------------------------------------------------------
-	// EVENTS	
-	//--------------------------------------------------------------------------------
-	
-	
-	void Awake() {
-		xform = transform;
-		fx = xform.GetChild(0);
-	}
-	
-
-
 
 }
