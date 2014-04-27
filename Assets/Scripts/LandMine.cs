@@ -15,7 +15,7 @@ public class LandMine : PooledObject {
 	// Use this for initialization
 	void Start () {
 	
-		GetComponent<SpriteRenderer> ().color = new Color(1,1,1,0);
+
 	}
 	
 	// Update is called once per frame
@@ -26,17 +26,28 @@ public class LandMine : PooledObject {
 		if (tripped) {
 					timeout += Time.deltaTime;
 		
+			if(timeout + Time.deltaTime > explodeTime - 0.1f && timeout < explodeTime - 0.1f)
+					{
+				Jukebox.Play ("beep1");
+					}
+
 					flickerTime -= Time.deltaTime;
 					if (flickerTime < 0) {
 							Color c = GetComponent<SpriteRenderer> ().color;
 							if (c.a == 1.0f)
 									c.a = 0.0f;
 							else
-									c.a = 1.0f;
+							{
+								c.a = 1.0f;
+								if(timeout < explodeTime - 0.1f)
+									Jukebox.Play ("beep0");
+								
+							}
 			
 							GetComponent<SpriteRenderer> ().color = c;
 			
-							if (timeout < explodeTime - 1.0f) {
+							if (timeout < explodeTime - 1.0f) 
+							{
 									if (c.a == 1.0f)
 											flickerTime = 0.1f;
 									else
@@ -89,6 +100,7 @@ public class LandMine : PooledObject {
 	{
 			timeout = 0;
 			tripped = false;
+		GetComponent<SpriteRenderer> ().color = new Color(1,1,1,0);
 
 	}
 

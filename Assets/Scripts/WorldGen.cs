@@ -87,6 +87,7 @@ public  class WorldGen : CustomBehaviour {
 				{
 					Destroy(tiles[x,y].gameObject);
 
+				
 					SafeDestroy(x,y+1);
 					SafeDestroy(x,y-1);
 					SafeDestroy(x+1,y);
@@ -115,19 +116,18 @@ public  class WorldGen : CustomBehaviour {
 
 
 				{
-		//			bool validPlacement = false;
-		//			if(!tiles[x,y].gameObject.activeSelf)
-		//				validPlacement = true;
+					//bool validPlacement = false;
+					//if(!tiles[x,y])
+					//	validPlacement = true;
 
-		//			if(validPlacement)
-		//			{
-		//				int r = rand.Next() % 10; //roll for land mine
-		//				if(r == 0)
-		//					landMine.Alloc(new Vector3 (x,y - height,0));
+					//if(validPlacement)
+					//{
+					//	int r = rand.Next() % 10; //roll for land mine
+					//	if(r == 0)
+					//		landMine.Alloc(new Vector3 (x,y - height,0));
 
 
-		//			}
-
+					//}
 
 				}
 
@@ -200,7 +200,17 @@ public  class WorldGen : CustomBehaviour {
 			if(tiles[x,y])
 			{
 				Vector3 pos = tiles [x, y].transform.position;
-				int r = rand.Next() % 10;
+				int range = 30;
+				if(y < (float)height * 0.2f)
+					range = 5;
+				if(y < (float)height * 0.4f)
+					range = 7;
+				if(y < (float)height * 0.6f)
+					range = 10;
+				if(y < (float)height * 0.8f)
+					range = 20;
+
+				int r = rand.Next() % range;
 				if(r == 0)
 					landMine.Alloc(pos + new Vector3 (0,0,0));
 
