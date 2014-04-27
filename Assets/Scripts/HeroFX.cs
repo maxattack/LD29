@@ -4,10 +4,13 @@ using System.Collections;
 public class HeroFX : CustomBehaviour {
 
 	public enum Direction { Left, Right }
-	public enum Status { Idle, Running, Jumping, Ragdoll }
+	public enum Status { Idle, Running, Jumping, Ragdoll, Corpse }
 
+	public bool TerminalState { get { return status == Status.Ragdoll || status == Status.Corpse; } }
 	
 	public float runAnimScale = 1f;
+	
+	public Sprite corpse;
 	
 	internal HeroPose pose;
 	internal SpriteRenderer idleSprite;
@@ -52,16 +55,26 @@ public class HeroFX : CustomBehaviour {
 	
 	public bool SetStatus(Status aStatus) {
 		
+		if (TerminalState) { return false; }
+		
 		// FLIP BETWEEN THE IDLE SPRITE AND THE ARTICULATED POSE
 		if (status != aStatus) {
-			if (status == Status.Idle) {
-				idleSprite.enabled = false;
-				pose.Show(true);
-			}
-			status = aStatus;
-			if (status == Status.Idle) {
+			if (aStatus == Status.Corpse) {
+				status = aStatus;
+				pose.Show (false);
 				idleSprite.enabled = true;
-				pose.Show(false);
+				idleSprite.sprite = corpse;
+			} else {
+			
+				if (status == Status.Idle) {
+					idleSprite.enabled = false;
+					pose.Show(true);
+				}
+				status = aStatus;
+				if (status == Status.Idle) {
+					idleSprite.enabled = true;
+					pose.Show(false);
+				}
 			}
 			return true;
 		} else {
@@ -76,7 +89,7 @@ public class HeroFX : CustomBehaviour {
 	
 	void Update() {
 	
-		if (status != Status.Ragdoll) {
+		if (!TerminalState) {
 			
 			// DO NORMAL ANIMATIONS
 			var oldStatus = status;
@@ -104,7 +117,7 @@ public class HeroFX : CustomBehaviour {
 				Jukebox.Play("Footfall");
 			}
 			
-		} else {
+		} else if (status == Status.Ragdoll) {
 			// DO RAGDOLL ANIMATIONS
 			pose.TickRagdoll();
 		}

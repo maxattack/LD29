@@ -3,6 +3,8 @@ using System.Collections;
 
 public class IntroBumper : CustomBehaviour {
 	
+	static bool firstTime = true;
+	
 	IEnumerator Start() {
 		
 		// CACHE REFERENCES
@@ -18,36 +20,49 @@ public class IntroBumper : CustomBehaviour {
 		var baseScale = appearFx.localScale;
 		appearFx.localScale = Vec(baseScale.x, 0, baseScale.z);
 		
-		// SHOW LOGO
-		var p0 = logo.position;
-		var p1 = p0.Above( CameraFX.inst.Height );
-		logo.position = p1;
-		yield return null;
-		foreach(var u in Interpolate(0.5f)) {
-			logo.position = Vector3.Lerp(p1, p0, EaseOut2(u));
+		if (firstTime) {
+			// SHOW LOGO
+			var p0 = logo.position;
+			var p1 = p0.Above( CameraFX.inst.Height );
+			logo.position = p1;
 			yield return null;
-		}
-		foreach(var u in Interpolate(0.1f)) {
-			logoFx.color = RGBA(Color.white, u);
-			yield return null;
-		}
-		Jukebox.Play("Bumper");
-		foreach(var u in Interpolate(0.1f)) {
-			logoFx.color = RGBA(Color.white, 1f-u);
-			yield return null;
-		}
+			foreach(var u in Interpolate(0.5f)) {
+				logo.position = Vector3.Lerp(p1, p0, EaseOut2(u));
+				yield return null;
+			}
+			foreach(var u in Interpolate(0.1f)) {
+				logoFx.color = RGBA(Color.white, u);
+				yield return null;
+			}
+			Jukebox.Play("Bumper");
+			foreach(var u in Interpolate(0.1f)) {
+				logoFx.color = RGBA(Color.white, 1f-u);
+				yield return null;
+			}
+			
+			
+			// WAIT FOR ANY KEY TO START
+			do { yield return null; } while(!Input.anyKeyDown);
+			
+			firstTime = false;
+			// TRANSITION IN "FRONT" / OUT LOGO
+			foreach(var u in Interpolate(0.1f)) {
+				appearFx.localScale = Vec(baseScale.x, u * baseScale.y, baseScale.z);
+				logo.position = Vector3.Lerp(p0, p1, EaseOut2(u));			
+				yield return null;
+			}
+			
+		} else {
+			logo.gameObject.SetActive(false);
 		
-		
-		// WAIT FOR ANY KEY TO START
-		do { yield return null; } while(!Input.anyKeyDown);
+			// TRANSITION IN "FRONT"
+			foreach(var u in Interpolate(0.1f)) {
+				appearFx.localScale = Vec(baseScale.x, u * baseScale.y, baseScale.z);
+				yield return null;
+			}
+			
+		}
 	
-		// TRANSITION IN "FRONT"
-		foreach(var u in Interpolate(0.1f)) {
-			appearFx.localScale = Vec(baseScale.x, u * baseScale.y, baseScale.z);
-			logo.position = Vector3.Lerp(p0, p1, EaseOut2(u));			
-			yield return null;
-		}
-		
 		// SHOW THE PLAYER
 		Hero.inst.gameObject.SetActive(true);
 		Hero.inst.fx.SetColor(Color.white);

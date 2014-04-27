@@ -10,6 +10,8 @@ public class Hero : CustomBehaviour {
 	public float jumpImpulse = 1f;
 	public float kickback = 10f;
 	
+	public GameObject killScreenPrefab;
+	
 	// INTERNAL PARAMETERS
 	internal static Hero inst;
 	internal HeroInput input;
@@ -186,17 +188,13 @@ public class Hero : CustomBehaviour {
 	public void RagdollKill(Vector2 sourcePosition) {
 		if (status == Status.Dead) { return; }
 		status = Status.Dead;
-		
-		fx.SetStatus(HeroFX.Status.Ragdoll);
 		StartCoroutine(DoFlyingDeath());
-		
-		Jukebox.Play("MetalRiff" + Random.Range(0,3));
-		
 		DoKillscreen();
 	}
 	IEnumerator DoFlyingDeath() {
-	
-		var height = 3f;
+		fx.SetStatus(HeroFX.Status.Ragdoll);
+		
+		var height = 0.8f * (CameraFX.inst.xform.position.y + CameraFX.inst.HalfHeight - xform.position.y);
 		var heightSqrt = Mathf.Sqrt(height);
 		var metersPerSecond = 4f;
 	
@@ -207,7 +205,7 @@ public class Hero : CustomBehaviour {
 		
 		var p0 = body.position;
 		var u = 0f;
-		for(;;) {
+		while(Time.deltaTime > 0.0001f) {
 			yield return null;
 			u += metersPerSecond * Time.deltaTime;
 			xform.position = p0 + Vec(
@@ -225,21 +223,38 @@ public class Hero : CustomBehaviour {
 	public void Kill() {
 		if (status == Status.Dead) { return; }
 		status = Status.Dead;
+		StartCoroutine(DoFallingDeath());
 		DoKillscreen();
 	}
 	
+	IEnumerator DoFallingDeath() {
+		fx.SetStatus(HeroFX.Status.Corpse);
+		body.isKinematic = true;
+		body.detectCollisions = false;
+		var metersPerSecond = 4f;
+		var p0 = body.position;
+		var u = 0f;
+		while(Time.deltaTime > 0.0001f) {
+			yield return null;
+			u += metersPerSecond * Time.deltaTime;
+			print(u);
+			xform.position = p0 + Vec(u, -u * u, 0f);
+			xform.rotation = QDegrees(20f * u);
+		}
+	}
+	
 	void DoKillscreen() {
+		Jukebox.Play("MetalRiff" + Random.Range(0,3));
 		DropItem();
 		StartCoroutine(DoSlowDownTime());
 		input.Halt();
-		Time.timeScale = 0;
 		Jukebox.Play("Kill");
 		Music.KillMusic();
-		print("KILL!");
+		Dup(killScreenPrefab);
 	}
 	
 	IEnumerator DoSlowDownTime() {
-		var duration = 2.5f;
+		var duration = 2.75f;
 		for(var t=0f; t<duration; t+=RealTime.DeltaTime) {
 			yield return null;
 			Time.timeScale = 1f-EaseOut4(t / duration);
