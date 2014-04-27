@@ -5,11 +5,6 @@ public class RocketLauncher : Item {
 
 	public Transform rocket;
 	
-
-	public override void Init() {
-	
-	}
-	
 	public override void Operate(Vector2 dir) {
 	
 		Transform inst = Dup (rocket);

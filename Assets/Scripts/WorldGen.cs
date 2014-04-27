@@ -169,37 +169,43 @@ public  class WorldGen : CustomBehaviour {
 
 	}
 
-	void Dig(int x,int y)
+	bool Dig(int x,int y)
 	{
 		if(SafeDestroy(x,height + y))
 		{
 			SpawnDebrisAt(x,y);
+			return true;
+		} else {
+			return false;
 		}
 	}
 
-	internal void DigShovel(int x,int y)
+	internal bool DigShovel(int x,int y)
 	{
-		Dig (x, y);
-		Dig (x - 1, y);
-		Dig (x + 1, y);
-		Dig (x, y - 1);
+		var result = Dig (x, y);
+		result |= Dig (x - 1, y);
+		result |= Dig (x + 1, y);
+		result |= Dig (x, y - 1);
+		return result;
 
 	}
 
-	internal void DigRocket(int x,int y)
+	internal bool DigRocket(int x,int y)
 	{
-		DigShovel (x, y);
+		var result = DigShovel (x, y);
 
-		Dig (x - 2, y);
-		Dig (x + 2, y);
-		Dig (x, y - 2);
-		Dig (x, y + 2);
+		result |= Dig (x - 2, y);
+		result |= Dig (x + 2, y);
+		result |= Dig (x, y - 2);
+		result |= Dig (x, y + 2);
 
 
-		Dig (x - 1, y - 1);
-		Dig (x + 1, y + 1);
-		Dig (x + 1, y - 1);
-		Dig (x - 1, y + 1);
+		result |= Dig (x - 1, y - 1);
+		result |= Dig (x + 1, y + 1);
+		result |= Dig (x + 1, y - 1);
+		result |= Dig (x - 1, y + 1);
+		
+		return result;
 		
 	}
 	

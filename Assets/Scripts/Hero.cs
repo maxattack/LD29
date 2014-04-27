@@ -144,6 +144,10 @@ public class Hero : CustomBehaviour {
 	//--------------------------------------------------------------------------------
 	
 	public void PickUp(Item item) {
+		DropItem();
+		
+		
+		Jukebox.Play("Pickup");
 		
 		currItem = item;
 		
@@ -156,6 +160,15 @@ public class Hero : CustomBehaviour {
 		currItem.gameObject.SetActive(false);
 	}
 	
+	public void DropItem() {
+		if (currItem == null) { return; }
+		
+		
+	}
+	
+	void OnDrawGizmos() {
+		if (currItem != null) { currItem.OnDrawGizmosEquipped(); }
+	}
 	
 	//--------------------------------------------------------------------------------
 	// INTERACTION HALTING

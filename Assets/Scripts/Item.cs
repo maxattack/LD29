@@ -11,8 +11,9 @@ public abstract class Item : CustomBehaviour {
 	// GENERIC ITEM INTERFACE
 	//--------------------------------------------------------------------------------
 	
-	public abstract void Init();
+	public virtual void Init() {}
 	public abstract void Operate(Vector2 dir);
+	public virtual void OnDrawGizmosEquipped() {}
 	
 	internal void SetDir(Vector2 d)
 	{

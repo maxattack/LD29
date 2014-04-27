@@ -7,27 +7,22 @@ public class HeroFX : CustomBehaviour {
 	public enum Status { Idle, Running, Jumping }
 
 	
-	public SpriteRenderer idleSprite;
 	public float runAnimScale = 1f;
 	
 	internal HeroPose pose;
+	internal SpriteRenderer idleSprite;
 	internal Transform xform;
 	internal float animationTime;
 	
 	internal Direction direction = Direction.Right;
 	internal Status status = Status.Idle;
 	
-	SpriteRenderer[] sprites;
-	
 	void Awake() {
-	
-		// CACHE REFERENCES
 		xform = transform;
-		sprites = GetComponentsInChildren<SpriteRenderer>();
+		idleSprite = xform.Find("idlePose").GetComponent<SpriteRenderer>();
 		pose = GetComponentInChildren<HeroPose>();
-		
 	}
-	
+		
 	void Start() {
 		pose.Show (false);
 	}
@@ -98,8 +93,9 @@ public class HeroFX : CustomBehaviour {
 	}
 	
 	public void SetColor(Color c) {
-		for(int i=0; i<sprites.Length; ++i) {
-			sprites[i].color = c;
+		idleSprite.color = c;
+		for(int i=0; i<pose.sprites.Length; ++i) {
+			pose.sprites[i].color = c;
 		}
 	}
 
