@@ -3,6 +3,8 @@ using System.Collections;
 
 public class KillScreen : CustomBehaviour {
 	
+	bool acceptsInput = false;
+	
 	IEnumerator Start() {
 		var xform = transform;
 		xform.parent = CameraFX.inst.xform;
@@ -13,14 +15,18 @@ public class KillScreen : CustomBehaviour {
 		for(var t=0f; t<0.5f; t+=RealTime.DeltaTime) {
 			yield return null;
 		}
+		acceptsInput = true;
 		for(var t=0f; t<duration; t+=RealTime.DeltaTime) {
 			xform.localPosition = Vector3.Lerp(p0, p1, EaseOut2(t/duration));
 			yield return null;
 		}
-		
-		while(!Input.anyKey) { yield return null; }
-		Application.LoadLevel(Application.loadedLevel);
-		Time.timeScale = 1f;
+	}
+	
+	void LateUpdate() {
+		if (acceptsInput && GameInput.AnyPress) {
+			StopAllCoroutines();
+			Application.LoadLevel(Application.loadedLevel);
+		}
 	}
 	
 }

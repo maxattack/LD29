@@ -42,7 +42,7 @@ public class IntroBumper : CustomBehaviour {
 			
 			
 			// WAIT FOR ANY KEY TO START
-			do { yield return null; } while(!Input.anyKeyDown);
+			do { yield return null; } while(!GameInput.AnyPress);
 			
 			firstTime = false;
 			// TRANSITION IN "FRONT" / OUT LOGO

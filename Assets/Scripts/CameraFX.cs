@@ -60,6 +60,13 @@ public class CameraFX : CustomBehaviour {
 		baseColor = cam.backgroundColor;
 		
 		p0 = xform.position;
+		
+		// ADJUST KILL COLLIDER
+		var box = GetComponent<BoxCollider>();
+		if (box) {
+			var c = box.center;
+			box.center = Vec(c.x, HalfHeight + 0.5f * box.size.y, c.z);
+		}
 	}
 	
 	void OnDestroy() {

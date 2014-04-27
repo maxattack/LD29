@@ -52,13 +52,13 @@ public class Hero : CustomBehaviour {
 	
 		// RELEASE SINGLETON REFERENCE
 		if (inst == this) { inst = null; }
-		
+		Time.timeScale = 1f;		
 	}
 
 	void Start() {
 		PollGrounded();
 	}
-
+	
 	void Update() {
 		TickJump();
 		TickCurrentItem();
