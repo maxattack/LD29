@@ -14,6 +14,8 @@ public abstract class Item : CustomBehaviour {
 	
 	public virtual void Init() {}
 	public abstract void Operate(Vector2 dir);
+	public virtual void OnPickUp() {}
+	public virtual void OnDrop() {}
 	
 	internal void SetDir(Vector2 d)
 	{

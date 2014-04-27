@@ -156,12 +156,15 @@ public class Hero : CustomBehaviour {
 		currItem.StopPhysics();
 		
 		fx.Flash(Color.white);
+		
+		currItem.OnPickUp();
 	}
 	
 	public void DropItem() {
 		if (currItem != null) {
-		
+			
 			currItem.StartPhysics(fx.direction == HeroFX.Direction.Right ?Vec(-8,16) : Vec(8,16), true);
+			currItem.OnDrop();
 			currItem = null;
 			Jukebox.Play("DropWeapon");
 			

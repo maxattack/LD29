@@ -52,7 +52,7 @@ public class IntroBumper : CustomBehaviour {
 		Hero.inst.gameObject.SetActive(true);
 		Hero.inst.fx.SetColor(Color.white);
 		
-		CameraFX.inst.Flash(Color.white);
+		CameraFX.inst.Flash(Color.white, 0.1f);
 		CameraFX.inst.Shake();
 		Jukebox.Play("AppearThump");
 		yield return new WaitForSeconds(0.1f);

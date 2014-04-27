@@ -14,6 +14,7 @@ public class CameraFX : CustomBehaviour {
 	internal Transform xform;
 	internal Rigidbody body;
 	internal Color baseColor;
+	internal float cameraColorEasing = 0.2f;
 	
 	float smoothedSpeed = 0f;
 	Vector3 shake = Vec(0,0,0);
@@ -99,6 +100,9 @@ public class CameraFX : CustomBehaviour {
 		
 		// body position instead?
 		xform.position = p0 + shakeIntensity * shake;
+		
+		// TONE DOWN FLASH
+		cam.backgroundColor = cam.backgroundColor.EaseTowards(baseColor, cameraColorEasing);
 	}
 
 	//--------------------------------------------------------------------------------
@@ -119,15 +123,14 @@ public class CameraFX : CustomBehaviour {
 	// COLOR FLASHES
 	//--------------------------------------------------------------------------------
 	
-	public void Flash(Color c, float duration=1f) {
-		StartCoroutine(DoFlash(c, duration));
-	}
-	
-	IEnumerator DoFlash(Color c, float duration) {
-		foreach(var u in Interpolate(duration)) {
-			cam.backgroundColor = Color.Lerp(c, baseColor, EaseOut4(u));
-			yield return null;
-		}
+	public void Flash(Color c, float easing = 0.4f) {
+		var c0 = cam.backgroundColor;
+		c0.r = Mathf.Max(c0.r, c.r);
+		c0.g = Mathf.Max(c0.g, c.g);
+		c0.b = Mathf.Max(c0.b, c.b);
+		c0.a = Mathf.Max(c0.a, c.a);
+		cameraColorEasing = easing;
+		cam.backgroundColor = c0;
 	}
 	
 	//--------------------------------------------------------------------------------

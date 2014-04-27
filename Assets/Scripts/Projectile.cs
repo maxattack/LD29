@@ -1,19 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Projectile : MonoBehaviour {
+public class Projectile : CustomBehaviour {
 
 
 
 	Transform xform;
 
-	// Use this for initialization
 	void Start () {
 		xform = transform;
 
 		rigidbody.centerOfMass = new Vector3 (-0.4f, 0, 0);
-
 		initDir.Normalize ();
+
+		rigidbody.velocity = Hero.inst.body.velocity.magnitude * initDir;
+
 
 		rigidbody.rotation = Quaternion.FromToRotation (new Vector3 (1, 0, 0), initDir);
 	}
@@ -51,11 +52,15 @@ public class Projectile : MonoBehaviour {
 					int y = (int)obj.transform.position.y;
 					WorldGen.inst.DigRocket(x,y);
 
-					Destroy (gameObject);
 				}
+				
 			}
-
-				}
+			Jukebox.Play("RocketExplosion");
+			CameraFX.inst.Shake();
+			CameraFX.inst.Flash(RGBA(Color.red, 0.5f));
+			
+			Destroy (gameObject);
+		}
 		
 	}
 }
