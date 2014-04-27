@@ -15,10 +15,14 @@ public class LandMine : PooledObject {
 	// Use this for initialization
 	void Start () {
 	
+		GetComponent<SpriteRenderer> ().color = new Color(1,1,1,0);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+
+
 		if (tripped) {
 					timeout += Time.deltaTime;
 		
@@ -48,25 +52,26 @@ public class LandMine : PooledObject {
 							CameraFX.inst.Shake ();
 							CameraFX.inst.Flash (RGBA (Color.white, 0.5f));
 
-						float size = 0.75f;
-							Vector3 [] offsets = new Vector3[7];
-						offsets[0] = Vector3.zero;
-						offsets[1] = new Vector3(size * 2,0,0);
-						offsets[2] = new Vector3(-size * 2,0,0);
-						offsets[3] = new Vector3(0,size * 2,0);
-						offsets[4] = new Vector3(size * 4,0,0);
-						offsets[5] = new Vector3(-size * 4,0,0);
-						offsets[6] = new Vector3(0,size * 4,0);
+						float dist = 1.0f;
+							Vector3 [] offsets = new Vector3[6];
+						
+						offsets[0] = new Vector3(dist * 1,0,0);
+						offsets[1] = new Vector3(-dist * 1,0,0);
+						offsets[2] = new Vector3(0,dist * 1,0);
+						offsets[3] = new Vector3(dist * 2,0,0);
+						offsets[4] = new Vector3(-dist * 2,0,0);
+						offsets[5] = new Vector3(0,dist * 2,0);
 
 							for(int i = 0 ; i < offsets.Length ; i++)
 							{
 								Vector3 blastPos = xform.position + offsets[i];
 
 								PooledObject inst = explosionPrefab.Alloc (xform.position + offsets[i]) as PooledObject;
-								inst.transform.localScale = new Vector3 (size,size,size);
+								float size = 0.45f;
+								inst.transform.localScale = new Vector3 (size,size,size );
 
 
-								WorldGen.inst.Dig((int)(blastPos.x),(int)(blastPos.y));
+								WorldGen.inst.Dig((int)(blastPos.x + 0.5f),(int)(blastPos.y ));
 							}
 						
 
@@ -87,6 +92,10 @@ public class LandMine : PooledObject {
 
 	}
 
+	internal void Trip()
+	{
+		tripped = true;
+	}
 	void OnCollisionEnter(Collision collision) 
 	{
 				if (collision.collider.IsHero ()) {

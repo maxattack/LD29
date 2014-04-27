@@ -9,6 +9,12 @@ public class BlastZone : CustomBehaviour {
 		if (c.IsHero()) {
 			Hero.inst.RagdollKill(transform.position.xy());
 		}
+
+		if (c.GetComponent<LandMine> () != null) {
+
+			c.GetComponent<LandMine>().Trip ();
+
+				}
 	}
 
 }

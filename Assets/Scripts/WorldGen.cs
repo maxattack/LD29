@@ -7,6 +7,7 @@ public  class WorldGen : CustomBehaviour {
 	public Transform tile;
 	public Debris debrisPrefab;
 	public Transform rocket;
+	public LandMine landMine;
 	
 	public Item[] items;	
 
@@ -107,8 +108,30 @@ public  class WorldGen : CustomBehaviour {
 
 		}
 
-		for (int y = 0; y < height - 10; y++) 
+		for (int y = 0; y < height - 1; y++) 
 		{
+			for(int x = 1 ; x < width - 1 ; x++)
+			{
+
+
+				{
+		//			bool validPlacement = false;
+		//			if(!tiles[x,y].gameObject.activeSelf)
+		//				validPlacement = true;
+
+		//			if(validPlacement)
+		//			{
+		//				int r = rand.Next() % 10; //roll for land mine
+		//				if(r == 0)
+		//					landMine.Alloc(new Vector3 (x,y - height,0));
+
+
+		//			}
+
+
+				}
+
+			}
 
 		}
 		//Add some land mines
@@ -121,7 +144,7 @@ public  class WorldGen : CustomBehaviour {
 		{
 			if(tiles[x,y])
 			{
-				Destroy (tiles [x, y].gameObject);
+				Destroy(tiles [x, y].gameObject);
 				return true;
 			}
 		}
@@ -171,13 +194,25 @@ public  class WorldGen : CustomBehaviour {
 	{
 
 
-		if(SafeDestroy(x,height + y))
+		y += height;
+		if (y < height && y >= 0 && x < width && x >= 0) 
 		{
-			SpawnDebrisAt(x,y);
-			return true;
-		} else {
-			return false;
+			if(tiles[x,y])
+			{
+				Vector3 pos = tiles [x, y].transform.position;
+				int r = rand.Next() % 10;
+				if(r == 0)
+					landMine.Alloc(pos + new Vector3 (0,0,0));
+
+				SpawnDebrisAt(x,y - height);
+				Destroy(tiles[x,y].gameObject);
+				return true;
+			}
+
 		}
+
+
+		return false;
 	}
 
 	internal bool DigShovel(int x,int y)
