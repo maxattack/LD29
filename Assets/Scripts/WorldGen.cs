@@ -126,7 +126,12 @@ public  class WorldGen : CustomBehaviour {
 			}
 
 		}
-		//Add some land mines
+
+
+		//Add the earth's core
+
+		var inst = Dup (earthCore);
+		inst.transform.position = new Vector3 (width / 2, -height - 25, 0);
     }
 	System.Random rand = new System.Random ();
 
