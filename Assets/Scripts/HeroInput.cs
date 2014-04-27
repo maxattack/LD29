@@ -29,5 +29,5 @@ public class HeroInput : CustomBehaviour {
 	public bool PressingRight { get { return !Halting && (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)); } }
 	public bool PressedJump { get { return !Halting && (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)); } }
 	public bool PressedItem { get { return !Halting && (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.Return)); } }
-		
+	public bool PressedDrop { get { return !Halting && Input.GetKeyDown (KeyCode.X); } }
 }

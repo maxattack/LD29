@@ -8,6 +8,7 @@ public class Hero : CustomBehaviour {
 	// DESIGNER PARAMETERS
 	public float runSpeed = 1f;
 	public float jumpImpulse = 1f;
+	public float doubleJumpImpulse = 1f;
 	public float kickback = 10f;
 	
 	public GameObject killScreenPrefab;
@@ -25,10 +26,10 @@ public class Hero : CustomBehaviour {
 	internal Status status = Status.Idle;
 	internal bool grounded = false;
 	
-	
 	// PRIVATE MEMBERS	
 	float targetRunningSpeed = 0f;
 	internal Vector2 currDir;
+	bool canDoubleJump;
 	
 	//--------------------------------------------------------------------------------
 	// EVENT CALLBACKS
@@ -59,7 +60,32 @@ public class Hero : CustomBehaviour {
 	}
 
 	void Update() {
-
+		TickJump();
+		TickCurrentItem();
+	}
+	
+	void TickJump() {
+		if (input.PressedJump) {
+			if (grounded) {
+				Jukebox.Play("Jump");
+				grounded = false;
+				body.AddForce(
+					Vec(0, jumpImpulse - body.velocity.y, 0), 
+					ForceMode.VelocityChange
+				);
+			} else if (canDoubleJump) {
+				Jukebox.Play("Jump");
+				canDoubleJump = false;
+				body.AddForce(
+					Vec(0, doubleJumpImpulse - body.velocity.y, 0), 
+					ForceMode.VelocityChange
+				);
+			}
+		
+		}
+	}
+	
+	void TickCurrentItem() {
 		// COMPUTE ITEM DIRECITON
 		Vector2 newDir = Vector2.zero;
 		if (input.PressingUp) { newDir.y += 1; } 
@@ -68,37 +94,27 @@ public class Hero : CustomBehaviour {
 		if (input.PressingLeft) { newDir.x -= 1; }
 		if (newDir.sqrMagnitude > 0) { currDir = newDir.normalized; }
 		if (currDir.sqrMagnitude < 0.0001f) {
-
 			currDir.x = fx.direction == HeroFX.Direction.Right ? 1 : -1;
-				}
+		}
 		
-		// TESTING HACK
-		if (Input.GetKeyDown(KeyCode.X)) {
-			DropItem();
-		}
-
-		// JUMPING
-		if (grounded && input.PressedJump) {
-			Jukebox.Play("Jump");
-			body.AddForce(Vec(0, jumpImpulse, 0), ForceMode.VelocityChange);
-		}
-
+		// TICK ITEM DIRECTION
 		if (currItem) {
 			currItem.SetDir(currDir);
 		}
+		
 		if (input.PressedItem) {
 			if(currItem) { currItem.Operate(currDir); }
-		}
+		}	
 	}
 	
 	void PollGrounded() {
 		grounded = status != Status.Dead && Physics.CheckSphere(body.position, 0.1f, Layers.DefaultMask);
+		canDoubleJump |= grounded;
 	}
 	
 	void FixedUpdate() {
 		PollGrounded();
 		
-	
 		// RUNNING
 		var vel = body.velocity;
 		var easing = 0.2f;
