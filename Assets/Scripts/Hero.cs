@@ -156,8 +156,7 @@ public class Hero : CustomBehaviour {
 		currItem.fx.localPosition = Vector3.zero;
 		currItem.fx.localScale = Vector3.one;
 		
-		//currItem.gameObject.SetActive(false);		
-		currItem.gameObject.SetActive(false);
+		currItem.StopPhysics();
 		
 		fx.Flash(Color.white);
 	}
@@ -166,10 +165,6 @@ public class Hero : CustomBehaviour {
 		if (currItem == null) { return; }
 		
 		
-	}
-	
-	void OnDrawGizmos() {
-		if (currItem != null) { currItem.OnDrawGizmosEquipped(); }
 	}
 	
 	//--------------------------------------------------------------------------------

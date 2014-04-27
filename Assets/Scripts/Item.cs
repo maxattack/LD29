@@ -13,7 +13,6 @@ public abstract class Item : CustomBehaviour {
 	
 	public virtual void Init() {}
 	public abstract void Operate(Vector2 dir);
-	public virtual void OnDrawGizmosEquipped() {}
 	
 	internal void SetDir(Vector2 d)
 	{
@@ -47,6 +46,7 @@ public abstract class Item : CustomBehaviour {
 			result.next = null;
 			result.xform.position = pos;
 			result.gameObject.SetActive(true);
+			result.StartPhysics();
 			
 		} else {
 			
@@ -61,6 +61,7 @@ public abstract class Item : CustomBehaviour {
 		
 		// RE-INIT INSTANCE
 		result.Init();
+		
 		
 		return result;
 	}
@@ -89,5 +90,23 @@ public abstract class Item : CustomBehaviour {
 		}
 		
 	}
-
+	
+	public void StopPhysics() {
+		this.collider.enabled = false;
+		var body = this.rigidbody;
+		body.velocity = Vector3.zero;
+		body.isKinematic = true;
+	}
+	
+	public void StartPhysics() {
+		if (fx.parent != xform) {
+			xform.position = fx.position;
+			xform.rotation = fx.rotation;
+			fx.parent = xform;
+		}
+		this.collider.enabled = true;
+		this.rigidbody.isKinematic = false;
+		
+	}
+	
 }

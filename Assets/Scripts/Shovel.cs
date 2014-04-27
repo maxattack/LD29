@@ -6,29 +6,27 @@ public class Shovel : Item {
 	public override void Operate(Vector2 dir) {
 		
 	
-		xform.localPosition = 1 * xform.right;
-		
 		var basePos = Hero.inst.xform.position;
-		
 		var didDig = WorldGen.inst.DigShovel((int)(basePos.x + dir.x + 0.5f),(int)(basePos.y + dir.y + 0.5f));
 		
 		Jukebox.Play(didDig ? "Dig" : "Derp");
+		if (didDig) { CameraFX.inst.Shake(0.5f); }
 		
-		if (didDig) {
-			CameraFX.inst.Shake(0.5f);
-		}
+		fx.localPosition = 0.8f * dir;
 		
 	}
 	
 	void Update () 
 	{
 		if (this == Hero.inst.currItem) {
-			fx.localPosition = fx.localPosition.EaseTowards (Vector3.zero, 0.1f); 
+			fx.localPosition = fx.localPosition.EaseTowards (Vector3.zero, 0.25f); 
 		}
 	}
 	
-	public override void OnDrawGizmosEquipped()
+	public void OnDrawGizmos()
 	{
+		
+		if (Hero.inst == null || this != Hero.inst.currItem) return;
 		
 		Gizmos.color = Color.white;
 		var basePos = Hero.inst.xform.position;
