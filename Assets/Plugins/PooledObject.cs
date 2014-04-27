@@ -1,11 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class PooledObject : CustomBehaviour {
-	
-	// AN EXAMPLE OF HOW TO DO ONE-SHOT POOLING.  NOTE THAT BECAUSE THE OBJECT
-	// IS DEACTIVATED RATHER THAN DESTROYED, THE EVENT-HANDLING SEMANTICS ARE 
-	// A LITTLE DIFFERENT (Awake-[OnEnable-OnDisable]*-OnDestroy
+public class PooledObject : CustomBehaviour {
 	
 	PooledObject prefab;
 	PooledObject next;
@@ -41,9 +37,11 @@ public abstract class PooledObject : CustomBehaviour {
 		return result;
 	}
 	
-	public abstract void Init();
+	public virtual void Init() {}
+	public virtual void Deinit() {}
 	
 	public void Release() {
+		Deinit();
 		
 		if (prefab != null) {
 			
