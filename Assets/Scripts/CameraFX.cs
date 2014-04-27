@@ -7,6 +7,7 @@ public class CameraFX : CustomBehaviour {
 	public float lookAheadAmount = 1f;
 	public float killSpeed = 1f;
 	public float bottomOffsetLimit = 0f;
+	public float shakeIntensity = 0.1f;
 	
 	internal static CameraFX inst;
 	internal Camera cam;
@@ -15,7 +16,10 @@ public class CameraFX : CustomBehaviour {
 	internal Color baseColor;
 	
 	float smoothedSpeed = 0f;
+	Vector3 shake = Vec(0,0,0);
 	int haltingSemaphore = 0;
+	
+	Vector3 p0; // restposition
 	
 	//--------------------------------------------------------------------------------
 	// GETTERS
@@ -54,6 +58,7 @@ public class CameraFX : CustomBehaviour {
 		cam = GetComponent<Camera>();
 		baseColor = cam.backgroundColor;
 		
+		p0 = xform.position;
 	}
 	
 	void OnDestroy() {
@@ -64,8 +69,6 @@ public class CameraFX : CustomBehaviour {
 	void LateUpdate() {
 		
 		if (Hero.inst) {
-			//var p0 = body.position;
-			var p0 = xform.position;
 
 			// TRACK HERO WITH A LITTLE LOOK-AHEAD
 			smoothedSpeed = smoothedSpeed.EaseTowards(Hero.inst.body.velocity.x, 0.1f);
@@ -87,10 +90,15 @@ public class CameraFX : CustomBehaviour {
 				p0.y -= diff;
 			}
 			
-			//body.MovePosition(p0);
-			xform.position = p0;
 		}
-	
+		
+		// CAMERA SHAKE
+		if (shake.sqrMagnitude > 0.0001f) {
+			shake = shake.EaseTowards(Vector3.zero, 0.5f);
+		}
+		
+		// body position instead?
+		xform.position = p0 + shakeIntensity * shake;
 	}
 
 	//--------------------------------------------------------------------------------
@@ -121,5 +129,20 @@ public class CameraFX : CustomBehaviour {
 			yield return null;
 		}
 	}
+	
+	//--------------------------------------------------------------------------------
+	// SHAKE
+	//--------------------------------------------------------------------------------
+	
+	public void Shake(float amount=1f) {
+//		switch(Mathf.FloorToInt(4 * Random.value)) {
+//		case 0: shake = Vec(amount,0,0); break;
+//		case 1: shake = Vec(-amount,0,0); break;
+//		case 2: shake = Vec(0,amount,0);break;
+//		default: shake = Vec(0,-amount,0);break;
+//		}
+		shake = Vec(0,-amount,0);
+	}
+	
 	
 }

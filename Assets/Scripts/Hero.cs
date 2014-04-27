@@ -158,6 +158,8 @@ public class Hero : CustomBehaviour {
 		
 		//currItem.gameObject.SetActive(false);		
 		currItem.gameObject.SetActive(false);
+		
+		fx.Flash(Color.white);
 	}
 	
 	public void DropItem() {

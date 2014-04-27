@@ -17,15 +17,25 @@ public class HeroFX : CustomBehaviour {
 	internal Direction direction = Direction.Right;
 	internal Status status = Status.Idle;
 	
+	//--------------------------------------------------------------------------------
+	// INIT
+	//--------------------------------------------------------------------------------
+	
 	void Awake() {
+		// CACHE REFERENCES
 		xform = transform;
 		idleSprite = xform.Find("idlePose").GetComponent<SpriteRenderer>();
 		pose = GetComponentInChildren<HeroPose>();
 	}
 		
 	void Start() {
+		// START IDLE
 		pose.Show (false);
 	}
+	
+	//--------------------------------------------------------------------------------
+	// MAJOR STATES
+	//--------------------------------------------------------------------------------
 	
 	public void SetDirection(Direction dir) {
 	
@@ -60,6 +70,10 @@ public class HeroFX : CustomBehaviour {
 		
 	}
 	
+	//--------------------------------------------------------------------------------
+	// ANIMATION EFFECTS
+	//--------------------------------------------------------------------------------
+	
 	void Update() {
 	
 		if (Hero.inst.grounded) {
@@ -80,6 +94,10 @@ public class HeroFX : CustomBehaviour {
 			pose.ApplyJumpCycle(Time.time);
 		}
 	}
+	
+	//--------------------------------------------------------------------------------
+	// COLOR TINTING EFFECTS
+	//--------------------------------------------------------------------------------
 	
 	public void Flash(Color c, float duration = 1f) {
 		StartCoroutine(DoFlash(c, duration));
