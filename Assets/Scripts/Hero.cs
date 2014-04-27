@@ -26,7 +26,8 @@ public class Hero : CustomBehaviour {
 	
 	// PRIVATE MEMBERS	
 	int haltSemaphore = 0;
-	float targetRunningSpeed = 0f;	
+	float targetRunningSpeed = 0f;
+	internal Vector2 currDir;
 	
 	//--------------------------------------------------------------------------------
 	// EVENT CALLBACKS
@@ -52,15 +53,9 @@ public class Hero : CustomBehaviour {
 		
 	}
 
-	Vector2 currDir;
-
 	void Start() {
 		PollGrounded();
 	}
-
-
-		
-		
 
 	void Update() {
 
@@ -72,10 +67,10 @@ public class Hero : CustomBehaviour {
 		if (input.PressingLeft) { newDir.x -= 1; }
 		if (newDir.sqrMagnitude > 0) { currDir = newDir.normalized; }
 		
+		// TESTING HACK
 		if (Input.GetKeyDown(KeyCode.X)) {
 			DropItem();
 		}
-		
 
 		// JUMPING
 		if (grounded && input.PressedJump) {

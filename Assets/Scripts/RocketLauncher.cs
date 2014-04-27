@@ -14,7 +14,6 @@ public class RocketLauncher : Item {
 	
 	public override void Operate(Vector2 dir) {
 	
-	
 		// SPAWN ROCKET W/ KINDA RANDOMIZED HEADING
 		rocket.Alloc(
 			muzzle.position,  
@@ -27,7 +26,6 @@ public class RocketLauncher : Item {
 	}
 
 	public override void OnPickUp() {
-		print("Pickup Bazooka");
 		particles.Play();
 	}
 	
