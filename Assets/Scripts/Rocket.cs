@@ -85,8 +85,9 @@ public class Rocket : CustomBehaviour {
 			
 		}
 		CameraFX.inst.Shake();
-		CameraFX.inst.Flash(RGBA(Color.red, 0.5f));
-		explosionPrefab.Alloc(xform.position);
+		CameraFX.inst.Flash(RGBA(Color.white, 0.5f));
+		PooledObject inst = explosionPrefab.Alloc(xform.position) as PooledObject;
+		inst.transform.localScale = new Vector3 (2, 2, 1);
 		Release();
 		
 	}

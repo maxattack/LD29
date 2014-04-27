@@ -29,7 +29,7 @@ public class GrenadeLauncher : Item {
 		inst.SetInitDir(Cmul (UnitVec (Random.Range (-0.05f * Mathf.PI, 0.05f * Mathf.PI)), dir));
 		
 		// SIDE-EFFECTS
-		Jukebox.Play("ShootBazooka");
+		Jukebox.Play("ShootGrenade");
 		Hero.inst.Kickback();
 	}
 }

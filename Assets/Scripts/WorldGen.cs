@@ -163,6 +163,8 @@ public  class WorldGen : CustomBehaviour {
 
 	bool Dig(int x,int y)
 	{
+
+
 		if(SafeDestroy(x,height + y))
 		{
 			SpawnDebrisAt(x,y);
