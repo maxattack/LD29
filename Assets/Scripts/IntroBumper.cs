@@ -13,6 +13,8 @@ public class IntroBumper : CustomBehaviour {
 		var logo = xform.Find("Logo");
 		var logoFx = logo.GetComponent<SpriteRenderer>();
 		
+		var credits = xform.Find ("Credits");
+		
 		// HIDE THE PLAYER AND APPEAR FX
 		Hero.inst.input.Halt();
 		CameraFX.inst.Halt();
@@ -46,14 +48,19 @@ public class IntroBumper : CustomBehaviour {
 			
 			firstTime = false;
 			// TRANSITION IN "FRONT" / OUT LOGO
+			var cp0 = credits.position;
+			var cp1 = credits.position.Below(0.5f * CameraFX.inst.HalfHeight);
+			
 			foreach(var u in Interpolate(0.1f)) {
 				appearFx.localScale = Vec(baseScale.x, u * baseScale.y, baseScale.z);
 				logo.position = Vector3.Lerp(p0, p1, EaseOut2(u));			
+				credits.position = Vector3.Lerp (cp0, cp1, EaseOut2(u));
 				yield return null;
 			}
 			
 		} else {
 			logo.gameObject.SetActive(false);
+			credits.gameObject.SetActive(false);
 		
 			// TRANSITION IN "FRONT"
 			foreach(var u in Interpolate(0.1f)) {
