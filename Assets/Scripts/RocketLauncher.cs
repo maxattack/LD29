@@ -16,8 +16,11 @@ public class RocketLauncher : Item {
 	
 		Jukebox.Play("ShootBazooka");
 	
-		Dup(rocket, muzzle.position).initDir = 
-			QDegrees(Random.Range(-10f, 10f)) * Vec(dir.x,dir.y,0);
+		// SPAWN ROCKET (TODO: POOL)
+		Dup(rocket, muzzle.position).initDir = QDegrees(Random.Range(-10f, 10f)) * Vec(dir.x,dir.y,0);
+		
+		// KICKBACK
+		Hero.inst.Kickback();
 	}
 
 	public override void OnPickUp() {

@@ -8,6 +8,7 @@ public class Hero : CustomBehaviour {
 	// DESIGNER PARAMETERS
 	public float runSpeed = 1f;
 	public float jumpImpulse = 1f;
+	public float kickback = 10f;
 	
 	// INTERNAL PARAMETERS
 	internal static Hero inst;
@@ -168,6 +169,14 @@ public class Hero : CustomBehaviour {
 			currItem = null;
 			Jukebox.Play("DropWeapon");
 			
+		}
+	}
+	
+	public void Kickback() {
+		if (fx.direction == HeroFX.Direction.Left) {
+			body.AddForce(Vec(kickback,0,0), ForceMode.VelocityChange);
+		} else {
+			body.AddForce(Vec(-kickback,0,0), ForceMode.VelocityChange);
 		}
 	}
 	
