@@ -189,6 +189,8 @@ public class Hero : CustomBehaviour {
 		fx.SetStatus(HeroFX.Status.Ragdoll);
 		StartCoroutine(DoFlyingDeath());
 		
+		Jukebox.Play("MetalRiff" + Random.Range(0,3));
+		
 		DoKillscreen();
 	}
 	IEnumerator DoFlyingDeath() {

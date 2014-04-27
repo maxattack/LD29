@@ -84,10 +84,10 @@ public class HeroPose : CustomBehaviour {
 	}
 	
 	public void TickRagdoll() {
-		leftArm.localRotation = leftArm.localRotation * QDegrees(5f * Time.deltaTime);
-		rightArm.localRotation = leftArm.localRotation * QDegrees(5f * Time.deltaTime);
-		leftLeg.localRotation = leftArm.localRotation * QDegrees(5f * Time.deltaTime);
-		rightLeg.localRotation = leftArm.localRotation * QDegrees(5f * Time.deltaTime);	
+		leftArm.localRotation = leftArm.localRotation * QDegrees(40f * Time.deltaTime);
+		rightArm.localRotation = leftArm.localRotation * QDegrees(50f * Time.deltaTime);
+		leftLeg.localRotation = leftArm.localRotation * QDegrees(55f * Time.deltaTime);
+		rightLeg.localRotation = leftArm.localRotation * QDegrees(45f * Time.deltaTime);	
 	}
 	
 }
