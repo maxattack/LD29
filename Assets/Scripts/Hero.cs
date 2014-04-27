@@ -163,6 +163,7 @@ public class Hero : CustomBehaviour {
 		if (currItem != null) {
 			
 			currItem.StartPhysics(fx.direction == HeroFX.Direction.Right ?Vec(-8,16) : Vec(8,16), true);
+			currItem.rigidbody.angularVelocity = Vec(0, 0, 360f);
 			currItem.OnDrop();
 			currItem = null;
 			Jukebox.Play("DropWeapon");
