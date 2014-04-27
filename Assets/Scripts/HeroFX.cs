@@ -4,7 +4,7 @@ using System.Collections;
 public class HeroFX : CustomBehaviour {
 
 	public enum Direction { Left, Right }
-	public enum Status { Idle, Running, Jumping }
+	public enum Status { Idle, Running, Jumping, Ragdoll }
 
 	
 	public float runAnimScale = 1f;
@@ -76,29 +76,37 @@ public class HeroFX : CustomBehaviour {
 	
 	void Update() {
 	
-		var oldStatus = status;
-		if (Hero.inst.grounded) {
-			var speed = Mathf.Abs (Hero.inst.body.velocity.x);
-			var prevTime = animationTime;
-			if (speed > 0.05f) {
-				SetStatus(Status.Running);
-				animationTime += runAnimScale * (speed+0.25f) * Time.deltaTime;
-				pose.ApplyRunCycle(animationTime);
+		if (status != Status.Ragdoll) {
+			
+			// DO NORMAL ANIMATIONS
+			var oldStatus = status;
+			if (Hero.inst.grounded) {
+				var speed = Mathf.Abs (Hero.inst.body.velocity.x);
+				var prevTime = animationTime;
+				if (speed > 0.05f) {
+					SetStatus(Status.Running);
+					animationTime += runAnimScale * (speed+0.25f) * Time.deltaTime;
+					pose.ApplyRunCycle(animationTime);
+				} else {
+					SetStatus(Status.Idle);
+					animationTime = 0f;
+				}
+				var a = Mathf.FloorToInt(8f * prevTime) % 2;
+				var b = Mathf.FloorToInt(8f * animationTime) % 2;
+				if (a != b && b == 0) { Jukebox.Play("Footfall"); }
+				
 			} else {
-				SetStatus(Status.Idle);
 				animationTime = 0f;
+				SetStatus(Status.Jumping);
+				pose.ApplyJumpCycle(Time.time);
 			}
-			var a = Mathf.FloorToInt(8f * prevTime) % 2;
-			var b = Mathf.FloorToInt(8f * animationTime) % 2;
-			if (a != b && b == 0) { Jukebox.Play("Footfall"); }
+			if (status != oldStatus && oldStatus == Status.Jumping) {
+				Jukebox.Play("Footfall");
+			}
 			
 		} else {
-			animationTime = 0f;
-			SetStatus(Status.Jumping);
-			pose.ApplyJumpCycle(Time.time);
-		}
-		if (status != oldStatus && oldStatus == Status.Jumping) {
-			Jukebox.Play("Footfall");
+			// DO RAGDOLL ANIMATIONS
+			pose.TickRagdoll();
 		}
 	}
 	

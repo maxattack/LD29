@@ -25,7 +25,6 @@ public class Hero : CustomBehaviour {
 	
 	
 	// PRIVATE MEMBERS	
-	int haltSemaphore = 0;
 	float targetRunningSpeed = 0f;
 	internal Vector2 currDir;
 	
@@ -87,7 +86,7 @@ public class Hero : CustomBehaviour {
 	}
 	
 	void PollGrounded() {
-		grounded = Physics.CheckSphere(body.position, 0.1f, Layers.DefaultMask);
+		grounded = status != Status.Dead && Physics.CheckSphere(body.position, 0.1f, Layers.DefaultMask);
 	}
 	
 	void FixedUpdate() {
@@ -176,32 +175,69 @@ public class Hero : CustomBehaviour {
 	}
 	
 	//--------------------------------------------------------------------------------
-	// INTERACTION HALTING
-	//--------------------------------------------------------------------------------
-	
-	public bool Halting { get { return haltSemaphore > 0; } }
-	
-	public void Halt() {
-		++haltSemaphore;
-	}
-	
-	public void Unhalt() {
-		if (haltSemaphore > 0) { --haltSemaphore; }
-	}
-	
-	//--------------------------------------------------------------------------------
 	// KILL! KILL!
 	//--------------------------------------------------------------------------------
 	
-	public void Kill() {
-		if (status != Status.Dead) {
-			status = Status.Dead;
-			Time.timeScale = 0;
-			Jukebox.Play("Kill");
-			Music.KillMusic();
-			print("KILL!");
-		}
+	public void RagdollKill(Vector2 sourcePosition) {
+		if (status == Status.Dead) { return; }
+		status = Status.Dead;
 		
+		fx.SetStatus(HeroFX.Status.Ragdoll);
+		StartCoroutine(DoFlyingDeath());
+		
+		DoKillscreen();
+	}
+	IEnumerator DoFlyingDeath() {
+	
+		var height = 3f;
+		var heightSqrt = Mathf.Sqrt(height);
+		var metersPerSecond = 4f;
+	
+		body.isKinematic = true;
+		body.detectCollisions = false;
+		
+		var sign = xform.position.x < CameraFX.inst.xform.position.x ? 1f : -1f;
+		
+		var p0 = body.position;
+		var u = 0f;
+		for(;;) {
+			yield return null;
+			u += metersPerSecond * Time.deltaTime;
+			xform.position = p0 + Vec(
+				sign * u,
+				height - (heightSqrt-u)*(heightSqrt-u),
+				0
+			);
+			xform.rotation = QDegrees(-sign * 20f * u);
+		}
+	
+	
+	}
+	
+	
+	public void Kill() {
+		if (status == Status.Dead) { return; }
+		status = Status.Dead;
+		DoKillscreen();
+	}
+	
+	void DoKillscreen() {
+		DropItem();
+		StartCoroutine(DoSlowDownTime());
+		input.Halt();
+		Time.timeScale = 0;
+		Jukebox.Play("Kill");
+		Music.KillMusic();
+		print("KILL!");
+	}
+	
+	IEnumerator DoSlowDownTime() {
+		var duration = 2.5f;
+		for(var t=0f; t<duration; t+=RealTime.DeltaTime) {
+			yield return null;
+			Time.timeScale = 1f-EaseOut4(t / duration);
+		}
+		Time.timeScale = 0f;
 	}
 				
 }

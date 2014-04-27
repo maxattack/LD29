@@ -12,7 +12,7 @@ public class IntroBumper : CustomBehaviour {
 		var logoFx = logo.GetComponent<SpriteRenderer>();
 		
 		// HIDE THE PLAYER AND APPEAR FX
-		Hero.inst.Halt();
+		Hero.inst.input.Halt();
 		CameraFX.inst.Halt();
 		Hero.inst.gameObject.SetActive(false);
 		var baseScale = appearFx.localScale;
@@ -71,7 +71,7 @@ public class IntroBumper : CustomBehaviour {
 		
 				
 		// BEGIN INTERACTION
-		Hero.inst.Unhalt();
+		Hero.inst.input.Unhalt();
 		CameraFX.inst.Unhalt();
 		
 		Destroy(gameObject);
