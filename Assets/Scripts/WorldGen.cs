@@ -121,7 +121,6 @@ public  class WorldGen : CustomBehaviour {
 		return false;
 	}
 
-	int depth = 0;
 	float timer = 0;
 	void Update()
 	{
@@ -129,14 +128,6 @@ public  class WorldGen : CustomBehaviour {
 		timer += Time.deltaTime;
 
 
-		if (Input.GetKeyDown(KeyCode.R)) {
-			Transform inst = Dup (rocket);
-
-			inst.transform.position = new Vector2(5,10);
-			inst.GetComponent<Projectile>().initDir = new Vector3(0,-1,0);
-		//	inst.rigidbody.AddForce(new Vector3(0,10,0));
-
-				}
 
 	}
 

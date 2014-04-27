@@ -17,8 +17,14 @@ public class RocketLauncher : Item {
 		Jukebox.Play("ShootBazooka");
 	
 		// SPAWN ROCKET (TODO: POOL)
-		Dup(rocket, muzzle.position).initDir = QDegrees(Random.Range(-10f, 10f)) * Vec(dir.x,dir.y,0);
-		
+		rocket.Alloc(
+			muzzle.position,  
+			
+			// DIRECTION RANDOMIZED A LITTLE
+			Cmul(UnitVec(Random.Range(-0.1f * Mathf.PI, 0.1f * Mathf.PI)), dir)
+			
+		);
+			
 		// KICKBACK
 		Hero.inst.Kickback();
 	}
