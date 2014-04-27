@@ -73,7 +73,7 @@ public  class WorldGen : CustomBehaviour {
 
 		//put caverns in (small medium and large
 	
-		for(int y = 5 ; y < height ; y++)
+		for(int y = 0 ; y < height - 5; y++)
 		{
 			int r = rand.Next () % 2;
 			if(r == 0)
@@ -106,6 +106,12 @@ public  class WorldGen : CustomBehaviour {
 			}
 
 		}
+
+		for (int y = 0; y < height - 10; y++) 
+		{
+
+		}
+		//Add some land mines
     }
 	System.Random rand = new System.Random ();
 
@@ -161,7 +167,7 @@ public  class WorldGen : CustomBehaviour {
 
 	}
 
-	bool Dig(int x,int y)
+	internal bool Dig(int x,int y)
 	{
 
 

@@ -248,5 +248,14 @@ TextureImporter:
         height: 9
       alignment: 0
       pivot: {x: .5, y: .5}
+    - name: landMine
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 17
+        width: 9
+        height: 10
+      alignment: 0
+      pivot: {x: .5, y: .5}
   spritePackingTag: 
   userData: 
