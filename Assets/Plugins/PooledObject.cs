@@ -6,6 +6,8 @@ public class PooledObject : CustomBehaviour {
 	PooledObject prefab;
 	PooledObject next;
 	
+	public PooledObject SourcePrefab { get { return prefab; } }
+	
 	public bool IsPrefab { 
 		get { return prefab == null; } 
 	}
