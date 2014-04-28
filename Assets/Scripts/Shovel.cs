@@ -13,7 +13,11 @@ public class Shovel : Item {
 		if (didDig) { CameraFX.inst.Shake(0.5f); }
 		
 		fx.localPosition = 0.8f * dir;
-		
+
+		float d = Vector3.Distance (WorldGen.inst.earthCore.xform.position, Hero.inst.xform.position);
+		if (d < 15) {
+						WorldGen.inst.earthCore.StartDestroy ();
+				}
 	}
 	
 	void Update () 

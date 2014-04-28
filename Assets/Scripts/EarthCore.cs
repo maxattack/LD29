@@ -12,7 +12,7 @@ public class EarthCore : CustomBehaviour {
 	}
 
 
-
+	internal bool dying = false;
 
 	// Update is called once per frame
 	void Update () {
@@ -21,28 +21,33 @@ public class EarthCore : CustomBehaviour {
 		GetComponent<SpriteRenderer>().color = GetComponent<SpriteRenderer>().color.EaseTowards( new Color(1,1,1,0),Time.deltaTime * 8);
 
 
+
+
+	}
+
+	internal void StartDestroy()
+	{
+		CameraFX.inst.Flash(RGBA(Color.white, 1.0f));
+		CameraFX.inst.Shake(5);
+		
+		
+		GetComponent<SpriteRenderer>().sprite = sadFace;
+		GetComponent<SpriteRenderer>().color = new Color(1,1,1,1);
+		
+		
+		dying = true;
+
+		
+		StartCoroutine(DeathSequence());
 	}
 
 	public Sprite sadFace;
 
-	IEnumerator OnCollisionEnter(Collision collision) 
+	void OnCollisionEnter(Collision collision) 
 	{
 		if (collision.collider.IsProjectile()) {
-			var p = collision.transform.position;
-			WorldGen.inst.DigRocket(Mathf.FloorToInt(p.x), Mathf.FloorToInt(p.y));
-		
-			CameraFX.inst.Flash(RGBA(Color.white, 1.0f));
-			CameraFX.inst.Shake(5);
 
-
-			GetComponent<SpriteRenderer>().sprite = sadFace;
-			GetComponent<SpriteRenderer>().color = new Color(1,1,1,1);
-
-
-
-			yield return new WaitForSeconds(0.5f);
-
-			StartCoroutine(DeathSequence());
+			StartDestroy ();
 		}
 
 	}

@@ -89,10 +89,22 @@ public class CameraFX : CustomBehaviour {
 			                                       lookAheadAmount  * smoothedSpeed.y,
 			                                       0);
 
+			//if we reached the center of the earth
 			if(Hero.inst.xform.position.y < -WorldGen.inst.height)
 			{
-				GetComponent<Camera>().orthographicSize = 12;
-				targetPosition = (WorldGen.inst.earthCore.xform.position + Hero.inst.xform.position) * 0.5f;
+				//look at the right place to show the world as it dies
+				float orthoSize = 12;
+				if(WorldGen.inst.earthCore.dying)
+				{
+					orthoSize = 14;
+					targetPosition = (WorldGen.inst.earthCore.xform.position);
+				}
+				else
+				{
+
+					targetPosition = (WorldGen.inst.earthCore.xform.position + Hero.inst.xform.position) * 0.5f;
+				}
+				GetComponent<Camera>().orthographicSize = GetComponent<Camera>().orthographicSize.EaseTowards(orthoSize,0.2f);
 			}
 
 
