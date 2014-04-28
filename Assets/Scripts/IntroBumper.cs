@@ -17,7 +17,7 @@ public class IntroBumper : CustomBehaviour {
 		
 		// HIDE THE PLAYER AND APPEAR FX
 		Hero.inst.input.Halt();
-		CameraFX.inst.Halt();
+		KillBar.inst.Halt();
 		Hero.inst.gameObject.SetActive(false);
 		var baseScale = appearFx.localScale;
 		appearFx.localScale = Vec(baseScale.x, 0, baseScale.z);
@@ -94,7 +94,7 @@ public class IntroBumper : CustomBehaviour {
 				
 		// BEGIN INTERACTION
 		Hero.inst.input.Unhalt();
-		CameraFX.inst.Unhalt();
+		KillBar.inst.Unhalt();
 		
 		Destroy(gameObject);
 	

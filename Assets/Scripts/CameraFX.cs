@@ -5,7 +5,7 @@ using System.Collections;
 public class CameraFX : CustomBehaviour {
 	
 	public float lookAheadAmount = 1f;
-	public float killSpeed = 1f;
+
 	public float bottomOffsetLimit = 0f;
 	public float shakeIntensity = 0.1f;
 	
@@ -16,9 +16,9 @@ public class CameraFX : CustomBehaviour {
 	internal Color baseColor;
 	internal float cameraColorEasing = 0.2f;
 	
-	float smoothedSpeed = 0f;
+	Vector3 smoothedSpeed = Vector3.zero;
 	Vector3 shake = Vec(0,0,0);
-	int haltingSemaphore = 0;
+
 	
 	Vector3 p0; // restposition
 	
@@ -79,26 +79,40 @@ public class CameraFX : CustomBehaviour {
 		if (Hero.inst) {
 
 			// TRACK HERO WITH A LITTLE LOOK-AHEAD
-			smoothedSpeed = smoothedSpeed.EaseTowards(Hero.inst.body.velocity.x, 0.1f);
-			var hp = Hero.inst.xform.position;
-			var targetPosition = hp.x + lookAheadAmount * smoothedSpeed;
+			Vector3 dir = new Vector3( Hero.inst.currDir.x,Hero.inst.currDir.y,0);
+			smoothedSpeed = smoothedSpeed.EaseTowards(dir, 0.1f);
+
+			var pos = Hero.inst.xform.position;
+
+
+			var targetPosition = pos + new Vector3(lookAheadAmount * 0.5f * smoothedSpeed.x,
+			                                       lookAheadAmount  * smoothedSpeed.y,
+			                                       0);
+
+			if(Hero.inst.xform.position.y < -WorldGen.inst.height)
+			{
+				GetComponent<Camera>().orthographicSize = 12;
+				targetPosition = (WorldGen.inst.earthCore.xform.position + Hero.inst.xform.position) * 0.5f;
+			}
+
+
 			p0.x = Mathf.Clamp(
-				p0.x.EaseTowards(targetPosition, 0.2f), 
+				p0.x.EaseTowards(targetPosition.x, 0.2f), 
 				LimitLeft, 
 				LimitRight
 			);
-			if (!Halted) {
-				p0.y -= Time.deltaTime * killSpeed;
-			}
+			p0.y = Mathf.Clamp( p0.y.EaseTowards(targetPosition.y,0.2f),-10000,KillBar.inst.xform.position.y - HalfHeight);
+
 			
 			// CAMERA TRACKS PLAYER BELOW SCREEN
-			var bottomThreshold = p0.y - HalfHeight + bottomOffsetLimit;
-			var diff = bottomThreshold - hp.y;
-			if (diff > 0f) {
-				p0.y -= diff;
-			}
-			
+			//var bottomThreshold = p0.y - HalfHeight + bottomOffsetLimit;
+			//var diff = bottomThreshold - pos.y;
+			//if (diff > 0f) {
+		//		p0.y -= diff;
+		//	}			
 		}
+
+
 		
 		// CAMERA SHAKE
 		if (shake.sqrMagnitude > 0.0001f) {
@@ -112,19 +126,7 @@ public class CameraFX : CustomBehaviour {
 		cam.backgroundColor = cam.backgroundColor.EaseTowards(baseColor, cameraColorEasing);
 	}
 
-	//--------------------------------------------------------------------------------
-	// Y-MOVE HALTING
-	//--------------------------------------------------------------------------------
-	
-	public bool Halted { get { return haltingSemaphore > 0; } }
-	
-	public void Halt() {
-		++haltingSemaphore;
-	}
-	
-	public void Unhalt() {
-		if (haltingSemaphore > 0) { --haltingSemaphore; }
-	}
+
 	
 	//--------------------------------------------------------------------------------
 	// COLOR FLASHES

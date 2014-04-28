@@ -4,7 +4,9 @@ using System.Collections;
 
 public  class WorldGen : CustomBehaviour {
 
-	public EarthCore earthCore;
+	public EarthCore earthCorePrefab;
+
+	internal EarthCore earthCore;
 
 
 	public Tile grassTile;
@@ -21,7 +23,7 @@ public  class WorldGen : CustomBehaviour {
 
 	internal static WorldGen inst;
 
-	public int height = 100;
+	public int height = 40;
 	public int width = 40;
 	internal Tile [,] tiles;
 	
@@ -130,8 +132,8 @@ public  class WorldGen : CustomBehaviour {
 
 		//Add the earth's core
 
-		var inst = Dup (earthCore);
-		inst.transform.position = new Vector3 (width / 2, -height - 25, 0);
+		earthCore = Dup (earthCorePrefab);
+		earthCore.transform.position = new Vector3 (width / 2, -height - 25, 0);
     }
 	System.Random rand = new System.Random ();
 

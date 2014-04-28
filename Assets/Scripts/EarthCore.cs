@@ -3,17 +3,17 @@ using System.Collections;
 
 public class EarthCore : CustomBehaviour {
 
-	public EarthCore earthCore;
+
 	public PooledObject explosionPrefab;
-	Transform xform;
+	internal Transform xform;
 	// Use this for initialization
 	void Start () {
 		xform = transform;
 	}
 
 
-	bool dying = false;
-	float explosionTimer = 0;
+
+
 	// Update is called once per frame
 	void Update () {
 
@@ -38,7 +38,7 @@ public class EarthCore : CustomBehaviour {
 			GetComponent<SpriteRenderer>().sprite = sadFace;
 			GetComponent<SpriteRenderer>().color = new Color(1,1,1,1);
 
-			dying = true;
+
 
 			yield return new WaitForSeconds(0.5f);
 
