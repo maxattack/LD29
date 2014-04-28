@@ -56,7 +56,6 @@ public class LazerBlast : PooledObject {
 					if (dino) { dino.Kill(); }
 					break;
 				case Layers.Tile:
-				Debug.Log ("testing tile");
 					var tile = hit.transform.GetComponent<Tile>();
 					WorldGen.inst.Dig(tile.tileX, tile.tileY - WorldGen.inst.height, 10);
 					break;
