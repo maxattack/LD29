@@ -20,7 +20,7 @@ TextureImporter:
   grayScaleToAlpha: 0
   generateCubemap: 0
   seamlessCubemap: 0
-  textureFormat: -1
+  textureFormat: -3
   maxTextureSize: 1024
   textureSettings:
     filterMode: 0
@@ -253,8 +253,8 @@ TextureImporter:
         serializedVersion: 2
         x: 18
         y: 17
-        width: 9
-        height: 10
+        width: 11
+        height: 11
       alignment: 0
       pivot: {x: .5, y: .5}
     - name: stoneDebris
