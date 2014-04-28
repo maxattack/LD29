@@ -80,7 +80,7 @@ public class IntroBumper : CustomBehaviour {
 		yield return new WaitForSeconds(0.1f);
 		
 		// TRANSITION IN "TAIL"
-		appearFx.position = appearFx.TransformPoint(Vec(0, 1, 0));
+		appearFx.localPosition = appearFx.TransformPoint(Vec(0, 1, 0));
 		appearFx.rotation = appearFx.rotation * QRadians(Mathf.PI);
 		
 		
