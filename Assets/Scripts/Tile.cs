@@ -9,12 +9,10 @@ public class Tile : PooledObject {
 	internal int tileX, tileY;
 	public int health = 1;
 	
-	void Awake() {
+	protected virtual void Awake() {
 		// Make sure we're tagged correctly
 		Assert(this.IsTile());
 		spr = GetComponent<SpriteRenderer>();
-
-
 	}
 
 	float whiteTimer = 0;
@@ -28,15 +26,14 @@ public class Tile : PooledObject {
 
 	}
 
-	void Update()
+	protected virtual void Update()
 	{
 		whiteTimer -= Time.deltaTime;
 		if (whiteTimer < 0) {
 			spr.color = spr.color.EaseTowards(baseColor,0.5f);
-				}
-
-
+		}
 	}
+	
 	Color baseColor;
 	public override void Init() {
 		WorldToCoord(transform.position.xy(), out tileX, out tileY);

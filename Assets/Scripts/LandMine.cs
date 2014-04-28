@@ -98,6 +98,7 @@ public class LandMine : PooledObject {
 	bool tripped = false;
 	public override void Init()
 	{
+		gameObject.layer = Layers.Hazard;
 			timeout = 0;
 			tripped = false;
 		GetComponent<SpriteRenderer> ().color = new Color(1,1,1,0);
