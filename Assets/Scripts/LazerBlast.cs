@@ -24,13 +24,6 @@ public class LazerBlast : PooledObject {
 		return result; 
 	}
 
-	void OnDrawGizmos()
-	{
-		Vector3 dir = Vec (1, 0, 0);
-		Gizmos.DrawWireSphere (Vec(xform.position.xy () ,0)- 2f * dir, 1.0f);
-		Gizmos.DrawRay (new Ray (Vec(xform.position.xy (),0) - 2f * dir, Vec (1, 0, 0)));
-	}
-	
 	public void Shoot(Vector2 dir) {
 		
 		// RESET FROM LAST TIME
