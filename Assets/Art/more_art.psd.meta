@@ -50,5 +50,41 @@ TextureImporter:
         height: 12
       alignment: 9
       pivot: {x: .237930998, y: .275000244}
+    - name: rayBegin
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 222
+        width: 7
+        height: 16
+      alignment: 4
+      pivot: {x: 0, y: .5}
+    - name: ray
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 222
+        width: 16
+        height: 16
+      alignment: 4
+      pivot: {x: 0, y: .5}
+    - name: zap1
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 219
+        width: 12
+        height: 22
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: zap2
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 219
+        width: 8
+        height: 22
+      alignment: 0
+      pivot: {x: .5, y: .5}
   spritePackingTag: 
   userData: 
