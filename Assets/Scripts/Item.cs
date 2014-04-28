@@ -54,6 +54,7 @@ public abstract class Item : CustomBehaviour {
 			
 			// CREATE NEW INSTANCE
 			result = Dup(this, pos);
+			Assert(result.IsItem());
 			result.xform = result.transform;
 			result.fx = result.xform.GetChild(0);
 			result.prefab = this;

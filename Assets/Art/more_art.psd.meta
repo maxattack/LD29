@@ -49,7 +49,7 @@ TextureImporter:
         width: 29
         height: 12
       alignment: 9
-      pivot: {x: .237930998, y: .275000244}
+      pivot: {x: .359655112, y: .275000244}
     - name: rayBegin
       rect:
         serializedVersion: 2

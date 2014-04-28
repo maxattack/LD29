@@ -43,7 +43,11 @@ public class CustomBehaviour : MonoBehaviour {
 	}
 	
 	public static Quaternion QRadians(float radians) {
-		return Quaternion.AngleAxis(radians, Vector3.forward);
+		return Quaternion.AngleAxis(radians * Mathf.Rad2Deg, Vector3.forward);
+	}
+	
+	public static Quaternion QDir(Vector2 dir) {
+		return Quaternion.AngleAxis(dir.Degrees(), Vector3.forward);
 	}
 	
 	// Runtime assertions which only run in the editor
