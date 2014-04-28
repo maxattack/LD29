@@ -19,7 +19,11 @@ public class Shovel : Item {
 				}
 
 		Jukebox.Play(didDig ? "Dig" : "Derp");
-		if (didDig) { CameraFX.inst.Shake(0.5f); }
+		if (didDig) 
+		{ 
+			CameraFX.inst.Shake(0.5f); 
+			Hero.inst.Kickback(-dir * 3);
+		}
 
 
 	}

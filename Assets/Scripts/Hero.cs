@@ -189,12 +189,10 @@ public class Hero : CustomBehaviour {
 		}
 	}
 	
-	public void Kickback() {
-		if (fx.direction == HeroFX.Direction.Left) {
-			body.AddForce(Vec(kickback,0,0), ForceMode.VelocityChange);
-		} else {
-			body.AddForce(Vec(-kickback,0,0), ForceMode.VelocityChange);
-		}
+	public void Kickback(Vector2 force) {
+
+		body.AddForce(Vec(force.x,force.y,0), ForceMode.VelocityChange);
+
 	}
 	
 	//--------------------------------------------------------------------------------

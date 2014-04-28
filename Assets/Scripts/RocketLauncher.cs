@@ -17,12 +17,15 @@ public class RocketLauncher : Item {
 		// SPAWN ROCKET W/ KINDA RANDOMIZED HEADING
 		rocket.Alloc(
 			muzzle.position,  
-			Cmul( UnitVec(Random.Range(-0.1f * Mathf.PI, 0.1f * Mathf.PI) ), dir)
+			Cmul( UnitVec(Random.Range(-0.025f * Mathf.PI, 0.025f * Mathf.PI) ), dir)
 		);
 		
 		// SIDE-EFFECTS
 		Jukebox.Play("ShootBazooka");
-		Hero.inst.Kickback();
+		dir *= -1;
+		if (dir.y == 0) //hack to combat friction
+				dir.y = 0.01f;
+		Hero.inst.Kickback(dir * 20);
 	}
 
 	public override void OnPickUp() {

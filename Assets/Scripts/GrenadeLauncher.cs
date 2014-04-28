@@ -30,6 +30,6 @@ public class GrenadeLauncher : Item {
 		
 		// SIDE-EFFECTS
 		Jukebox.Play("ShootGrenade");
-		Hero.inst.Kickback();
+		Hero.inst.Kickback(-dir * 5);
 	}
 }

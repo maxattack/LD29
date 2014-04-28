@@ -267,7 +267,7 @@ public  class WorldGen : CustomBehaviour {
 
 	internal bool DigRocket(int x,int y)
 	{
-		int dmg = 3;
+		int dmg = 6;
 		var result = Dig (x, y,dmg);
 
 		result |= Dig (x - 1, y - 1,dmg);
