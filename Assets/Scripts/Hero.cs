@@ -128,7 +128,7 @@ public class Hero : CustomBehaviour {
 	}
 	
 	void PollGrounded() {
-		var groundMask = Layers.TileMask | Layers.DefaultMask;
+		var groundMask = Layers.TileMask | Layers.DefaultMask | Layers.EnemyMask | Layers.HazardMask;
 		grounded = status != Status.Dead && Physics.CheckSphere(body.position, 0.1f, groundMask);
 		canDoubleJump |= grounded;
 	}
