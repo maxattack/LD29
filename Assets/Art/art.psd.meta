@@ -302,5 +302,14 @@ TextureImporter:
         height: 5
       alignment: 0
       pivot: {x: .5, y: .5}
+    - name: warning
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 109
+        width: 139
+        height: 13
+      alignment: 0
+      pivot: {x: .5, y: .5}
   spritePackingTag: 
   userData: 
