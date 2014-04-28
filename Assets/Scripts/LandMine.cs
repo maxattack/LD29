@@ -114,6 +114,10 @@ public class LandMine : PooledObject {
 						tripped = true;
 						
 				}
+				if (collision.collider.IsEnemy ()) {
+					tripped = true;
+					
+				}
 				if (collision.collider.IsProjectile ()) {
 				
 						tripped = true;

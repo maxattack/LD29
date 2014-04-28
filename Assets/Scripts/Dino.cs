@@ -69,12 +69,17 @@ public class Dino : PooledObject {
 	{
 		dead = true;
 		this.GetComponent<SpriteRenderer> ().sprite = die;
+		this.GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
+		this.gameObject.layer = Layers.Debris;
+
 	}
 
 	// Update is called once per frame
 	void Update () {
 		if (!dead)
 		{
+
+
 			if(targetRunningSpeed != 0)
 			{
 				frameTimer += Time.deltaTime;
@@ -100,8 +105,12 @@ public class Dino : PooledObject {
 			
 			
 		}
+		else
+		{
 
+			this.GetComponent<SpriteRenderer>().color = this.GetComponent<SpriteRenderer> ().color.EaseTowards( new Color(0,0,0,0.5f),0.2f);
 
+		}
 	}
 
 

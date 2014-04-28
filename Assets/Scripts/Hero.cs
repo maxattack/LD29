@@ -159,8 +159,10 @@ public class Hero : CustomBehaviour {
 	//--------------------------------------------------------------------------------
 	
 	void OnCollisionEnter(Collision collision) {
-		
-		switch(collision.collider.gameObject.layer) {
+
+		GameObject go = collision.collider.gameObject;
+
+		switch(go.layer) {
 			case Layers.Item:
 				var item = collision.collider.GetComponent<Item>();
 				if (item.goodToCapture) 
@@ -173,10 +175,20 @@ public class Hero : CustomBehaviour {
 					Kill();
 			} break;
 		case Layers.Enemy:
-			if(collision.collider.gameObject.GetComponent<Dino>() != null)
+			if(go.GetComponent<Dino>() != null)
 			{
-				if(collision.collider.gameObject.GetComponent<Dino>().IsDead == false)
-					RagdollKill(collision.transform.position);
+				if(go.GetComponent<Dino>().IsDead == false)
+				{
+					if(xform.position.y > go.transform.position.y)
+					{
+						go.GetComponent<Dino>().Kill();
+						Kickback(new Vector3(0,10,0));
+					}
+					else
+					{
+						RagdollKill(collision.transform.position);
+					}
+				}
 			}
 				break;
 		}
