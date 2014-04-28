@@ -3,7 +3,12 @@ using System.Collections;
 
 public class KillScreen : CustomBehaviour {
 	
+	public TextMesh label;
 	bool acceptsInput = false;
+	
+	void Awake() {
+		label.text = string.Format("YOU MADE IT {0} METERS!", Mathf.FloorToInt(Hero.inst.depth));
+	}	
 	
 	IEnumerator Start() {
 		var xform = transform;

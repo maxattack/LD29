@@ -94,18 +94,11 @@ public abstract class Item : CustomBehaviour {
 		}
 		
 		if (prefab != null) {
-			
-			// DEACTIVATE AND PREPEND TO PREFAB'S FREELIST
 			gameObject.SetActive(false);
 			next = prefab.next;
 			prefab.next = this;
-
-			
 		} else if (gameObject) {
-			
-			// THIS OBJECT WAS NOT DYNAMICALLY CREATED
 			Destroy(gameObject);
-			
 		}
 		
 	}
@@ -114,8 +107,10 @@ public abstract class Item : CustomBehaviour {
 		StopAllCoroutines();
 		
 		var body = this.rigidbody;
-		body.velocity = Vector3.zero;
-		body.isKinematic = true;
+		if (!body.isKinematic) {
+			body.velocity = Vector3.zero;
+			body.isKinematic = true;
+		}
 		body.detectCollisions = false;
 	}
 	
