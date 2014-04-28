@@ -329,5 +329,14 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: .5, y: .5}
+    - name: commanderAdmiral
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 135
+        width: 161
+        height: 49
+      alignment: 0
+      pivot: {x: .5, y: .5}
   spritePackingTag: 
   userData: 

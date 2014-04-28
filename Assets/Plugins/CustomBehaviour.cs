@@ -65,6 +65,20 @@ public class CustomBehaviour : MonoBehaviour {
 	public static float EaseOut2(float u) { return 1f-(u=1f-u)*u; }
 	public static float EaseOut4(float u) { return 1f-(u=1f-u)*u*u*u; }
 	
+	
+	public static float EaseInOutBack(float t) {
+		var v = t + t;
+		var s = 1.70158f * 1.525f;
+		if (v < 1.0f) {
+			return 0.5f * (v * v * ((s + 1.0f) * v - s));
+		} else {
+			v -= 2.0f;
+			return 0.5f * (v * v * ((s + 1.0f) * v + s) + 2.0f);
+		}
+	}
+	
+	public static float EaseOutBack(float t) { t-=1.0f; return t*t*((1.70158f+1.0f)*t + 1.70158f) + 1.0f; }
+	
 	public static float Expovariate(float avgDuration, float uMin, float uMax) { 
 		return -avgDuration * Mathf.Log(1.0f - UnityEngine.Random.Range(uMin, uMax)); 
 	}
