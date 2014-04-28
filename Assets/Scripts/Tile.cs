@@ -7,17 +7,39 @@ public class Tile : PooledObject {
 	
 	internal SpriteRenderer spr;
 	internal int tileX, tileY;
+	public int health = 1;
 	
 	void Awake() {
 		// Make sure we're tagged correctly
 		Assert(this.IsTile());
 		spr = GetComponent<SpriteRenderer>();
 	}
-	
+
+	float whiteTimer = 0;
+	internal void TakeDamage(int dmg)
+	{
+		health -= dmg;
+		spr.color = new Color (1, 1, 1, 1);
+		whiteTimer = 0.1f;
+
+		baseColor.a = 0.5f;
+
+	}
+
+	void Update()
+	{
+		whiteTimer -= Time.deltaTime;
+		if (whiteTimer < 0) {
+			spr.color = spr.color.EaseTowards(baseColor,0.5f);
+				}
+
+
+	}
+	Color baseColor;
 	public override void Init() {
 		WorldToCoord(transform.position.xy(), out tileX, out tileY);
 		
-		spr.color = (tileX + tileY) % 2 == 0 ? RGB(0.9f, 0.9f, 0.9f) : Color.white;
+		baseColor = (tileX + tileY) % 2 == 0 ? RGBA(0.0f, 0.0f, 0.0f,0.1f) : new Color(0,0,0,0);
 	}
 	
 	public override void Deinit() {

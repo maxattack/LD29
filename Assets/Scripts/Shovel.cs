@@ -9,15 +9,19 @@ public class Shovel : Item {
 		var basePos = Hero.inst.xform.position;
 		var didDig = WorldGen.inst.DigShovel((int)(basePos.x + dir.x + 0.5f),(int)(basePos.y + dir.y + 0.5f));
 		
-		Jukebox.Play(didDig ? "Dig" : "Derp");
-		if (didDig) { CameraFX.inst.Shake(0.5f); }
-		
+
 		fx.localPosition = 0.8f * dir;
 
 		float d = Vector3.Distance (WorldGen.inst.earthCore.xform.position, Hero.inst.xform.position);
 		if (d < 15) {
 						WorldGen.inst.earthCore.StartDestroy ();
+			didDig = true;
 				}
+
+		Jukebox.Play(didDig ? "Dig" : "Derp");
+		if (didDig) { CameraFX.inst.Shake(0.5f); }
+
+
 	}
 	
 	void Update () 

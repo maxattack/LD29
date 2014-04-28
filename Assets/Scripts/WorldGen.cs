@@ -182,7 +182,7 @@ public  class WorldGen : CustomBehaviour {
 		return tiles[x,y] != null;
 	}
 
-	internal bool Dig(int x,int y)
+	internal bool Dig(int x,int y,int dmg)
 	{
 		
 		y += height;
@@ -190,23 +190,28 @@ public  class WorldGen : CustomBehaviour {
 		{
 			if(IsTileAt(x,y))
 			{
-				Vector3 pos = tiles [x, y].transform.position;
-				int range = 30;
-				if(y < (float)height * 0.2f)
-					range = 5;
-				if(y < (float)height * 0.4f)
-					range = 7;
-				if(y < (float)height * 0.6f)
-					range = 10;
-				if(y < (float)height * 0.8f)
-					range = 20;
+				tiles[x,y].TakeDamage(dmg);
+				if(tiles[x,y].health <= 0)
+				{
+					SpawnDebrisAt(x,y - height);
 
-				int r = rand.Next() % range;
-				if(r == 0)
-					landMine.Alloc(pos + new Vector3 (0,0,0));
+					Vector3 pos = tiles [x, y].transform.position;
+					int range = 30;
+					if(y < (float)height * 0.2f)
+						range = 5;
+					if(y < (float)height * 0.4f)
+						range = 7;
+					if(y < (float)height * 0.6f)
+						range = 10;
+					if(y < (float)height * 0.8f)
+						range = 20;
+					
+					int r = rand.Next() % range;
+					if(r == 0)
+						landMine.Alloc(pos + new Vector3 (0,0,0));
 
-				SpawnDebrisAt(x,y - height);
-				tiles[x,y].Release();
+					tiles[x,y].Release();
+				}
 				return true;
 			}
 
@@ -218,27 +223,29 @@ public  class WorldGen : CustomBehaviour {
 
 	internal bool DigShovel(int x,int y)
 	{
-		var result = Dig (x, y);
-		result |= Dig (x - 1, y);
-		result |= Dig (x + 1, y);
-		result |= Dig (x, y - 1);
+		int dmg = 1;
+		var result = Dig (x, y,dmg);
+		result |= Dig (x - 1, y,dmg);
+		result |= Dig (x + 1, y,dmg);
+		result |= Dig (x, y - 1,dmg);
 		return result;
 
 	}
 
 	internal bool DigRocket(int x,int y)
 	{
-		var result = Dig (x, y);
+		int dmg = 3;
+		var result = Dig (x, y,dmg);
 
-		result |= Dig (x - 1, y - 1);
-		result |= Dig (x + 1, y + 1);
-		result |= Dig (x + 1, y - 1);
-		result |= Dig (x - 1, y + 1);
+		result |= Dig (x - 1, y - 1,dmg);
+		result |= Dig (x + 1, y + 1,dmg);
+		result |= Dig (x + 1, y - 1,dmg);
+		result |= Dig (x - 1, y + 1,dmg);
 
-		result |= Dig (x - 1, y);
-		result |= Dig (x + 1, y);
-		result |= Dig (x, y - 1);
-		result |= Dig (x, y + 1);
+		result |= Dig (x - 1, y,dmg);
+		result |= Dig (x + 1, y,dmg);
+		result |= Dig (x, y - 1,dmg);
+		result |= Dig (x, y + 1,dmg);
 
 
 		return result;
@@ -246,18 +253,22 @@ public  class WorldGen : CustomBehaviour {
 
 	internal bool DigGrenade(int x,int y)
 	{
-		var result = DigShovel (x, y);
+		int dmg = 3;
+		var result = Dig (x, y,dmg);
+		result |= Dig (x - 1, y,dmg);
+		result |= Dig (x + 1, y,dmg);
+		result |= Dig (x, y - 1,dmg);
 
-		result |= Dig (x - 2, y);
-		result |= Dig (x + 2, y);
-		result |= Dig (x, y - 2);
-		result |= Dig (x, y + 2);
+		result |= Dig (x - 2, y,dmg);
+		result |= Dig (x + 2, y,dmg);
+		result |= Dig (x, y - 2,dmg);
+		result |= Dig (x, y + 2,dmg);
 
 
-		result |= Dig (x - 1, y - 1);
-		result |= Dig (x + 1, y + 1);
-		result |= Dig (x + 1, y - 1);
-		result |= Dig (x - 1, y + 1);
+		result |= Dig (x - 1, y - 1,dmg);
+		result |= Dig (x + 1, y + 1,dmg);
+		result |= Dig (x + 1, y - 1,dmg);
+		result |= Dig (x - 1, y + 1,dmg);
 		
 		return result;
 		

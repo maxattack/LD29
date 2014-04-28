@@ -82,7 +82,7 @@ public class LandMine : PooledObject {
 								inst.transform.localScale = new Vector3 (size,size,size );
 
 
-								WorldGen.inst.Dig((int)(blastPos.x + 0.5f),(int)(blastPos.y ));
+								WorldGen.inst.Dig((int)(blastPos.x + 0.5f),(int)(blastPos.y ),3);
 							}
 						
 
