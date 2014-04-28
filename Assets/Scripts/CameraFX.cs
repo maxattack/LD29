@@ -113,6 +113,7 @@ public class CameraFX : CustomBehaviour {
 				LimitLeft, 
 				LimitRight
 			);
+
 			p0.y = Mathf.Clamp( p0.y.EaseTowards(targetPosition.y,0.2f),-10000,KillBar.inst.xform.position.y - HalfHeight);
 
 			

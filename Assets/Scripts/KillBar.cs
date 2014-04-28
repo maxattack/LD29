@@ -10,7 +10,7 @@ public class KillBar : MonoBehaviour {
 	internal Transform xform;
 	void Awake()
 	{
-				inst = this;
+		inst = this;
 		xform = transform;
 		}
 
@@ -27,8 +27,34 @@ public class KillBar : MonoBehaviour {
 				p0.y -= Time.deltaTime * killSpeed;
 			}
 
+
 		xform.position = p0;
+
+		Vector3 p = CameraFX.inst.xform.position;
+
+		SpriteRenderer warning = GetComponentInChildren<SpriteRenderer> ();
+
+		
+		if (p.y + CameraFX.inst.HalfHeight + 1.5f > xform.position.y) {
+						warning.transform.localScale = warning.transform.localScale.EaseTowards (new Vector3 (1, 1, 1), 0.2f);
+						flashTimer += Time.deltaTime;
+						if (flashTimer > 1) {
+								Jukebox.Play ("warning");
+
+								warning.color = new Color (1, 1, 1, 1);
+								flashTimer = 0;
+						}
+
+		
+				} else {
+						warning.transform.localScale = new Vector3 (1, 0, 1);
+				}
+		warning.color = warning.color.EaseTowards (new Color (1, 1, 1, 0), 0.2f);
+		
+		warning.transform.position = new Vector3(p.x, p.y + CameraFX.inst.HalfHeight * 0.9f,0);
 	}
+
+	float flashTimer = 0;
 
 	//--------------------------------------------------------------------------------
 	// Y-MOVE HALTING
