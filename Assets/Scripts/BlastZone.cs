@@ -5,35 +5,49 @@ using System.Collections;
 [RequireComponent(typeof(Collider))]
 public class BlastZone : CustomBehaviour {
 
+	float killTimer = 0.1f;
+	void Update()
+	{
+		killTimer -= Time.deltaTime;
 
 
-	void OnTriggerEnter(Collider c) {
-		if (c.IsHero()) {
-			Hero.inst.RagdollKill(transform.position.xy());
 		}
 
-		if (c.GetComponent<LandMine> () != null) {
+	void OnEnable()
+	{
+		killTimer = 0.1f;
+		}
 
-			c.GetComponent<LandMine>().Trip ();
+	void OnTriggerEnter(Collider c) 
+	{
+		if (killTimer > 0) {
 
-				}
+						if (c.IsHero ()) {
+								Hero.inst.RagdollKill (transform.position.xy ());
+						}
 
-		if (c.GetComponent<Grenade> () != null) {
+						if (c.GetComponent<LandMine> () != null) {
 
-			Vector3 toGrenade = c.gameObject.transform.position - transform.position;
-			toGrenade.Normalize();
+								c.GetComponent<LandMine> ().Trip ();
 
-			toGrenade.y += 0.1f;
+						}
 
-			c.GetComponent<Grenade>().rigidbody.AddForce(toGrenade * 30,ForceMode.VelocityChange);
+						if (c.GetComponent<Grenade> () != null) {
+
+								Vector3 toGrenade = c.gameObject.transform.position - transform.position;
+								toGrenade.Normalize ();
+
+								toGrenade.y += 0.1f;
+
+								c.GetComponent<Grenade> ().rigidbody.AddForce (toGrenade * 30, ForceMode.VelocityChange);
 			
-		}
-		if (c.GetComponent<Dino>() != null)
-		{
+						}
+						if (c.GetComponent<Dino> () != null) {
 
-			c.GetComponent<Dino>().Kill();
+								c.GetComponent<Dino> ().Kill ();
 
-		}
+						}
+				}
 	
 	}
 

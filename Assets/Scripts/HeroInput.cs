@@ -50,19 +50,19 @@ public class HeroInput : CustomBehaviour {
 	
 	public bool PressedJump { 
 		get { 
-			return !Halting && (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) || InputManager.ActiveDevice.Action1.WasPressed); 
+			return !Halting && (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.RightShift) || InputManager.ActiveDevice.Action1.WasPressed); 
 		}
 	}
 	
 	public bool PressedItem { 
 		get { 
-			return !Halting && (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.Return) || InputManager.ActiveDevice.Action3.WasPressed); 
+			return !Halting && (Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.Return) || InputManager.ActiveDevice.Action3.WasPressed); 
 		}
 	}
 	
 	public bool PressedDrop { 
 		get { 
-			return !Halting && (Input.GetKeyDown (KeyCode.X) || InputManager.ActiveDevice.Action2.WasPressed); 
+			return !Halting && (Input.GetKeyDown (KeyCode.C) || InputManager.ActiveDevice.Action2.WasPressed); 
 		}
 	}
 	

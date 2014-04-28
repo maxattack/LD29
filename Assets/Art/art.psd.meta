@@ -311,5 +311,23 @@ TextureImporter:
         height: 13
       alignment: 0
       pivot: {x: .5, y: .5}
+    - name: backgroundtile
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: tileselector
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: .5, y: .5}
   spritePackingTag: 
   userData: 

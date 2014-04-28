@@ -54,7 +54,7 @@ public  class WorldGen : CustomBehaviour {
     {
 
 		//items [1].Alloc (new Vector2 (5, 10));
-		items [3].Alloc (new Vector2 (5, 10));
+		items [1].Alloc (new Vector2 (5, 10));
 
 
 		//generate grid
@@ -324,7 +324,7 @@ public  class WorldGen : CustomBehaviour {
 
 	internal bool DigGrenade(int x,int y)
 	{
-		int dmg = 3;
+		int dmg = 6;
 		var result = Dig (x, y,dmg);
 		result |= Dig (x - 1, y,dmg);
 		result |= Dig (x + 1, y,dmg);
@@ -340,7 +340,24 @@ public  class WorldGen : CustomBehaviour {
 		result |= Dig (x + 1, y + 1,dmg);
 		result |= Dig (x + 1, y - 1,dmg);
 		result |= Dig (x - 1, y + 1,dmg);
+
+
+
+		result |= Dig (x - 1, y - 2,dmg);
+		result |= Dig (x - 1, y + 2,dmg);
+
+		result |= Dig (x + 1, y + 2,dmg);
+		result |= Dig (x + 1, y - 2,dmg);
+
+
+		result |= Dig (x - 2, y - 1,dmg);
+		result |= Dig (x + 2, y - 1,dmg);
 		
+		result |= Dig (x - 2, y + 1,dmg);
+		result |= Dig (x + 2, y + 1,dmg);
+
+
+
 		return result;
 		
 	}

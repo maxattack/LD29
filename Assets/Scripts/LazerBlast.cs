@@ -24,12 +24,7 @@ public class LazerBlast : PooledObject {
 		return result; 
 	}
 
-	void OnDrawGizmos()
-	{
-		Vector3 dir = Vec (1, 0, 0);
-		Gizmos.DrawWireSphere (Vec(xform.position.xy () ,0)- 2f * dir, 1.0f);
-		Gizmos.DrawRay (new Ray (Vec(xform.position.xy (),0) - 2f * dir, Vec (1, 0, 0)));
-	}
+
 	
 	public void Shoot(Vector2 dir) {
 		
@@ -65,19 +60,7 @@ public class LazerBlast : PooledObject {
 					var tile = hit.transform.GetComponent<Tile>();
 					WorldGen.inst.Dig(tile.tileX, tile.tileY - WorldGen.inst.height, 10);
 					break;
-			case Layers.Hazard:
-				Debug.Log ("testing");
-				break;
-		//			if( hit.transform.gameObject.GetComponent<LandMine>() != null)
-		//			{ 
-		//				hit.transform.gameObject.GetComponent<LandMine>().Release();
-		//			}
-		//			break;
-			//case Layers.PassiveHazard:
-		//		if( hit.transform.gameObject.GetComponent<LandMine>() != null)
-		//		{	hit.transform.gameObject.GetComponent<LandMine>().Release();}
-		//		break;
-
+	
 
 
 			}

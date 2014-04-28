@@ -43,6 +43,7 @@ public class Rocket : CustomBehaviour {
 		particles.Clear();		
 		body.velocity =  initDir * (Hero.inst.body.velocity.magnitude + speed);
 		body.rotation = Quaternion.FromToRotation (new Vector3 (1, 0, 0), initDir);
+	
 	}
 	
 	
@@ -78,17 +79,21 @@ public class Rocket : CustomBehaviour {
 
 	}
 
-	void OnCollisionEnter(Collision collision) {
-		//if (collision.collider.IsTile()) {
-			var p = collision.transform.position;
-			WorldGen.inst.DigRocket(Mathf.FloorToInt(p.x), Mathf.FloorToInt(p.y));
-			
-		//}
-		CameraFX.inst.Shake();
-		CameraFX.inst.Flash(RGBA(Color.white, 0.5f));
-		PooledObject inst = explosionPrefab.Alloc(xform.position) as PooledObject;
-		inst.transform.localScale = new Vector3 (1.5f, 1.5f, 1);
-		Release();
-		
+
+
+	void OnCollisionStay(Collision collision) {
+
+
+
+						
+						var p = collision.transform.position;
+						WorldGen.inst.DigRocket (Mathf.FloorToInt (p.x), Mathf.FloorToInt (p.y));
+						
+						CameraFX.inst.Shake ();
+						CameraFX.inst.Flash (RGBA (Color.white, 0.5f));
+						PooledObject inst = explosionPrefab.Alloc (xform.position) as PooledObject;
+						inst.transform.localScale = new Vector3 (1.5f, 1.5f, 1);
+						Release ();
+				
 	}
 }

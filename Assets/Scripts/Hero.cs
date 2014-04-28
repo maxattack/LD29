@@ -137,7 +137,9 @@ public class Hero : CustomBehaviour {
 		if (status == Status.Dead) { return; }
 		
 		PollGrounded();
-		
+
+
+
 		// RUNNING
 		var vel = body.velocity;
 		var easing = 0.2f;
@@ -184,7 +186,7 @@ public class Hero : CustomBehaviour {
 			{
 				if(go.GetComponent<Dino>().IsDead == false)
 				{
-					if(xform.position.y > go.transform.position.y)
+					if(collision.contacts[0].normal.y > 0)
 					{
 						go.GetComponent<Dino>().Kill();
 						Kickback(new Vector3(0,10,0));
@@ -212,7 +214,8 @@ public class Hero : CustomBehaviour {
 
 		if (currItem == shovel) 
 		{
-			shovel.gameObject.SetActive (false);
+			(shovel as Shovel).PutAway();
+
 			currItem = null;
 			PickUp(item);
 		}
@@ -234,8 +237,8 @@ public class Hero : CustomBehaviour {
 
 		if (item == shovel) 
 		{
-			shovel.gameObject.SetActive (true);
-			shovel.GetComponent<Shovel>().spr.color = new Color(1,1,1,1);
+		
+			(shovel as Shovel).TakeOut();
 		}
 		
 		Jukebox.Play("Pickup");
@@ -259,8 +262,7 @@ public class Hero : CustomBehaviour {
 
 			if(currItem == shovel)
 			{
-				shovel.gameObject.SetActive(false);
-				shovel.GetComponent<Shovel>().spr.color = new Color(1,1,1,0);
+				(shovel as Shovel).PutAway();
 			}
 			else
 			{
