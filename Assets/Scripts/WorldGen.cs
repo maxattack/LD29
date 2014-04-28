@@ -157,7 +157,7 @@ public  class WorldGen : CustomBehaviour {
 
 		// set up some worms
 		for(int x=0; x<width; ++x) 
-		for(int y=0; y<height-10; ++y) {
+		for(int y=0; y<height-60; ++y) {
 			TryPlaceWorm(x,y);
 		}
 		
