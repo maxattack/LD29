@@ -73,7 +73,6 @@ public class Shovel : Item {
 	{
 		gameObject.SetActive (false);
 		selector.SetActive (false);
-		Debug.Break ();
 	}
 
 	internal void TakeOut()
