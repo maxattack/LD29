@@ -164,6 +164,8 @@ public class Hero : CustomBehaviour {
 	//--------------------------------------------------------------------------------
 	
 	public void PickUp(Item item) {
+		if (item == currItem) { return; }
+	
 		DropItem();
 		
 		
@@ -257,7 +259,6 @@ public class Hero : CustomBehaviour {
 		while(Time.deltaTime > 0.0001f) {
 			yield return null;
 			u += metersPerSecond * Time.deltaTime;
-			print(u);
 			xform.position = p0 + Vec(u, -u * u, 0f);
 			xform.rotation = QDegrees(20f * u);
 		}

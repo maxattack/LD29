@@ -13,6 +13,8 @@ public class LazerCannon : Item {
 	
 	public override void Operate (Vector2 dir) {
 		blastPrefab.AllocBlast(muzzle.position, dir);
+		
+		Hero.inst.Kickback(-8f * dir);
 	}
 	
 	public override void Init () {

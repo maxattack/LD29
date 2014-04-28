@@ -20,21 +20,29 @@ public class LazerBlast : PooledObject {
 
 	public LazerBlast AllocBlast(Vector3 position, Vector2 dir) {
 		var result = Alloc(position) as LazerBlast;
-		result.xform.rotation = QDir(dir);
+		result.Shoot(dir);
 		return result; 
 	}
 	
-	public override void Init () {
+	public void Shoot(Vector2 dir) {
+		
+		// RESET FROM LAST TIME
 		rayStartRoot.localScale = Vec(1,1,1);
 		rayRoot.localScale = Vec(0,1,1);
 		SetAlpha(1);
-		StartCoroutine(ShowEffects());
-		CameraFX.inst.Flash(Color.white);
-		
-		// RESTORE ZAP POSITIONS
 		for(int i=0; i<zaps.Length; ++i) {
 			zaps[i].localPosition = zapStarts[i];
 		}
+		
+		// ROTATE BEAM
+		xform.rotation = QDir(dir);
+		
+		// START ANIMATIONS
+		Jukebox.Play("LazerBlast");
+		StartCoroutine(ShowEffects());
+		CameraFX.inst.Flash(Color.white, 0.1f);
+		
+		// ACTUALLY SHOOT
 		
 	}
 	
@@ -46,15 +54,15 @@ public class LazerBlast : PooledObject {
 	
 	IEnumerator ShowEffects() {
 		
-		// shoot
+		// SHOOT
 		var diag = Vec(CameraFX.inst.Width, CameraFX.inst.Height).magnitude;
 		foreach(var u in Interpolate(0.2f)) {
 			rayRoot.localScale = Vec(Mathf.Lerp(0f, diag, u), 1f, 1f);
 			yield return null;
 		}
 		
-		// fade out
-		foreach(var u in Interpolate (0.25f)) {
+		// FADE OUT
+		foreach(var u in Interpolate (0.1f)) {
 			rayStartRoot.localScale = Vec(1f, 1f-u, 1f);
 			rayRoot.localScale = Vec(diag, 1f-u, 1f);
 			SetAlpha(1f-EaseOut2(u));
@@ -69,9 +77,11 @@ public class LazerBlast : PooledObject {
 	}
 	
 	void Update() {
+		// UPDATE ZAPS
 		for(int i=0; i<zaps.Length; ++i) {
-			var speed = 24f * (1f + 0.8f * i);
+			var speed = 30f * (1f + 0.8f * i);
 			zaps[i].localPosition = zaps[i].localPosition + Vec(speed * Time.deltaTime, 0, 0);
+			zaps[i].localScale = Vec(-zaps[i].localScale.x, 1, 1);
 		}
 	}
 	

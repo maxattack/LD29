@@ -76,7 +76,8 @@ public abstract class Item : CustomBehaviour {
 			Hero.inst.currItem = null;
 			fx.parent = xform;
 			fx.Reset();
-			this.collider.enabled = true;
+			//this.collider.enabled = true;
+			this.rigidbody.detectCollisions = true;
 			this.rigidbody.isKinematic = false;
 		}
 		
@@ -99,10 +100,12 @@ public abstract class Item : CustomBehaviour {
 	
 	public void StopPhysics() {
 		StopAllCoroutines();
-		this.collider.enabled = false;
+		//this.collider.enabled = false;
+		
 		var body = this.rigidbody;
 		body.velocity = Vector3.zero;
 		body.isKinematic = true;
+		body.detectCollisions = false;
 	}
 	
 	public void StartPhysics(Vector2 initialVelocity, bool deferCollider = false) {
@@ -118,7 +121,8 @@ public abstract class Item : CustomBehaviour {
 			goodToCapture = false;
 			StartCoroutine(DoWaitToResetCapture());
 		}
-		this.collider.enabled = true;
+		//this.collider.enabled = true;
+		body.detectCollisions = true;
 		body.isKinematic = false;
 		body.AddForce(initialVelocity, ForceMode.VelocityChange);
 	}
