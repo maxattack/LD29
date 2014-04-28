@@ -10,7 +10,7 @@ public class Hero : CustomBehaviour {
 	public float jumpImpulse = 1f;
 	public float doubleJumpImpulse = 1f;
 	public float kickback = 10f;
-	float maxSpeed = 32f;
+	public float maxSpeed = 24f;
 	
 	public GameObject killScreenPrefab;
 	
@@ -31,6 +31,8 @@ public class Hero : CustomBehaviour {
 	float targetRunningSpeed = 0f;
 	internal Vector2 currDir;
 	bool canDoubleJump;
+	float initialDepth = 0f;
+	internal float depth = 0f;
 	
 	//--------------------------------------------------------------------------------
 	// EVENT CALLBACKS
@@ -61,11 +63,14 @@ public class Hero : CustomBehaviour {
 
 		shovel = WorldGen.inst.items[0].Alloc (xform.position);
 		PickUp (shovel);
-
 		PollGrounded();
+		initialDepth = xform.position.y;
 	}
 	
 	void Update() {
+		if (status != Status.Dead) {
+			depth = Mathf.Max (depth, initialDepth-xform.position.y);
+		}
 		TickJump();
 		TickCurrentItem();
 	}
