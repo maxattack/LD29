@@ -17,7 +17,7 @@ public class RocketLauncher : Item {
 		// SPAWN ROCKET W/ KINDA RANDOMIZED HEADING
 		rocket.Alloc(
 			muzzle.position,  
-			Cmul( UnitVec(Random.Range(-0.025f * Mathf.PI, 0.025f * Mathf.PI) ), dir)
+			Cmul( UnitVec(Random.Range(-0.025f * Mathf.PI, 0.125f * Mathf.PI) ), dir)
 		);
 		
 		// SIDE-EFFECTS

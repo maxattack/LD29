@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Grenade : PooledObject {
@@ -23,10 +23,11 @@ public class Grenade : PooledObject {
 	void FixedUpdate()
 	{
 		float len = body.velocity.magnitude;
-		if (len > 50) {
-						Vector3 dir = body.velocity / len;
-						body.velocity = dir * 50;
-				}
+		if (len > 20.0f) 
+		{
+			Vector3 dir = body.velocity / len;
+			body.velocity = dir * 20;
+		}
 
 	}
 

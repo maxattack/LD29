@@ -79,11 +79,11 @@ public class Rocket : CustomBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision) {
-		if (collision.collider.IsTile()) {
+		//if (collision.collider.IsTile()) {
 			var p = collision.transform.position;
 			WorldGen.inst.DigRocket(Mathf.FloorToInt(p.x), Mathf.FloorToInt(p.y));
 			
-		}
+		//}
 		CameraFX.inst.Shake();
 		CameraFX.inst.Flash(RGBA(Color.white, 0.5f));
 		PooledObject inst = explosionPrefab.Alloc(xform.position) as PooledObject;

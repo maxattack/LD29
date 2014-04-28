@@ -28,7 +28,12 @@ public class BlastZone : CustomBehaviour {
 			c.GetComponent<Grenade>().rigidbody.AddForce(toGrenade * 30,ForceMode.VelocityChange);
 			
 		}
+		if (c.GetComponent<Dino>() != null)
+		{
 
+			c.GetComponent<Dino>().Kill();
+
+		}
 	
 	}
 

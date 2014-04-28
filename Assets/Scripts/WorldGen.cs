@@ -7,7 +7,7 @@ public  class WorldGen : CustomBehaviour {
 	public EarthCore earthCorePrefab;
 
 	internal EarthCore earthCore;
-
+	public Dino dinoPrefab;
 
 	public Tile grassTile;
 	public Tile dirtTile;
@@ -145,6 +145,26 @@ public  class WorldGen : CustomBehaviour {
 
 			}
 
+		}
+
+
+
+		//place dinosaurs in the caverns
+		for (int y = 0; y < height - 5; y++) 
+		{
+				for (int x = 1; x < width - 1; x++) 
+				{
+						//put in stone tiles, there are a few patterns to use
+						int r = rand.Next () % 20;
+						if (r == 0) 
+						{
+							if(tiles[x,y] == false)
+							{
+								dinoPrefab.Alloc( Tile.CoordToWorld(x,y) );
+							}
+
+						}
+				}
 		}
 
 

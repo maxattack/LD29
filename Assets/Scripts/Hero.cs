@@ -145,7 +145,13 @@ public class Hero : CustomBehaviour {
 			case Layers.Camera:
 				if (grounded) {
 					Kill();
-				}
+			} break;
+		case Layers.Enemy:
+			if(collision.collider.gameObject.GetComponent<Dino>() != null)
+			{
+				if(collision.collider.gameObject.GetComponent<Dino>().IsDead == false)
+					RagdollKill(collision.transform.position);
+			}
 				break;
 		}
 		

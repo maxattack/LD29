@@ -275,5 +275,32 @@ TextureImporter:
         height: 16
       alignment: 0
       pivot: {x: .5, y: .5}
+    - name: dino0_stand
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 40
+        width: 31
+        height: 14
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: dino0_run
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 40
+        width: 31
+        height: 14
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: dino0_die
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 40
+        width: 23
+        height: 5
+      alignment: 0
+      pivot: {x: .5, y: .5}
   spritePackingTag: 
   userData: 
