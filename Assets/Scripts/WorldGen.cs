@@ -52,11 +52,11 @@ public  class WorldGen : CustomBehaviour {
 
 	void Start()
     {
-        
+		items [1].Alloc (new Vector2 (5, 10));
+		items [2].Alloc (new Vector2 (10, 10));
+
 		//generate grid
-		items[0].Alloc (new Vector2 (10, 10));
-		items[3].Alloc (new Vector2 (5, 10));
-		items[2].Alloc (new Vector2 (1, 10));
+
 
 		tiles = new Tile[width, height];
 
@@ -149,21 +149,37 @@ public  class WorldGen : CustomBehaviour {
 
 
 
-		//place dinosaurs in the caverns
+		//place stuff in the caverns
 		for (int y = 0; y < height - 5; y++) 
 		{
 				for (int x = 1; x < width - 1; x++) 
 				{
-						//put in stone tiles, there are a few patterns to use
-						int r = rand.Next () % 20;
-						if (r == 0) 
+					if(tiles[x,y] == false)
+					{
+						//dinosaurs
+					    if( y < height - 30)
 						{
-							if(tiles[x,y] == false)
+							int r = rand.Next () % 30;
+							if (r == 0) 
 							{
-								dinoPrefab.Alloc( Tile.CoordToWorld(x,y) );
-							}
+								
+								{
+									dinoPrefab.Alloc( Tile.CoordToWorld(x,y) );
+								}
 
+							}
 						}
+						{
+							//weapons
+							int r = rand.Next()% 50;
+							if(r == 0)
+							{
+								int w = 1 + rand.Next () % (items.Length-1);
+								items[w].Alloc (Tile.CoordToWorld(x,y));
+							
+							}
+						}
+					}
 				}
 		}
 

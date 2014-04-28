@@ -56,7 +56,12 @@ public class Hero : CustomBehaviour {
 		Time.timeScale = 1f;		
 	}
 
+	Item shovel;
 	void Start() {
+
+		shovel = WorldGen.inst.items[0].Alloc (xform.position);
+		PickUp (shovel);
+
 		PollGrounded();
 	}
 	
@@ -104,7 +109,16 @@ public class Hero : CustomBehaviour {
 		}
 		
 		if (input.PressedItem) {
-			if(currItem) { currItem.Operate(currDir); }
+			if(currItem) 
+			{ 
+				currItem.Use(currDir); 
+				if(currItem.ammo <= 0)
+				{
+					DropItem();
+					PickUp(shovel);
+
+				}
+			}
 		}	
 	}
 	
@@ -149,7 +163,10 @@ public class Hero : CustomBehaviour {
 		switch(collision.collider.gameObject.layer) {
 			case Layers.Item:
 				var item = collision.collider.GetComponent<Item>();
-				if (item.goodToCapture) { PickUp(item);	}
+				if (item.goodToCapture) 
+				{ 
+					PickUp(item);	
+				}
 				break;
 			case Layers.Camera:
 				if (grounded) {
@@ -171,12 +188,38 @@ public class Hero : CustomBehaviour {
 	//--------------------------------------------------------------------------------
 	// INTERACTING WITH ITEMS
 	//--------------------------------------------------------------------------------
+
+	public void SwapItem(Item item)
+	{
+		if (item == currItem) { return; }
+
+		if (currItem == shovel) 
+		{
+			shovel.gameObject.SetActive (false);
+			currItem = null;
+			PickUp(item);
+		}
+		else
+		{
+			DropItem();
+			PickUp (shovel);
+
+			
+		}
+
+			
+	}
 	
 	public void PickUp(Item item) {
 		if (item == currItem) { return; }
 	
 		DropItem();
-		
+
+		if (item == shovel) 
+		{
+			shovel.gameObject.SetActive (true);
+			shovel.GetComponent<Shovel>().spr.color = new Color(1,1,1,1);
+		}
 		
 		Jukebox.Play("Pickup");
 		
@@ -196,11 +239,24 @@ public class Hero : CustomBehaviour {
 	
 	public void DropItem() {
 		if (currItem != null) {
-			
-			currItem.StartPhysics(fx.direction == HeroFX.Direction.Right ?Vec(-8,16) : Vec(8,16), true);
-			currItem.rigidbody.angularVelocity = Vec(0, 0, 360f);
-			currItem.OnDrop();
+
+			if(currItem == shovel)
+			{
+				shovel.gameObject.SetActive(false);
+				shovel.GetComponent<Shovel>().spr.color = new Color(1,1,1,0);
+			}
+			else
+			{
+
+				currItem.StartPhysics(fx.direction == HeroFX.Direction.Right ?Vec(-8,16) : Vec(8,16), true);
+				currItem.rigidbody.angularVelocity = Vec(0, 0, 360f);
+				currItem.OnDrop();
+			}
 			currItem = null;
+
+
+			
+
 			Jukebox.Play("DropWeapon");
 			
 		}

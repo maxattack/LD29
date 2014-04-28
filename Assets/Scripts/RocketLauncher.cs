@@ -26,6 +26,7 @@ public class RocketLauncher : Item {
 		if (dir.y == 0) //hack to combat friction
 				dir.y = 0.01f;
 		Hero.inst.Kickback(dir * 20);
+
 	}
 
 	public override void OnPickUp() {

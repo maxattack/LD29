@@ -7,13 +7,26 @@ public abstract class Item : CustomBehaviour {
 	internal Transform xform;
 	internal Vector2 dir;
 	internal bool goodToCapture;
-	
+
+
+
 	//--------------------------------------------------------------------------------
 	// GENERIC ITEM INTERFACE
 	//--------------------------------------------------------------------------------
+
+	public int ammo = 5;
+
+	public virtual void Init() {  }
+
+	public void Use(Vector2 dir)
+	{
+		if (ammo > 0)
+				Operate (dir);
+		ammo--;
 	
-	public virtual void Init() {}
-	public abstract void Operate(Vector2 dir);
+	}
+	public abstract void Operate (Vector2 dir);
+
 	public virtual void OnPickUp() {}
 	public virtual void OnDrop() {}
 	
@@ -126,7 +139,10 @@ public abstract class Item : CustomBehaviour {
 	
 	IEnumerator DoWaitToResetCapture() {
 		yield return new WaitForSeconds(0.5f);
-		goodToCapture = true;
+		if (ammo <= 0)
+						Release ();
+		else
+			goodToCapture = true;
 	}
 	
 }

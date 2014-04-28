@@ -66,7 +66,7 @@ public class Grenade : PooledObject {
 			CameraFX.inst.Shake();
 			CameraFX.inst.Flash(RGBA(Color.white, 0.5f));
 			PooledObject inst = explosionPrefab.Alloc(xform.position) as PooledObject;
-			inst.transform.localScale = new Vector3(3,3,1);
+			inst.transform.localScale = new Vector3(2.5f,2.5f,1);
 			Release();
 
 				}

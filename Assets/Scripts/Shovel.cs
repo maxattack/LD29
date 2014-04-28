@@ -3,6 +3,13 @@ using System.Collections;
 
 public class Shovel : Item {
 
+	internal SpriteRenderer spr;
+
+	void Awake()
+	{
+		spr = GetComponentInChildren<SpriteRenderer> ();
+	}
+
 	public override void Operate(Vector2 dir) {
 		
 	
@@ -30,6 +37,7 @@ public class Shovel : Item {
 	
 	void Update () 
 	{
+		ammo = 100;
 		if (this == Hero.inst.currItem) {
 			fx.localPosition = fx.localPosition.EaseTowards (Vector3.zero, 0.25f); 
 		}
