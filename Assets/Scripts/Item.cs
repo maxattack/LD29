@@ -54,6 +54,7 @@ public abstract class Item : CustomBehaviour {
 			
 			// CREATE NEW INSTANCE
 			result = Dup(this, pos);
+			Assert(result.IsItem());
 			result.xform = result.transform;
 			result.fx = result.xform.GetChild(0);
 			result.prefab = this;
@@ -75,7 +76,7 @@ public abstract class Item : CustomBehaviour {
 			Hero.inst.currItem = null;
 			fx.parent = xform;
 			fx.Reset();
-			this.collider.enabled = true;
+			this.rigidbody.detectCollisions = true;
 			this.rigidbody.isKinematic = false;
 		}
 		
@@ -98,10 +99,11 @@ public abstract class Item : CustomBehaviour {
 	
 	public void StopPhysics() {
 		StopAllCoroutines();
-		this.collider.enabled = false;
+		
 		var body = this.rigidbody;
 		body.velocity = Vector3.zero;
 		body.isKinematic = true;
+		body.detectCollisions = false;
 	}
 	
 	public void StartPhysics(Vector2 initialVelocity, bool deferCollider = false) {
@@ -112,12 +114,12 @@ public abstract class Item : CustomBehaviour {
 			// Not sure why we need this - sprite randomly shrinks sometimes :P
 			fx.localScale = Vector3.one;
 		}
-		var body = this.rigidbody;
 		if (deferCollider) {
 			goodToCapture = false;
 			StartCoroutine(DoWaitToResetCapture());
 		}
-		this.collider.enabled = true;
+		var body = this.rigidbody;
+		body.detectCollisions = true;
 		body.isKinematic = false;
 		body.AddForce(initialVelocity, ForceMode.VelocityChange);
 	}

@@ -10,6 +10,7 @@ public class Hero : CustomBehaviour {
 	public float jumpImpulse = 1f;
 	public float doubleJumpImpulse = 1f;
 	public float kickback = 10f;
+	float maxSpeed = 32f;
 	
 	public GameObject killScreenPrefab;
 	
@@ -108,11 +109,14 @@ public class Hero : CustomBehaviour {
 	}
 	
 	void PollGrounded() {
-		grounded = status != Status.Dead && Physics.CheckSphere(body.position, 0.1f, Layers.DefaultMask);
+		var groundMask = Layers.TileMask | Layers.DefaultMask;
+		grounded = status != Status.Dead && Physics.CheckSphere(body.position, 0.1f, groundMask);
 		canDoubleJump |= grounded;
 	}
 	
 	void FixedUpdate() {
+		if (status == Status.Dead) { return; }
+		
 		PollGrounded();
 		
 		// RUNNING
@@ -129,6 +133,11 @@ public class Hero : CustomBehaviour {
 		}
 		
 		body.AddForce(Vec(targetRunningSpeed - vel.x, 0, 0), ForceMode.VelocityChange);
+		
+		vel = body.velocity;
+		if (vel.sqrMagnitude > maxSpeed * maxSpeed) {
+			body.velocity = body.velocity.normalized * maxSpeed;
+		}
 	}
 
 	//-------------------------------------------------------------------------------
@@ -164,6 +173,8 @@ public class Hero : CustomBehaviour {
 	//--------------------------------------------------------------------------------
 	
 	public void PickUp(Item item) {
+		if (item == currItem) { return; }
+	
 		DropItem();
 		
 		
@@ -257,7 +268,6 @@ public class Hero : CustomBehaviour {
 		while(Time.deltaTime > 0.0001f) {
 			yield return null;
 			u += metersPerSecond * Time.deltaTime;
-			print(u);
 			xform.position = p0 + Vec(u, -u * u, 0f);
 			xform.rotation = QDegrees(20f * u);
 		}
