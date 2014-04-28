@@ -24,6 +24,8 @@ public class LazerBlast : PooledObject {
 		return result; 
 	}
 
+
+	
 	public void Shoot(Vector2 dir) {
 		
 		// RESET FROM LAST TIME
@@ -44,25 +46,23 @@ public class LazerBlast : PooledObject {
 		
 		// ACTUALLY SHOOT
 		var diag = Vec(CameraFX.inst.Width, CameraFX.inst.Height).magnitude;
-		var shootMask = Layers.TileMask | Layers.EnemyMask | Layers.HazardMask | Layers.PassiveHazardMask;
+		var shootMask = Layers.TileMask | Layers.EnemyMask | Layers.Hazard | Layers.PassiveHazard;
 		var hits = Physics.SphereCastAll(xform.position.xy ()-2f*dir, 1.0f, Vec(dir,0), diag, shootMask);
 		foreach(var hit in hits) {
 			switch(hit.transform.gameObject.layer) {
-			case Layers.Enemy:
-				// TODO: GENERALIZE TO ANY ENEMY?
-				var dino = hit.transform.GetComponent<Dino>();
-				if (dino) { dino.Kill(); }
-				break;
-			case Layers.Tile:
-				var tile = hit.transform.GetComponent<Tile>();
-				WorldGen.inst.Dig(tile.tileX, tile.tileY - WorldGen.inst.height, 10);
-				break;
-			case Layers.Hazard:
-				goto case Layers.PassiveHazard;
-			case Layers.PassiveHazard:
-				var mine = hit.transform.gameObject.GetComponent<LandMine>();
-				if( mine != null) {	mine.Release(); }
-				break;
+				case Layers.Enemy:
+					// TODO: GENERALIZE TO ANY ENEMY?
+					var dino = hit.transform.GetComponent<Dino>();
+					if (dino) { dino.Kill(); }
+					break;
+				case Layers.Tile:
+				Debug.Log ("testing tile");
+					var tile = hit.transform.GetComponent<Tile>();
+					WorldGen.inst.Dig(tile.tileX, tile.tileY - WorldGen.inst.height, 10);
+					break;
+	
+
+
 			}
 			
 		}
