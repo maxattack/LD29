@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-using System.Collections;
 
 public  class WorldGen : CustomBehaviour {
 
@@ -12,6 +13,7 @@ public  class WorldGen : CustomBehaviour {
 	public Tile grassTile;
 	public Tile dirtTile;
 	public Tile stoneTile;
+	public Tile wormTile;
 
 	public Debris debrisPrefab;
 	public LandMine landMine;
@@ -153,7 +155,12 @@ public  class WorldGen : CustomBehaviour {
 
 		}
 
-
+		// set up some worms
+		for(int x=0; x<width; ++x) 
+		for(int y=0; y<height-10; ++y) {
+			TryPlaceWorm(x,y);
+		}
+		
 
 		//place stuff in the caverns
 		for (int y = 0; y < height - 5; y++) 
@@ -206,8 +213,80 @@ public  class WorldGen : CustomBehaviour {
 				}
 		}
 	}
-
-
+	
+	bool IsDirt(int x, int y) {
+		return IsTileAt(x,y) && tiles[x,y].SourcePrefab == dirtTile;
+	}
+	
+	bool CanPlaceWormAt(int x, int y) {
+		// is a 4x4 grid of dirt tiles open?
+		for(int u=0; u<4; ++u)
+		for(int v=0; v<4; ++v) {
+			if (!IsDirt(x+u, y+v)) { return false; }
+		}
+		return true;
+	}
+	
+	void TryPlaceWorm(int x, int y) {
+		if (!CanPlaceWormAt(x,y)) {
+			return;
+		}
+		
+		// pick a random start corner
+		switch(Random.Range(0,4)) {
+			case 1: x+=3; break;
+			case 2: x+=3; y+=3; break;
+			case 3: y+=3; break;
+		}
+		
+		// alloc the head
+		var wormTiles = new List<WormTile>(5);
+		var curr = wormTile.AllocAtCoord(x,y) as WormTile;
+		curr.wPrev = null;
+		wormTiles.Add(curr);
+		tiles[x,y].Release();
+		tiles[x,y] = curr;
+		
+		// alloc the others			
+		var nhood = new List<Tile>();
+		while(wormTiles.Count < wormTiles.Capacity) {
+			// pick diry neighbor
+			nhood.Clear();
+			if (IsDirt(x+1,y)) { nhood.Add(tiles[x+1,y]); }
+			if (IsDirt(x,y+1)) { nhood.Add(tiles[x,y+1]); }
+			if (IsDirt(x-1,y)) { nhood.Add(tiles[x-1,y]); }
+			if (IsDirt(x,y-1)) { nhood.Add(tiles[x,y-1]); }
+			if (nhood.Count == 0) {	break; }
+			var tile = nhood[Random.Range(0,nhood.Count)];
+			
+			// append worm tile				
+			x = tile.tileX;
+			y = tile.tileY;
+			var next = wormTile.AllocAtCoord(x,y) as WormTile;
+			curr.wNext = next;
+			next.wPrev = curr;
+			wormTiles.Add(next);
+			curr = next;
+			tiles[x,y].Release();
+			tiles[x,y] = curr;
+		}
+		curr.wNext = null;
+		
+		// don't place small worms
+		if (wormTiles.Count < 3) {
+			foreach(var tile in wormTiles) {
+				tile.Release();
+			}
+			
+			return;
+		}
+		
+		foreach(var tile in wormTiles) {
+			tile.InitFX();
+		}
+			
+	}
+	
 	System.Random rand = new System.Random ();
 
 
@@ -225,7 +304,7 @@ public  class WorldGen : CustomBehaviour {
 		return false;
 	}
 
-	void SpawnDebrisAt(int x,int y)
+	internal void SpawnDebrisAt(int x,int y)
 	{
 		for(int sy = 0 ; sy < 2 ; sy++)
 		{
@@ -254,45 +333,17 @@ public  class WorldGen : CustomBehaviour {
 	}
 
 	internal bool IsTileAt(int x, int y) {
-		return tiles[x,y] != null;
+		return x >= 0 && y >= 0 && x < width && y < height && tiles[x,y] != null;
 	}
 
-	internal bool Dig(int x,int y,int dmg)
-	{
-		
+	internal bool Dig(int x,int y,int dmg) {
 		y += height;
-		if (y < height && y >= 0 && x < width && x >= 0) 
-		{
-			if(IsTileAt(x,y))
-			{
+		if (y < height && y >= 0 && x < width && x >= 0) {
+			if(IsTileAt(x,y)) {
 				tiles[x,y].TakeDamage(dmg);
-				if(tiles[x,y].health <= 0)
-				{
-					SpawnDebrisAt(x,y - height);
-
-					Vector3 pos = tiles [x, y].transform.position;
-					int range = 30;
-					if(y < (float)height * 0.2f)
-						range = 5;
-					if(y < (float)height * 0.4f)
-						range = 7;
-					if(y < (float)height * 0.6f)
-						range = 10;
-					if(y < (float)height * 0.8f)
-						range = 20;
-					
-					int r = rand.Next() % range;
-					if(r == 0)
-						landMine.Alloc(pos + new Vector3 (0,0,0));
-
-					tiles[x,y].Release();
-				}
 				return true;
 			}
-
 		}
-
-
 		return false;
 	}
 
