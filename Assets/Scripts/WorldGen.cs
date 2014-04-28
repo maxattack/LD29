@@ -11,6 +11,7 @@ public  class WorldGen : CustomBehaviour {
 
 	public Tile grassTile;
 	public Tile dirtTile;
+	public Tile stoneTile;
 
 	public Debris debrisPrefab;
 	public LandMine landMine;
@@ -68,20 +69,15 @@ public  class WorldGen : CustomBehaviour {
 	
 		for(int y = 0 ; y < height - 5; y++)
 		{
-			int r = rand.Next () % 2;
-			if(r == 0)
+			for(int x = 0 ; x < width ; x++)
 			{
-				//punch a hole
-				int size = rand.Next () % 3; //0 - 3 small -> big
-				int x = rand.Next () % width;
-
-				if(size >= 0)
+				int r = rand.Next () % 30;
+				if(r == 0)
 				{
 					if (IsTileAt(x,y)) {
 						tiles[x,y].Release();
 					}
 
-				
 					SafeDestroy(x,y+1);
 					SafeDestroy(x,y-1);
 					SafeDestroy(x+1,y);
@@ -96,34 +92,56 @@ public  class WorldGen : CustomBehaviour {
 
 					}
 
-				}
 
+				}
 
 			}
 
 		}
 
-		for (int y = 0; y < height - 1; y++) 
+		//set up stone tiles
+		for (int y = 0; y < height - 5; y++) 
 		{
 			for(int x = 1 ; x < width - 1 ; x++)
 			{
-
-
+				//put in stone tiles, there are a few patterns to use
+				int r = rand.Next () % 30;
+				if(r == 0)
 				{
-					//bool validPlacement = false;
-					//if(!tiles[x,y])
-					//	validPlacement = true;
 
-					//if(validPlacement)
-					//{
-					//	int r = rand.Next() % 10; //roll for land mine
-					//	if(r == 0)
-					//		landMine.Alloc(new Vector3 (x,y - height,0));
+					int p = rand.Next() % 5;
+					if(p > 0)
+					{
+						int stoneWidth = 3 + rand.Next () % 6;
+						for(int i = 0 ; i < stoneWidth ; i++)
+						{
+							if( rand.Next() % 100 < 80)
+								TryPlaceStone(x + i - 1,y +1);
+							if( rand.Next() % 100 < 80)
+								TryPlaceStone(x + i,y);
+							if( rand.Next() % 100 < 80)
+								TryPlaceStone(x + i - 1,y -1);
+							
+						}
+					}
+					else if(p == 0)
+					{
+						int stoneHeight = 2 + rand.Next () % 4;
+						for(int i = 0 ; i < stoneHeight ; i++)
+						{
+							if( rand.Next() % 100 < 80)
+								TryPlaceStone(x,y + i);
+							if( rand.Next() % 100 < 80)
+								TryPlaceStone(x - 1,y + i - 1);
+
+						}
+					}
 
 
-					//}
+
 
 				}
+
 
 			}
 
@@ -135,7 +153,22 @@ public  class WorldGen : CustomBehaviour {
 		earthCore = Dup (earthCorePrefab);
 		earthCore.transform.position = new Vector3 (width / 2, -height - 25, 0);
     }
+
+	void TryPlaceStone(int x,int y)
+	{
+		if (y < height && y >= 0 && x < width && x >= 0) 
+		{
+				if (IsTileAt (x, y)) {
+						tiles [x, y].Release ();
+						tiles [x, y] = stoneTile.AllocAtCoord (x, y); 
+				}
+		}
+	}
+
+
 	System.Random rand = new System.Random ();
+
+
 
 	bool SafeDestroy(int x,int y)
 	{

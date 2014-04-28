@@ -257,5 +257,23 @@ TextureImporter:
         height: 10
       alignment: 0
       pivot: {x: .5, y: .5}
+    - name: stoneDebris
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 8
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: stone
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: .5, y: .5}
   spritePackingTag: 
   userData: 
