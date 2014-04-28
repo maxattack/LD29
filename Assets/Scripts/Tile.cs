@@ -13,6 +13,8 @@ public class Tile : PooledObject {
 		// Make sure we're tagged correctly
 		Assert(this.IsTile());
 		spr = GetComponent<SpriteRenderer>();
+
+
 	}
 
 	float whiteTimer = 0;
