@@ -12,6 +12,10 @@ public class HeroFX : CustomBehaviour {
 	
 	public Sprite corpse;
 	
+	public TextMesh ammoLabel;
+	Vector3 ammoScale;
+	Transform ammoXform;
+	
 	internal HeroPose pose;
 	internal SpriteRenderer idleSprite;
 	internal Transform xform;
@@ -29,6 +33,9 @@ public class HeroFX : CustomBehaviour {
 		xform = transform;
 		idleSprite = xform.Find("idlePose").GetComponent<SpriteRenderer>();
 		pose = GetComponentInChildren<HeroPose>();
+		ammoLabel.text = "";
+		ammoXform = ammoLabel.transform;
+		ammoScale = ammoXform.localScale;
 	}
 		
 	void Start() {
@@ -50,6 +57,7 @@ public class HeroFX : CustomBehaviour {
 			xform.localScale = Vec(dir == Direction.Left ? -1 : 1, 1, 1);
 			pose.rightHand.localScale = Vec(dir == Direction.Left ? -1 : 1, 1, 1);
 			pose.leftHand.localScale = Vec(dir == Direction.Left ? -1 : 1, 1, 1);
+			ammoXform.localScale = Vec(dir == Direction.Left ? -ammoScale.x : ammoScale.x, ammoScale.y, ammoScale.z);
 		}
 	}
 	
@@ -87,11 +95,29 @@ public class HeroFX : CustomBehaviour {
 	// ANIMATION EFFECTS
 	//--------------------------------------------------------------------------------
 	
+	static string[] kAmmoLabels = {
+		"AMMO",
+		"AMMO |",
+		"AMMO | |",
+		"AMMO | | |",
+		"AMMO | | | |",
+		"AMMO | | | | |"		
+	};
+	
 	void Update() {
 	
 		if (!TerminalState) {
 			
 			// DO NORMAL ANIMATIONS
+			var ammo = 0;
+			if (Hero.inst.currItem != null) { ammo = Hero.inst.currItem.ammo; }
+			if (ammo == 0 || ammo >= kAmmoLabels.Length) {
+				ammoLabel.text = "";
+			} else {
+				ammoLabel.text = kAmmoLabels[ammo];
+			}
+			
+			
 			var oldStatus = status;
 			if (Hero.inst.grounded) {
 				var speed = Mathf.Abs (Hero.inst.body.velocity.x);
@@ -117,9 +143,12 @@ public class HeroFX : CustomBehaviour {
 				Jukebox.Play("Footfall");
 			}
 			
-		} else if (status == Status.Ragdoll) {
-			// DO RAGDOLL ANIMATIONS
-			pose.TickRagdoll();
+		} else {
+			ammoLabel.text = "";
+			if (status == Status.Ragdoll) {
+				// DO RAGDOLL ANIMATIONS
+				pose.TickRagdoll();
+			}
 		}
 	}
 	
