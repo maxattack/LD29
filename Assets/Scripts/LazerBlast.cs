@@ -43,7 +43,23 @@ public class LazerBlast : PooledObject {
 		CameraFX.inst.Flash(Color.white, 0.1f);
 		
 		// ACTUALLY SHOOT
-		
+		var diag = Vec(CameraFX.inst.Width, CameraFX.inst.Height).magnitude;
+		var shootMask = Layers.TileMask | Layers.EnemyMask;
+		var hits = Physics.SphereCastAll(xform.position.xy ()-2f*dir, 0.5f, Vec(dir,0), diag, shootMask);
+		foreach(var hit in hits) {
+			switch(hit.transform.gameObject.layer) {
+				case Layers.Enemy:
+					// TODO: GENERALIZE TO ANY ENEMY?
+					var dino = hit.transform.GetComponent<Dino>();
+					if (dino) { dino.Kill(); }
+					break;
+				case Layers.Tile:
+					var tile = hit.transform.GetComponent<Tile>();
+					WorldGen.inst.Dig(tile.tileX, tile.tileY - WorldGen.inst.height, 10);
+					break;
+			}
+			
+		}
 	}
 	
 	void SetAlpha(float u) {
