@@ -101,26 +101,28 @@ public class LandMine : PooledObject {
 			timeout = 0;
 			tripped = false;
 		GetComponent<SpriteRenderer> ().color = new Color(1,1,1,0);
+	
 
 	}
 
 	internal void Trip()
 	{
 		tripped = true;
+		gameObject.layer = Layers.PassiveHazard;
 	}
 	void OnCollisionEnter(Collision collision) 
 	{
 				if (collision.collider.IsHero ()) {
-						tripped = true;
+			Trip();
 						
 				}
 				if (collision.collider.IsEnemy ()) {
-					tripped = true;
+			Trip();
 					
 				}
 				if (collision.collider.IsProjectile ()) {
 				
-						tripped = true;
+			Trip();
 						timeout = 10000;
 				}
 		}

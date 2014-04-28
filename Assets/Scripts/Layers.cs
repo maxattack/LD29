@@ -11,6 +11,7 @@ public static class Layers {
 	public const int Hazard = 13;
 	public const int Enemy = 14;
 	public const int Tile = 15;
+	public const int PassiveHazard = 16;
 	
 	public const int DefaultMask = 1;
 	public const int DebrisMask = 1<<8;
@@ -21,6 +22,7 @@ public static class Layers {
 	public const int HazardMask = 1<<13;
 	public const int EnemyMask = 1<<14;
 	public const int TileMask = 1<<15;
+	public const int PassiveHazardMask = 1<<16;
 	
 	public static bool IsDefault(this GameObject go) { return go.layer == Default; }
 	public static bool IsDebris(this GameObject go) { return go.layer == Debris; }
@@ -31,6 +33,7 @@ public static class Layers {
 	public static bool IsHazard(this GameObject go) { return go.layer == Hazard; }
 	public static bool IsEnemy(this GameObject go) { return go.layer == Enemy; }
 	public static bool IsTile(this GameObject go) { return go.layer == Tile; }
+	public static bool IsPassiveHazard(this GameObject go) { return go.layer == PassiveHazard; }
 	
 	public static bool IsDefault(this Component c) { return c.gameObject.layer == Default; }	
 	public static bool IsDebris(this Component c) { return c.gameObject.layer == Debris; }
@@ -41,5 +44,6 @@ public static class Layers {
 	public static bool IsHazard(this Component c) { return c.gameObject.layer == Hazard; }
 	public static bool IsEnemy(this Component c) { return c.gameObject.layer == Enemy; }	
 	public static bool IsTile(this Component c) { return c.gameObject.layer == Tile; }
+	public static bool IsPassiveHazard(this Component c) { return c.gameObject.layer == PassiveHazard; }
 }
 

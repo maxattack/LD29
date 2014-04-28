@@ -52,8 +52,8 @@ public  class WorldGen : CustomBehaviour {
 
 	void Start()
     {
-		items [1].Alloc (new Vector2 (5, 10));
-		items [2].Alloc (new Vector2 (10, 10));
+		//items [1].Alloc (new Vector2 (5, 10));
+		items [3].Alloc (new Vector2 (5, 10));
 
 		//generate grid
 
