@@ -67,6 +67,10 @@ public class Dino : PooledObject {
 
 	internal void Kill()
 	{
+		if (!dead) {
+						Jukebox.Play ("dinodie");
+				}
+
 		dead = true;
 		this.GetComponent<SpriteRenderer> ().sprite = die;
 		this.GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 1);
