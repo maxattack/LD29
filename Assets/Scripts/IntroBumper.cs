@@ -10,6 +10,8 @@ public class IntroBumper : CustomBehaviour {
 	public TextMesh pressAny;
 	static bool firstTime = true;
 	
+	static bool isGirl = false;
+	
 	IEnumerator Start() {
 		
 		
@@ -74,6 +76,7 @@ public class IntroBumper : CustomBehaviour {
 					yield return null;
 				} while(girlChoice == null);
 				Jukebox.Play("Pickup");
+				isGirl = girlChoice.Value;
 				if (girlChoice.Value) {
 					Hero.inst.SetGirl(true);
 				}
@@ -96,6 +99,11 @@ public class IntroBumper : CustomBehaviour {
 			credits.gameObject.SetActive(false);
 			
 		} else {
+		
+			if (isGirl) {
+				Hero.inst.SetGirl(true);
+			}
+			
 			logo.gameObject.SetActive(false);
 			credits.gameObject.SetActive(false);
 		
