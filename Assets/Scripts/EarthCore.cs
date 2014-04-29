@@ -34,11 +34,10 @@ public class EarthCore : CustomBehaviour {
 		GetComponent<SpriteRenderer>().sprite = sadFace;
 		GetComponent<SpriteRenderer>().color = new Color(1,1,1,1);
 		
-		
-		dying = true;
-
-		
-		StartCoroutine(DeathSequence());
+		if (!dying) {
+			dying = true;		
+			StartCoroutine(DeathSequence());
+		}
 	}
 
 	public Sprite sadFace;
@@ -91,6 +90,7 @@ public class EarthCore : CustomBehaviour {
 
 
 		}
-
+		yield return new WaitForSeconds(0.5f);
+		Application.LoadLevel("outro");
 	}
 }

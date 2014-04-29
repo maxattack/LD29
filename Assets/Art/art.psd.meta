@@ -338,5 +338,59 @@ TextureImporter:
         height: 49
       alignment: 0
       pivot: {x: .5, y: .5}
+    - name: winBackground
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 126
+        width: 196
+        height: 114
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: earth1
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 59
+        width: 60
+        height: 60
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: earth2
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 54
+        width: 73
+        height: 67
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: youWin
+      rect:
+        serializedVersion: 2
+        x: 359
+        y: 61
+        width: 70
+        height: 11
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: boyPrez
+      rect:
+        serializedVersion: 2
+        x: 360
+        y: 87
+        width: 36
+        height: 33
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: ladyPrez
+      rect:
+        serializedVersion: 2
+        x: 396
+        y: 86
+        width: 36
+        height: 33
+      alignment: 0
+      pivot: {x: .5, y: .5}
   spritePackingTag: 
   userData: 
