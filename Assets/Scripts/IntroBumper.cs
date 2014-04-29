@@ -1,13 +1,18 @@
-﻿using UnityEngine;
+﻿using InControl;
+using UnityEngine;
 using System.Collections;
 
 public class IntroBumper : CustomBehaviour {
 	
 	public SpriteRenderer dialogSpr;
 	public SpriteRenderer[] textSprites;
+	public SpriteRenderer genderOp;
+	public TextMesh pressAny;
 	static bool firstTime = true;
 	
 	IEnumerator Start() {
+		
+		
 		
 		// CACHE REFERENCES
 		var xform = transform;
@@ -24,9 +29,8 @@ public class IntroBumper : CustomBehaviour {
 		var baseScale = appearFx.localScale;
 		appearFx.localScale = Vec(baseScale.x, 0, baseScale.z);
 		dialogSpr.enabled = false;
-		foreach(var spr in textSprites) {
-			spr.enabled = false;
-		}
+		foreach(var spr in textSprites) { spr.enabled = false; }
+		genderOp.enabled = false;
 		
 		if (firstTime) {
 			// SHOW LOGO
@@ -51,6 +55,32 @@ public class IntroBumper : CustomBehaviour {
 			
 			// WAIT FOR ANY KEY TO START
 			do { yield return null; } while(!GameInput.AnyPress);
+			
+			if (genderOp) {
+				pressAny.text = "GIRL OR BOY?";
+				genderOp.enabled = true;
+				genderOp.color = RGBA(1,1,1,0);
+				foreach(var u in Interpolate(0.25f)) {
+					genderOp.color = RGBA(1,1,1,EaseOut2(u));
+					yield return null;
+				}
+				bool? girlChoice = null;
+				do {
+					var pressedLeft = Input.GetKeyDown(KeyCode.LeftArrow) || InputManager.ActiveDevice.DPadLeft.WasPressed;
+					var pressedRight = Input.GetKeyDown(KeyCode.RightArrow) || InputManager.ActiveDevice.DPadRight.WasPressed;
+					if (pressedLeft || pressedRight) {
+						girlChoice = pressedLeft;
+					}
+					yield return null;
+				} while(girlChoice == null);
+				Jukebox.Play("Pickup");
+				if (girlChoice.Value) {
+					Hero.inst.SetGirl(true);
+				}
+				genderOp.enabled = false;
+			
+			}
+			
 			
 			// TRANSITION IN "FRONT" / OUT LOGO
 			var cp0 = credits.position;
