@@ -209,7 +209,7 @@ TextureImporter:
         x: 161
         y: 9
         width: 13
-        height: 15
+        height: 16
       alignment: 7
       pivot: {x: .5, y: 0}
     - name: heroRightArm
@@ -392,5 +392,32 @@ TextureImporter:
         height: 33
       alignment: 0
       pivot: {x: .5, y: .5}
+    - name: art_39
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 24
+        width: 21
+        height: 30
+      alignment: 0
+      pivot: {x: .5, y: .5}
+    - name: hero_girl_torso
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 11
+        width: 13
+        height: 16
+      alignment: 7
+      pivot: {x: .5, y: 0}
+    - name: girl_hero_idle
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 5
+        width: 22
+        height: 22
+      alignment: 7
+      pivot: {x: .5, y: 0}
   spritePackingTag: 
   userData: 
