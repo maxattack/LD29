@@ -3,6 +3,8 @@ using System.Collections;
 
 public class IntroBumper : CustomBehaviour {
 	
+	public SpriteRenderer dialogSpr;
+	public SpriteRenderer[] textSprites;
 	static bool firstTime = true;
 	
 	IEnumerator Start() {
@@ -21,6 +23,10 @@ public class IntroBumper : CustomBehaviour {
 		Hero.inst.gameObject.SetActive(false);
 		var baseScale = appearFx.localScale;
 		appearFx.localScale = Vec(baseScale.x, 0, baseScale.z);
+		dialogSpr.enabled = false;
+		foreach(var spr in textSprites) {
+			spr.enabled = false;
+		}
 		
 		if (firstTime) {
 			// SHOW LOGO
@@ -46,7 +52,6 @@ public class IntroBumper : CustomBehaviour {
 			// WAIT FOR ANY KEY TO START
 			do { yield return null; } while(!GameInput.AnyPress);
 			
-			firstTime = false;
 			// TRANSITION IN "FRONT" / OUT LOGO
 			var cp0 = credits.position;
 			var cp1 = credits.position.Below(0.5f * CameraFX.inst.HalfHeight);
@@ -57,6 +62,8 @@ public class IntroBumper : CustomBehaviour {
 				credits.position = Vector3.Lerp (cp0, cp1, EaseOut2(u));
 				yield return null;
 			}
+			logo.gameObject.SetActive(false);
+			credits.gameObject.SetActive(false);
 			
 		} else {
 			logo.gameObject.SetActive(false);
@@ -91,10 +98,52 @@ public class IntroBumper : CustomBehaviour {
 		}
 		Hero.inst.fx.Flash(Color.white, 0.25f);
 		
+		if (firstTime) {
+			
+			// DIALOG SCENE
+			Jukebox.Play("Warning");
+			var dRoot = dialogSpr.transform;
+			dRoot.parent = CameraFX.inst.xform;
+			var p = dRoot.localPosition;
+			p.x = 0;
+			dialogSpr.enabled = true;
+			foreach(var u in Interpolate(0.5f)) {
+				dialogSpr.color = RGBA(Color.white, 1f - EaseOut2(u));
+				dRoot.localPosition = Vector3.Lerp(p.Below(1f), p, EaseOutBack(u));
+				yield return null;
+			}
+			foreach(var spr in textSprites) {
+				spr.enabled = true;
+				Jukebox.Play("Beep1");
+				foreach(var u in Interpolate(0.25f)) {
+					spr.color = RGBA(1,1,1,u);
+					yield return null;
+				}
+				for(var t=0f; t<4f; t+=Time.deltaTime) {
+					if (GameInput.AnyPress) { break; }
+					yield return null;
+				}
+				foreach(var u in Interpolate(0.25f)) {
+					spr.color = RGBA(1,1,1,1f-u);
+					yield return null;					
+				}
+			}
+			Jukebox.Play("Derp");
+			foreach(var u in Interpolate(0.1f)) {
+				dRoot.localScale = Vec(1, 1-EaseOut2(u), 1);
+				//dRoot.localPosition = Vector3.Lerp(p.Below(1f), p, 1f-EaseOutBack(u));
+				yield return null;
+			}
+			
+			Destroy(dialogSpr.gameObject);
+		}
 				
 		// BEGIN INTERACTION
 		Hero.inst.input.Unhalt();
 		KillBar.inst.Unhalt();
+		
+		firstTime = false;
+		
 		
 		Destroy(gameObject);
 	

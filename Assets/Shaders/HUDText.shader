@@ -4,9 +4,10 @@
 	} 
 	
 	SubShader { 
-	   Tags { "Queue"="Transparent+64" "IgnoreProjector"="True" "RenderType"="Transparent" } 
+	   Tags { "Queue"="Overlay" "IgnoreProjector"="True" } 
 	   Lighting Off Cull Off ZWrite Off Fog { Mode Off }
 	   Blend SrcAlpha OneMinusSrcAlpha 
+	   
 	   Pass { 
 	   	BindChannels {
 	   		Bind "Vertex", vertex
