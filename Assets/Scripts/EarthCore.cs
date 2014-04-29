@@ -35,7 +35,8 @@ public class EarthCore : CustomBehaviour {
 		GetComponent<SpriteRenderer>().color = new Color(1,1,1,1);
 		
 		if (!dying) {
-			dying = true;		
+			dying = true;	
+			Hero.inst.invulnerable = true;	
 			StartCoroutine(DeathSequence());
 		}
 	}
