@@ -26,6 +26,7 @@ public class Hero : CustomBehaviour {
 	internal enum Status { Idle, Dead };
 	internal Status status = Status.Idle;
 	internal bool grounded = false;
+	internal bool invulnerable = false;
 	
 	// PRIVATE MEMBERS	
 	float targetRunningSpeed = 0f;
@@ -34,10 +35,12 @@ public class Hero : CustomBehaviour {
 	float initialDepth = 0f;
 	internal float depth = 0f;
 
+
 	public void SetGirl(bool g)
 	{
 				fx.SetGirl (g);
 		}
+
 
 	//--------------------------------------------------------------------------------
 	// EVENT CALLBACKS
@@ -297,7 +300,7 @@ public class Hero : CustomBehaviour {
 	//--------------------------------------------------------------------------------
 	
 	public void RagdollKill(Vector2 sourcePosition) {
-		if (status == Status.Dead) { return; }
+		if (invulnerable || status == Status.Dead) { return; }
 		status = Status.Dead;
 		StartCoroutine(DoFlyingDeath());
 		DoKillscreen();
@@ -332,7 +335,7 @@ public class Hero : CustomBehaviour {
 	
 	
 	public void Kill() {
-		if (status == Status.Dead) { return; }
+		if (invulnerable || status == Status.Dead) { return; }
 		status = Status.Dead;
 		StartCoroutine(DoFallingDeath());
 		DoKillscreen();
