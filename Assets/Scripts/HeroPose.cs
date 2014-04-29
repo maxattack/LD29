@@ -24,6 +24,21 @@ public class HeroPose : CustomBehaviour {
 	void Awake() {
 		sprites = GetComponentsInChildren<SpriteRenderer>();
 	}
+
+	public Sprite girlTorso;
+	public Sprite boyTorso;
+
+	public void SetGirl(bool g)
+	{
+		if(g)
+		{
+			sprites[4].sprite = girlTorso;
+		}
+		else
+		{
+			sprites[4].sprite = boyTorso;
+		}
+	}
 	
 	public void Show(bool flag) {
 		if (flag != showing) {

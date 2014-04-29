@@ -42,6 +42,18 @@ public class HeroFX : CustomBehaviour {
 		// START IDLE
 		pose.Show (false);
 	}
+
+	public Sprite girlIdle;
+	public Sprite boyIdle;
+	public void SetGirl(bool g)
+	{
+		if (g)
+			idleSprite.sprite = girlIdle;
+		else
+			idleSprite.sprite = boyIdle;
+		pose.SetGirl (g);
+
+	}
 	
 	//--------------------------------------------------------------------------------
 	// MAJOR STATES

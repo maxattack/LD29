@@ -33,7 +33,12 @@ public class Hero : CustomBehaviour {
 	bool canDoubleJump;
 	float initialDepth = 0f;
 	internal float depth = 0f;
-	
+
+	public void SetGirl(bool g)
+	{
+				fx.SetGirl (g);
+		}
+
 	//--------------------------------------------------------------------------------
 	// EVENT CALLBACKS
 	//--------------------------------------------------------------------------------
