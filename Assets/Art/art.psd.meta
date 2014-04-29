@@ -419,5 +419,14 @@ TextureImporter:
         height: 22
       alignment: 7
       pivot: {x: .5, y: 0}
+    - name: choosegender
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 5
+        width: 67
+        height: 34
+      alignment: 0
+      pivot: {x: .5, y: .5}
   spritePackingTag: 
   userData: 
