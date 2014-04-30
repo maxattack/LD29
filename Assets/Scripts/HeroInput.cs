@@ -50,7 +50,12 @@ public class HeroInput : CustomBehaviour {
 	
 	public bool PressedJump { 
 		get { 
-			return !Halting && (Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.RightShift) || InputManager.ActiveDevice.Action1.WasPressed); 
+			return !Halting && (
+				Input.GetKeyDown(KeyCode.Z) || 
+				Input.GetKeyDown(KeyCode.Y) || // BUGFIX FOR EUROPEAN KEYBOARDS
+				Input.GetKeyDown(KeyCode.RightShift) || 
+				InputManager.ActiveDevice.Action1.WasPressed
+			); 
 		}
 	}
 	
