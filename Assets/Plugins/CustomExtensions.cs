@@ -67,8 +67,7 @@ public static class CustomExtensions {
 	
 	
 	static float TimeIndependentRate(float easing) {
-		var dt = Time.deltaTime;
-		return dt > Mathf.Epsilon ? Mathf.Pow(easing, (1f/(60f * dt))) : 0f;
+		return 1f - Mathf.Pow(1f - easing, 60f * Time.deltaTime);
 	}
 	
 	public static float EaseTowards(this float curr, float target, float easing) {
