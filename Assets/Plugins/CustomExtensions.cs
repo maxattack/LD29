@@ -66,32 +66,37 @@ public static class CustomExtensions {
 	// Time-independent Easing
 	
 	
+	static float TimeIndependentRate(float easing) {
+		var dt = Time.deltaTime;
+		return dt > Mathf.Epsilon ? Mathf.Pow(easing, (1f/(60f * dt))) : 0f;
+	}
+	
 	public static float EaseTowards(this float curr, float target, float easing) {
-		return Mathf.Lerp(curr, target, Mathf.Pow(easing, Mathf.Clamp01(1f/(60f * Time.deltaTime))));
+		return Mathf.Lerp(curr, target, TimeIndependentRate(easing));
 	}
 	
 	public static Quaternion EaseTowards(this Quaternion curr, Quaternion target, float easing) {
-		return Quaternion.Slerp(curr, target, Mathf.Pow(easing, Mathf.Clamp01(1f/(60f * Time.deltaTime))));
+		return Quaternion.Slerp(curr, target, TimeIndependentRate(easing));
 	}
 	
 	public static Vector2 EaseTowards(this Vector2 curr, Vector2 target, float easing) {
-		return Vector2.Lerp(curr, target, Mathf.Pow(easing, Mathf.Clamp01(1f/(60f * Time.deltaTime))));
+		return Vector2.Lerp(curr, target, TimeIndependentRate(easing));
 	}
 	
 	public static Vector3 EaseTowards(this Vector3 curr, Vector3 target, float easing) {
-		return Vector3.Lerp(curr, target, Mathf.Pow(easing, Mathf.Clamp01(1f/(60f * Time.deltaTime))));
+		return Vector3.Lerp(curr, target, TimeIndependentRate(easing));
 	}
 
 	public static Vector3 EaseTowards(this Vector3 curr, Vector3 target, float easing, float dt) {
-		return Vector3.Lerp(curr, target, Mathf.Pow(easing, Mathf.Clamp01(1f/(60f * Time.deltaTime))));
+		return Vector3.Lerp(curr, target, TimeIndependentRate(easing));
 	}
 
 	public static Vector4 EaseTowards(this Vector4 curr, Vector4 target, float easing) {
-		return Vector4.Lerp(curr, target, Mathf.Pow(easing, Mathf.Clamp01(1f/(60f * Time.deltaTime))));
+		return Vector4.Lerp(curr, target, TimeIndependentRate(easing));
 	}
 	
 	public static Color EaseTowards(this Color curr, Color target, float easing) {
-		return Color.Lerp(curr, target, Mathf.Pow(easing, Mathf.Clamp01(1f/(60f * Time.deltaTime))));
+		return Color.Lerp(curr, target, TimeIndependentRate(easing));
 	}
 	
 	// Like the UI command
